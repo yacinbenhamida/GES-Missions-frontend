@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<head>
+    <title>Home</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+    <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/animate.css">
+    <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/css/sky-forms-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms-rtl.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>	
+<body> 
+<div class="wrapper" style="background-image: url('../assets/img/breadcrumbs.png');">   
+    <div class="breadcrumbs">
+        <div class="container arabparagraph">
+            <h1 class="pull-left"><span class="arabtext">المستعملون</span></h1>
+            <ul class="pull-right breadcrumb arabparagraph">
+                <li>الثوابت</li>
+                <li>المستعملون</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container content ">
+  <div class="row ">
+  <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <header class="arabparagraph">اضافة مستعمل
+        <button *ngIf="adduserv == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAddUser()"><i class="fa fa-sort-desc"></i></button>
+        <button *ngIf="adduserv == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAddUser()"><i class="fa fa-sort-asc"></i></button>                  
+  </header> 
+  <div class="arabparagraph" *ngIf="adduserv == true">
+    <fieldset>                  
+      <div class="row ">
+          <section class="col col-4 ">
+              <label class="input">
+                  <i class="icon-prepend fa fa-user"></i>
+                  <input required minlength="5"  type="text" name="name" placeholder="الأسم" [(ngModel)]="user.nomAr">
+              </label>
+          </section>
+          
+          <section class="col col-4">
+              <label class="input">
+                  <i class="icon-prepend fa fa-user"></i>
+                  <input  minlength="5" required type="text" name="surname" placeholder="القب" [(ngModel)]="user.prenomAr">
+              </label>
+          </section>
+          <section class="col col-4">
+            <label class="input">
+                <i class="icon-prepend fa fa-info"></i>
+                <input  minlength="8" maxlength="8" required type="number" name="CIN" placeholder="رقم بطاقة التعريف الوطنية " [(ngModel)]="user.login">
+            </label>
+        </section>
+        
+      </div>
+      <div class="row">
+            <section class="col col-4">
+                    <label class="input">
+                        <i class="icon-prepend fa fa-user"></i>
+                        <input  minlength="5" type="text" required name="prenomfr" placeholder="prenom" [(ngModel)]="user.prenomFr">
+                    </label>
+                </section>
+            <section class="col col-4">
+                    <label class="input">
+                        <i class="icon-prepend fa fa-user"></i>
+                        <input   minlength="5" type="text" required name="nomfr" placeholder="nom" [(ngModel)]="user.nomFr">
+                    </label>
+            </section>
+            <section class="col col-4">
+                <label class="select">
+                    <select required name="job"  [(ngModel)]="user.codeProfile" >
+                        <option value="none" selected disabled>وضيفة المستعمل</option>
+                        <option value="ordonnateur">آمر بالصرف</option>
+                        <option value="ordonateurministere">آمر بالصرف بوزارة الاشراف</option>
+                        <option value="controlleur">مراقب المصاريف</option>
+                        <option value="payeur">محاسب</option>
+                    </select>
+                    <i></i>
+                </label>
+            </section>
+      </div>
+      <div class="row">
+          <section class="col col-4">
+              <label class="input">
+                  <i class="icon-prepend fa fa-lock"></i>
+                  <input  minlength="5" type="password" required name="pass1" placeholder="كلمة السر" [(ngModel)]="user.motDePasse">
+              </label>
+          </section>
+          <section class="col col-4">
+              <label class="input">
+                  <i class="icon-prepend fa fa-lock"></i>
+                  <input  minlength="5"  type="password" required name="pass2" placeholder="تأكيد كلمة السر">
+              </label>
+          </section>
+          <section class="col col-4" *ngIf="departements!=null">
+            <label class="select">
+                <select  required name="budget"  [(ngModel)]="departement">
+                    <option value="0"  disabled>المؤسسة / الهيكل المعني</option>
+                    <option *ngFor="let x of departements" [ngValue]="x" >{{x.libDepAr}}</option>
+                </select>
+                <i></i>
+            </label>
+        </section>
+      </div>
+  </fieldset>
+  </div>
+  <footer *ngIf="adduserv == true">
+      <button type="submit" class="btn-u">تأكيد</button>
+      <div class="progress"></div>
+  </footer>               
+</form></div> 
+</div>  
+<div class="container content">
+        <div class="row">            
+                        <router-outlet></router-outlet>
+        </div> 
+</div>
+<div class="container content">
+        <div class="row ">
+                <form>
+                        <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                    <input type="text" class="form-control" name="searchString" placeholder="اسم المستعمل..." [(ngModel)]="searchString">
+                                </div>
+                            </div>
+                    </form>
+                <div   id="sky-form1" class="sky-form ">
+                <header class="arabparagraph">قائمة المستعملون
+                        <button *ngIf="listusers == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
+                        <button *ngIf="listusers == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                  
+                </header> 
+                <table class=" table table-bordered table-striped"  *ngIf="listusers == true">
+                        <thead>
+                                <tr>
+                                    <th>
+                                        اسم المستعمل
+                                    </th>
+                                    <th>
+                                        nom
+                                    </th>
+                                    <th>
+                                        prenom
+                                    </th>
+                                    <th>
+                                        الأسم
+                                    </th>
+                                    <th>
+                                        اللقب
+                                    </th>
+                                    <th>
+                                        كلمة السر
+                                    </th>
+                                    <th>
+                                         رمز وضيفة المستعمل
+                                    </th>
+                                    <th style="width:110px;">قيام بتغيرات</th>
+                                    <th style="text-align: center;">التعينات</th>  
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let u of allusers| filterfct: 'prenomAr': searchString; let i = index ">
+                                <td>{{u.login}}</td>
+                                <td>{{u.nomFr}}</td>
+                                <td>{{u.prenomFr}}</td>
+                                <td>{{u.prenomAr}}</td>
+                                <td>{{u.nomAr}}</td>
+                                <td>{{u.motDePasse}}</td>
+                                <td>{{u.codeProfile}}</td>
+                                <td><button  class="btn-u btn-u-red" (click)="deleteU(u)"><i class="fa fa-ban"></i></button>
+                                    <button class="btn-u btn-u-blue" (click)="showInfosU(u)"><i class="fa fa-cogs"></i></button></td>
+                                <td style="text-align: center;"><button *ngIf="u.codeProfile == 'C' || u.codeProfile == 'P'" class="btn-u" (click)="affectations(u)"><i class="fa fa-th-list"></i></button></td>    
+                            </tr>
+                        </tbody>
+                </table>
+                </div>
+        </div>           
+</div>
+<div class="container content arabparagraph" style="margin-top: 100%;">
+        <div class="row">    
+            <popup>             
+                <div class="container content">
+                    <span class="arabparagraph"> المستعمل : {{nomuser}}</span>
+                
+                            <div class="form-group">
+                                
+                                    <div class="input-group">
+                                        <section class="col col-1">
+                                        <span class="arabtext">إضافة مؤسسة</span></section>
+                                        <label class="select">
+                                                <select  required   [(ngModel)]="depctrl">
+                                                    <option value="0"  disabled>إضافة مؤسسة</option>
+                                                    <option *ngFor="let x of departementc" [ngValue]="x" >{{x.libDepAr}}</option>
+                                                </select>
+                                                <i></i>
+                                            </label>
+                                            
+                                        <button type="button" (click)="affecter()" class="btn-u">تأكيد</button>
+
+                                    </div>
+                                </div>  
+                            </div>        
+                    
+               <table class="table table-bordered table-striped">
+                   <thead>
+                       <tr>
+                       <th>المؤسسة</th>
+                        <th>تاريخ التعيين</th>
+                        <th></th>
+                    </tr>
+                   </thead>
+                   <tbody>
+                       <tr *ngFor="let u of lstStruct| paginate : { itemsPerPage:5, currentPage:p}">
+                            <td>{{u.departement.libDepAr}}</td>
+                            <td>{{u.dateAffectation}}</td>
+                            <td class="text-center"><button class="btn btn-u btn-u-red" (click) ="deleteUs(u)" type="button"><i class="fa fa-trash"></i></button></td>
+                       </tr>
+                   </tbody>
+                   <tfoot>
+                       <tr>
+                    <td colspan="3" class="text-center"><span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls></span></td>
+                      </tr>
+                   </tfoot>
+               </table>
+            
+            </popup>
+        </div>
+
+</div>
+<!-- End Order Form -->
+<!-- JS Global Compulsory -->			
+<script src="../../assets/plugins/jquery/jquery.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script src="../../assets/plugins/back-to-top.js"></script>
+<script src="../../assets/plugins/smoothScroll.js"></script>
+<script src="../../assets/plugins/jquery.parallax.js"></script>
+<!-- JS Customization -->
+<script src="../../assets/js/custom.js"></script>
+<!-- JS Page Level -->           
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/plugins/style-switcher-rtl.js"></script>
+<script>
+    jQuery(document).ready(function() {
+      	App.init();
+        StyleSwitcher.initStyleSwitcher();        
+    });
+    
+</script>
+</body>

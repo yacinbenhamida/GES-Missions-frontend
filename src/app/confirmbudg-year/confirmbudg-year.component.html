@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<head>
+    <title>Departements</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+    <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/animate.css">
+    <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/css/sky-forms-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms-rtl.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>	
+<body> 
+<div class="wrapper" style="background-image: url('../assets/img/breadcrumbs.png');">   
+    <div class="breadcrumbs">
+        <div class="container arabparagraph">
+            <h1 class="pull-left"><span class="arabtext">المصادقة على اعتمادات الهياكل</span></h1>
+            <ul class="pull-right breadcrumb arabparagraph">
+                <li>الأعتمادات</li>
+                <li> المصادقة على اعتمادات الهياكل/ المشاريع </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container content ">
+    <div class="row">
+        <div class="panel panel-dark-blue">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> <span style="font:arial;font-weight: bold;">{{year}}</span>
+                    </h3>
+                </div>           
+        </div>
+    </div> 
+    <br/>   
+    <div class="row">
+        <span   id="sky-form1" class="sky-form " >
+          <section class="col col-2">
+            <span class="arabparagraph"> الهيكل المعني</span>
+          </section>
+            <section class="col col-4" *ngIf="departements!=null">
+                <label class="select">
+                    <select  required name="departements" (change)="fetchDepBudgs()"  [(ngModel)]="selecteddepartement">
+                        <option value="0"  disabled>  الهيكل المعني</option>
+                        <option *ngFor="let x of departements"  [ngValue]="x" >{{x.libDepAr}}</option>
+                    </select>
+                    <i></i>
+                </label>
+            </section>
+        </span>
+    </div>
+    
+<br/> <br/>
+<div class="row">
+        <div class="sky-form">
+
+                            <div   id="sky-form1" class="sky-form ">
+                            <header class="arabparagraph">اعتمادات الهياكل
+                                    <button *ngIf="listvisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
+                                    <button *ngIf="listvisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                 
+                            </header>  
+                            <div *ngIf="isEmpty(majbudgdep)==true" class="arabparagraph">لا توجد   تحيينات</div>                
+                            <table *ngIf="isEmpty(majbudgdep)==false && listvisible == true" class=" table table-bordered table-striped" >
+                                    <thead>
+                                            <tr>
+                                                <th>
+                                                    مرجع مصاريف المأموريات
+                                                </th>
+                                                <th>
+                                                    المبلغ المخصص للمأموريات
+                                                </th>
+                                                <th>
+                                                    مرجع مصاريف النقل
+                                                </th> 
+                                                <th> المبلغ المخصص للتنقل </th>
+                                                <th>الوضعية</th>
+                                                <th>التاريخ</th>
+                                                <th>فتح الاعتماد</th>
+                                                <th>رفض الاعتماد</th>
+                                                
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr  *ngFor="let budgets of majbudgdep| paginate : { itemsPerPage:5, currentPage:p}">
+                                            <td>{{budgets.refBudgMission}}</td>
+                                            <td>{{budgets.valeurBudgMission}}</td>
+                                            <td>{{budgets.refBudgTransport}}</td>
+                                            <td>{{budgets.valeurBudgTransport}}</td>
+                                            <td [innerHTML]="convertEtat(budgets.etat)"></td>
+                                            <td>{{budgets.dateMaj}}</td>  
+                                            <td class="text-center"><button class="btn-u btn-u-blue" (click)="confirmUpdate(budgets)"><i class="fa fa-check-circle"></i></button></td>
+                                            <td class="text-center"><button class="btn-u btn-u-red" (click)="abortUpdate(budgets)"><i class="fa fa-ban"></i></button></td>
+                                          </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                      <td colspan="9" class="text-center"> <span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls>
+                                    </span></td> 
+                                    </tr>
+                                        </tfoot>
+                            </table>
+                            </div>
+        </div>
+    </div> 
+ <br/><br/>
+ 
+<div class="row">
+    <div class="sky-form">
+
+                        <div   id="sky-form2" class="sky-form ">
+                        <header class="arabparagraph">إعتمادات المشاريع
+                                <button *ngIf="listproj == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleListproj()"><i class="fa fa-sort-desc"></i></button>
+                                <button *ngIf="listproj == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleListproj()"><i class="fa fa-sort-asc"></i></button>                                 
+                        </header>  
+                        <div *ngIf="isEmpty(majbudgprog)==true" class="arabparagraph">لا توجد   تحيينات</div>                
+                        <table *ngIf="isEmpty(majbudgprog)==false && listproj == true" class=" table table-bordered table-striped" >
+                                <thead>
+                                        <tr>
+                                            <th>
+                                              المشروع 
+                                            </th>
+                                            <th>
+                                              المرجع
+                                            </th>
+                                            <th>
+                                              المبلغ
+                                            </th> 
+                                            <th>الوضعية</th>
+                                            <th> التاريخ </th>
+                                            <th style="width: 10px;">فتح الاعتماد</th>
+                                            <th style="width: 10px;">رفض الاعتماد</th>
+                                            
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let budgets of majbudgprog">
+                                        <td>{{budgets.budgetprojet.projet.libProjAr}}</td>
+                                        <td>{{budgets.refBudget}}</td>
+                                        <td>{{budgets.valeurMajBudgProg}}</td>
+                                        <td  [innerHTML]="convertEtat(budgets.etat)"></td>
+                                        <td>{{budgets.dateMajBudgProg}}</td>  
+                                        <td class="text-center"><button class="btn-u btn-u-blue" (click)="confirmUpdateproj(budgets)"><i class="fa fa-check-circle"></i></button></td>
+                                        <td class="text-center"><button class="btn-u btn-u-red" (click)="abortUpdateproj(budgets)"><i class="fa fa-ban"></i></button></td>
+                                      </tr>
+                                </tbody>
+                        </table>
+                        </div>
+    </div>
+</div>   
+</div> 
+<!-- End Order Form -->
+<!-- JS Global Compulsory -->			
+<script src="../../assets/plugins/jquery/jquery.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script src="../../assets/plugins/back-to-top.js"></script>
+<script src="../../assets/plugins/smoothScroll.js"></script>
+<script src="../../assets/plugins/jquery.parallax.js"></script>
+<!-- JS Customization -->
+<script src="../../assets/js/custom.js"></script>
+<!-- JS Page Level -->           
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/plugins/style-switcher-rtl.js"></script>
+<script>
+    jQuery(document).ready(function() {
+      	App.init();
+        StyleSwitcher.initStyleSwitcher();        
+    });
+    
+</script>
+</body>

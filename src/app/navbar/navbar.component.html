@@ -1,0 +1,169 @@
+
+<head>
+    <title>RACHED</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+    <!-- CSS Header and Footer -->
+    <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="../../assets/plugins/animate.css">
+    <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+    <!-- Style Switcher -->
+    <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+    <!-- CSS Theme -->
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+    <!-- RTL Customization -->
+    <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+    <!--=== Header ===-->    
+    <div class="header">
+            <div class="container">
+                <!-- Logo -->
+                <a class="logo" href="index.html">
+                    <img src="../../assets/img/rached-menu-logo.png" alt="Logo">
+                </a>
+                <!-- End Logo -->
+                
+                <!-- Topbar -->
+                <div class="topbar header-dark">
+                    <ul class="loginbar pull-right">
+                       <li>مرحبا</li>
+                        <li class="topbar-devider"></li>   
+                        <li>{{username}}</li>
+                        <li class="topbar-devider"></li>   
+                        <li><a (click)="disconnect()">Logout</a></li>   
+                    </ul>
+                </div>
+            </div>
+            <div class="collapse navbar-collapse mega-menu navbar-responsive-collapse arabtext">
+                <div class="container">
+                    <ul class="nav navbar-nav">
+                        <!-- homepage -->
+                        <li >
+                                <a routerLink="home" class="dropdown-toggle " data-toggle="dropdown">
+                                        <span class="arabtext">الصفحة الرئيسية</span>  
+                                 </a>
+                        </li>
+                        <!-- الثوابت -->                 
+                        <li class="dropdown" *ngIf="nav.ordonnateur || nav.ordonnateurministere || nav.admin" >
+                            <a href="javascript:void(0);" class="dropdown-toggle " data-toggle="dropdown">
+                              <span class="arabtext">الثوابت</span>  
+                            </a>
+                            <ul class="dropdown-menu"  >
+                                <li *ngIf="nav.admin"><a routerLink="th-users" class="arabtext">المستعملون </a></li>
+                                <li *ngIf="nav.admin"><a routerLink="th-countries" class="arabtext">البلدان</a></li>
+                                <li *ngIf="nav.admin"><a routerLink="th-zone" class="arabtext">المناطق</a></li>
+                                <li *ngIf="nav.ordonnateur || nav.ordonnateurministere"><a routerLink="th-fonct" class="arabtext">الوضيفة</a></li>
+                                <li *ngIf="nav.admin"><a routerLink="th-grade" class="arabtext">الرتب</a></li>
+                                <li *ngIf="nav.admin"><a routerLink="th-departements" class="arabtext">الوزارات</a></li>
+                                <li *ngIf="nav.admin"><a routerLink="th-classes" class="arabtext">المجموعات</a></li>
+                                <li *ngIf="nav.admin"><a routerLink="th-categories" class="arabtext">الاصناف</a></li>
+                                <li *ngIf="nav.ordonnateur || nav.ordonnateurministere"><a routerLink="th-projects" class="arabtext">المشاريع</a></li>
+                                <li *ngIf="nav.admin"><a routerLink="th-typefrais" *ngIf="val" class="arabtext">انواع المصاريف</a></li>
+                                <li *ngIf="nav.admin"><a routerLink="th-changeAppointment"  class="arabtext">تغيير التعيين</a></li>
+                                <li *ngIf="nav.admin"><a routerLink="th-keywords"  class="arabtext">كلمات المفاتيح </a></li>
+                                <li *ngIf="nav.ordonnateurministere"><a routerLink="th-org"  class="arabtext">المؤسسات </a></li>
+                            </ul>
+                        </li>
+                    
+                        <!-- End الثوابت -->
+    
+                        <!-- الاعتمادات -->                        
+                        <li class="dropdown"  *ngIf="nav.ordonnateur || nav.controlleur || nav.ordonnateurministere">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                             <span class="arabtext">الاعتمادات</span>   
+                            </a>
+                            <ul class="dropdown-menu arabtext">
+                                <li class="dropdown-submenu" *ngIf="nav.ordonnateurministere || nav.ordonnateur ">
+                                    <a href="javascript:void(0);" class="arabtext" class="dropdown-toggle" data-toggle="dropdown" >
+                                        إدخال الاعتمادات السنوية</a>
+                                        <ul class="dropdown-menu">
+                                                <li><a routerLink="/insbud-org">المؤسسة</a></li>
+                                                <li><a routerLink="/insbudg-proj">المشاريع</a></li>                                          
+                                            </ul> 
+                                    
+                                </li>                           
+                                <li class="dropdown-submenu" *ngIf="nav.ordonnateurministere || nav.ordonnateur "> 
+                                    <a href="javascript:void(0);" class="arabtext" class="dropdown-toggle" data-toggle="dropdown">
+                                         تحيين الأعتمادات</a>
+                                         <ul class="dropdown-menu">
+                                                <li><a routerLink="/updbudg-org">المؤسسة</a></li>
+                                                <li><a routerLink="/updbudg-proj">المشاريع</a></li>                                          
+                                        </ul>   
+                                </li>
+                            
+                                <li  *ngIf="nav.ordonnateurministere || nav.controlleur">
+                                       <a routerLink="/confirmbudg-year" class="dropdown-toggle" data-toggle="dropdown" >
+                                        المصادقة على اعتمادات الهياكل/ المشاريع
+                                       </a>
+                                </li>                   
+                                <!-- End لمصادقة على الاعتمادات -->
+                            </ul>
+                        </li>
+                        <!-- End -->
+    
+                        <!-- مآموريات -->
+                        <li class="dropdown arabtext"  *ngIf="nav.ordonnateur || nav.controlleur ||nav.payeur || nav.ordonnateurministere">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                              <span class="arabtext">المآموريات</span>  
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li  *ngIf="nav.ordonnateur || nav.ordonnateurministere">
+                                    <a routerLink="/m-missionaires"> إدخال المنتفعين</a>
+                                </li>
+                                <li class="dropdown-submenu" *ngIf="nav.ordonnateur || nav.ordonnateurministere">
+                                    <a href="javascript:void(0);">إدخال المأموريات</a>             
+                                        <ul class="dropdown-menu">
+                                                <li><a routerLink="/m-missions">إدخال مأمورية جديدة</a></li>
+                                                <li><a routerLink="/m-editmissions">تحيين مأمورية</a></li>                                          
+                                        </ul>                                                               
+                                </li>
+                                <li *ngIf="nav.ordonnateur || nav.ordonnateurministere">
+                                    <a href="#">المصادقة على المأمورية</a>                               
+                                </li>
+                                <li *ngIf="nav.ordonnateurministere"><a href="#" >تأشيرة سلطة الإشراف</a></li>
+                                <li *ngIf="nav.payeur"><a href="#" >المصادقة على التسبقة</a></li>
+                                <li *ngIf="nav.controlleur"><a href="#" >تأشيرة مراقب المصاريف</a></li>
+                            </ul>
+                        </li>
+                        <!-- End Blog -->
+    
+                        <!-- المتابعة -->
+                        <li class="dropdown"  *ngIf="nav.ordonnateur || nav.ordonnateurministere">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                              <span class="arabtext">المتابعة</span>  
+                            </a>        
+                            <ul class="dropdown-menu">
+                                    <li><a href="#">المأموريات المنجزة من طرف المؤسسة</a></li>
+                                    <li><a href="#">توزيع المأموريات حسب البلدان</a></li>
+                                    <li><a href="#">بيان حول استهلاك الإعتمادات</a></li>
+                            </ul>               
+                        </li>
+                        <!-- End المتابعة -->
+    
+                        <!-- التسوية -->
+                        <li class="dropdown"  *ngIf="nav.ordonnateurministere || nav.controlleur || nav.payeur">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                              <span class="arabtext"> التسوية</span> 
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li *ngIf="nav.ordonnateurministere"><a href="#">الغاء مهمة</a></li>
+                                <li *ngIf="nav.ordonnateurministere"><a href="#">تسوية مهمة</a></li>
+                                <li *ngIf="nav.ordonnateurministere"><a href="#">مصادقة الآمر بالصرف</a></li>
+                                <li *ngIf="nav.ordonnateurministere"><a href="#">مصادقة سلطة الإشراف</a></li>
+                                <li *ngIf="nav.controlleur"><a href="#">تآشيرة مراقب المصاريف</a></li>
+                                <li *ngIf="nav.payeur"><a href="#">تآشيرة المحاسب </a></li>
+                            </ul>                           
+                        </li>  
+                         <!--end التسوية -->                 
+                    </ul>
+                </div>
+                <!--/end container-->
+            </div></div>

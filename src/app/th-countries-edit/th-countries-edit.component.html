@@ -1,0 +1,79 @@
+<head>
+  <title>Departements</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+  <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+  <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+  <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+  <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+  <link rel="stylesheet" href="../../assets/plugins/animate.css">
+  <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+  <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+  <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+  <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+  <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+  <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/css/sky-forms-rtl.css">
+  <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms-rtl.css">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<div class="panel panel-dark-blue">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-cogs"></i> <span class="arabparagraph">تغيير بلد</span>
+                <button type="button" class="btn-u btn-u-xs pull-right" (click)="confirmer()"><i class="fa fa-ban"></i></button></h3>
+        </div>
+        <div class="panel-body">
+                <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
+                        <div class="arabparagraph">
+                          <fieldset>                  
+                            <div class="row ">
+                                  <section class="col col-6">
+                                          <label class="input">
+                                              <i class="icon-prepend fa fa-info"></i>
+                                              <input  minlength="4" maxlength="5" required type="text" name="codez" placeholder="رمز البلد " [(ngModel)]="pays.codepays">
+                                          </label>
+                                      </section>
+                                <section class="col col-6">
+                                    <label class="input">
+                                        <i class="icon-prepend fa fa-industry"></i>
+                                        <input  minlength="4" maxlength="5" required type="text" name="nomfctar" placeholder="اسم البلد" [(ngModel)]="pays.libPaysAr">
+                                    </label>
+                                </section>
+                                <section class="col col-6 ">
+                                    <label class="input">
+                                        <i class="icon-prepend fa fa-object-ungroup"></i>
+                                        <input required minlength="5"  type="text" name="nomfctfr" placeholder=" nom du pays" [(ngModel)]="pays.libPaysFr">
+                                    </label>
+                                </section>
+                                <section class="col col-6 ">
+                                  <label class="select">
+                                      <select  required name="budget"  [(ngModel)]="pays.zonepays">
+                                          <option value="0"  disabled>المنطقة</option>
+                                          <option *ngFor="let x of zone" [ngValue]="x" >{{x.libZoneAr}}</option>
+                                      </select>
+                                      <i></i>
+                                  </label>
+                                </section>
+                       
+                            </div>
+                            <div class="row">
+                            <section class="col col-6 ">
+                              <label class="select">
+                                  <select  required name="langue"  [(ngModel)]="pays.langue">
+                                      <option value="0" selected disabled>اللغة</option>
+                                      <option value="العربية">العربية</option>
+                                      <option value="الفرنسية">الفرنسية</option>
+                                      <option value="الانجليزية">الانجليزية</option>
+                                      <option value="اليابانية">اليابانية</option>
+                                  </select>
+                                  <i></i>
+                              </label>
+                            </section>
+                           <section class="col col-2">
+                              <button type="submit" class="btn-u">تأكيد</button>
+                           </section></div>
+                        </fieldset>
+                      </div>            
+                       </form>
+                       
+        </div>
+    </div>

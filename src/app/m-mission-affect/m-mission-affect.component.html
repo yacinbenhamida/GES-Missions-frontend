@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<head>
+    <title>Classes</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+    <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/animate.css">
+    <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/css/sky-forms-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms-rtl.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>	
+<body> 
+<div class="wrapper " style="background-image: url('../assets/img/breadcrumbs.png');">   
+    <div class="breadcrumbs ">
+        <div class="container arabparagraph " >
+            <h1 class="pull-left"><span class="arabtext">الوجهة والمصاريف</span></h1>
+            <ul class="pull-right breadcrumb arabparagraph">
+               <li><a routerLink="/m-missions"> <i class="fa fa-chevron-left"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container content ">
+    <div class="row">
+        <section >         
+            <span class="arabparagraph" style="font-size: 15px;"> آمر بالمأمورية عدد
+                <span style="font-family: Arial;">
+                    {{codeOrdreMission}}
+                </span>
+              </span>
+              <button class="btn-u btn-u-blue pull-right" (click)="toggleModal()" type="button"><span class="arabparagraph"> إضافة منتفع </span></button>
+        </section>
+      </div>
+      <br/>
+  <div class="row ">
+  <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <header class="arabparagraph">الاعوان المعنيون
+        <button *ngIf="add == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAdd()"><i class="fa fa-sort-desc"></i></button>
+        <button *ngIf="add == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAdd()"><i class="fa fa-sort-asc"></i></button>                                                                  
+  </header> 
+  <div class="arabparagraph" *ngIf="add == true">
+    <fieldset>      
+      <div class="row">
+          <table class=" table table-bordered table-striped"  *ngIf="add == true">
+              <thead>
+                      <tr>
+                          <th>
+                              ر.ب.ت.و
+                          </th>
+                          <th>
+                              الاسم واللقب
+                          </th>
+                          <th>المجموعة</th>
+                          <th>
+                              تاريخ الذهاب 
+                          </th>    
+                       <th>تاريخ الإياب</th>
+                       <th>(الفترة (أيام</th>                            
+                                                  
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let u of missionaires | paginate : { itemsPerPage:5, currentPage:p}| filterfct: 'dateDepP': searchString; let i = index ">
+                      <td>{{u.missionaire.cin}}</td>
+                      <td>{{u.missionaire.prenomAr}}  {{u.missionaire.nomAr}}</td>
+                      <td>{{u.missionaire.classe.libClasseAr}}</td>
+                      <td>{{u.dateDepP}}</td>
+                      <td>{{u.dateArrP}}</td>
+                      <td [innerHTML]="convDur(u.dateDepP,u.dateArrP)"></td>
+                  </tr>
+              </tbody>
+              <tfoot>
+                  <td colspan="2"></td>
+                  <td class="arabparagraph">المجموع</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+              </tfoot>
+              <tr>
+                  <td colspan="6" class="text-center">
+                        <pagination-controls (pageChange)="p=$event"></pagination-controls>
+                  </td>
+              </tr>
+      </table>
+      </div>
+         
+  </fieldset>    
+</div>
+  </form>
+</div>            
+</div> 
+ 
+<br/> <br/>
+<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" (click)="toggleModal()" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">إضافة منتفع </span></h4>
+            </div>
+            <div class="modal-body">
+              <div class="container content">
+                  <div class="modal-body">
+                          <section class="col col-4">
+                            <label class="select" for="missionaires" class="arabparagraph">إضافة منتفع <input  name="miss"  [(ngModel)]="n" (change)="disp()"  list="missionaires" type="text" class="form-control">            
+                            <datalist  id="missionaires" >
+                              <option *ngFor="let x of missionairesAff" [ngValue]="x"  >CIN : {{x.cin}} {{x.nomAr}} {{x.prenomAr}}</option>
+                            </datalist> 
+                            <i></i>
+                            </label> 
+                        </section>             
+                      </div>
+                      <div class="row">
+                          <div class="col-md-4">
+                              <label class="arabparagraph">الاسم</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.nomAr" class="form-control" type="text"></p>
+                              <label class="arabparagraph">ر.ب.ت.و</label><p><input style="background-color: ghostwhite;" disabled  [(ngModel)]="ordre.missionaire.cin" class="form-control" type="text"></p>
+                              <label class="arabparagraph">المجموعة</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.classe.libClasseFr" class="form-control" type="text"></p>
+                              <label class="arabparagraph">تاريخ الإياب</label><p><input  class="form-control" type="text" disabled [(ngModel)]="ordre.mission.dateArriveP"></p>
+                          </div>
+                          <div class="col-md-5">
+                              <label class="arabparagraph">اللقب</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.prenomAr" class="form-control" type="text"></p>
+                              <label class="arabparagraph">المعرف الوحيد</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.matricule" class="form-control" type="text"></p>
+                              <label class="arabparagraph">تاريخ الذهاب</label><p><input class="form-control" type="text" disabled [(ngModel)]="ordre.mission.dateDepartP"></p>
+                              <label class="arabparagraph">المنحة </label><p><input class="form-control" type="number" [(ngModel)]="ordre.avance"></p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                  <div class="col-md-13">
+                  <div class="modal-footer">
+                      <button type="button" (click)="toggleModal()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                      <button type="button" (click)="addMissionaire()" class="btn-u btn-u-primary"><span class="arabparagraph">تأكيد</span></button>
+                  </div>
+                </div>
+            </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+   
+<!-- End Order Form -->
+<!-- JS Global Compulsory -->			
+<script src="../../assets/plugins/jquery/jquery.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script src="../../assets/plugins/back-to-top.js"></script>
+<script src="../../assets/plugins/smoothScroll.js"></script>
+<script src="../../assets/plugins/jquery.parallax.js"></script>
+<!-- JS Customization -->
+<script src="../../assets/js/custom.js"></script>
+<!-- JS Page Level -->           
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/plugins/style-switcher-rtl.js"></script>
+<script>
+    jQuery(document).ready(function() {
+      	App.init();
+        StyleSwitcher.initStyleSwitcher();        
+    });
+    
+</script>
+</body>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<head>
+    <title>Classes</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+    <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/animate.css">
+    <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/css/sky-forms-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms-rtl.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>	
+<body> 
+<div class="wrapper" style="background-image: url('../assets/img/breadcrumbs.png');">   
+    <div class="breadcrumbs">
+        <div class="container arabparagraph">
+            <h1 class="pull-left"><span class="arabtext">تحيين مأمورية</span></h1>
+            <ul class="pull-right breadcrumb arabparagraph">
+                <li>المأموريات</li>
+                <li>إدخال المأموريات</li>
+                <li>تحيين مأمورية</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container content ">
+  <div class="row ">
+   <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
+   <header class="arabparagraph">قائمة المأموريات
+        <button *ngIf="missions == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleMiss()"><i class="fa fa-sort-desc"></i></button>
+        <button *ngIf="missions == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleMiss()"><i class="fa fa-sort-asc"></i></button>                                                                  
+   </header> 
+     <div class="arabparagraph" *ngIf="missions == true">                 
+            <fieldset>      
+              <div class="row">
+                  <form>
+                      <div class="form-group">
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                  <input type="text" class="form-control" name="searchString" placeholder="رقم المأمورية..." [(ngModel)]="searchString">
+                              </div>
+                          </div>
+                  </form> 
+                  <table class=" table table-bordered table-striped"  *ngIf="missions == true">
+                      <thead>
+                              <tr>
+                                  <th>رقم المأمورية</th>
+                                  <th>الموضوع</th>
+                                  <th>تاريخ الذهاب </th>    
+                                  <th>تاريخ الإياب</th>
+                                  <th>المدة</th>
+                                  <th style="width: 10px;"></th>                         
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let u of tabmissions | paginate : { itemsPerPage:5, currentPage:p} | filterfct: 'numMission': searchString; let i = index">
+                              <td>{{u.numMission}}</td>
+                              <td>{{u.objectifMissionAr}}</td>
+                              <td>{{u.dateDepartP}}</td>
+                              <td>{{u.dateArriveP}}</td>
+                              <td [innerHTML]="affdur(u.dateArriveP,u.dateDepartP)"></td>
+                              <td class="text-center"><button type="button" class="btn-u btn-u-green" (click)="editMiss(u)"><i class="fa fa-edit"></i> تحيين</button></td>  
+                          </tr>
+                      </tbody>
+                      <tfoot>
+                          <tr>
+                            <td colspan="9" class="text-center">
+                             <span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls></span>
+                            </td>
+                          </tr>
+                        </tfoot>                  
+                </table>
+              </div>                
+          </fieldset> 
+          <footer></footer>   
+        </div> 
+      </form>
+  </div>
+<br/>  <br />
+
+<div class="row " *ngIf="showmodif == true">
+  <form   id="sky-form2" class="sky-form ">
+  <header class="arabparagraph">تغيير معطيات مأمورية
+        <button *ngIf="edmission == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleEdMissio()"><i class="fa fa-sort-desc"></i></button>
+        <button *ngIf="edmission == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleEdMissio()"><i class="fa fa-sort-asc"></i></button>                                                                  
+        <button style="margin-right: 10px;"  class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="showmodif = false"><i class="fa fa-ban"></i></button>                                                                  
+  </header> 
+  <div class="arabparagraph" *ngIf="edmission == true">
+      <fieldset>
+        <div class="row">
+            <section class="col col-5"></section>
+            <section class="col col-6">         
+                    <span class="arabparagraph" style="font-size: 15px;"> المأمورية عدد
+                        <span style="font-family: Arial;">
+                            {{missionmodif.numMission}} / {{dep.codeDep}} 
+                        </span>
+                      </span>
+            </section>
+        </div>
+        <div class="row">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-cogs"></i> <span class="arabparagraph">المأمورية</span>
+                          <button *ngIf="frais == true" class="btn-u btn-u-green rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleF()"><i class="fa fa-sort-desc"></i></button>
+                          <button *ngIf="frais == false" class="btn-u btn-u-green rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleF()"><i class="fa fa-sort-asc"></i></button>                                                                          
+                        </h3>
+                    </div>                   
+                <div class="arabparagraph" *ngIf="frais == true">
+                    <fieldset>
+
+                        <div class="row">
+                            <label class="label">كلمة المفتاح</label>
+                            <label class="select">
+                                <select (change)="fetchTheme()"  required  name="motcle"  [(ngModel)]="choosenMc">
+                                    <option *ngFor="let x of motcles" [ngValue]="x" [selected]="x.theme == missionmodif.theme">{{x.libMcAr}}</option>
+                                </select>
+                                <i></i>
+                            </label> 
+                        </div> 
+                          <div class="row">
+                              <section>
+                                  <label class="label">هدف المأمورية</label>
+                                  <label class="textarea textarea-resizable">
+                                      <textarea name="objectifMissionAr"  [(ngModel)]="missionmodif.objectifMissionAr" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 123px;"></textarea>
+                                  </label>
+                              </section>
+                          </div>
+                          <div class="row">
+                              <section>
+                                  <label class="label" style="font-family: Arial;">objectif de la mission</label>
+                                  <label class="textarea textarea-resizable">
+                                      <textarea name="objectifMissionFr" [(ngModel)]="missionmodif.objectifMissionFr" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 123px;"></textarea>
+                                  </label>
+                              </section>
+                          </div>
+                          <div class="row text-center">
+                            <section class="col col-2"></section>
+                            <section class="col col-1.5">
+                              <span class="arabparagraph">تاريخ الذهاب</span>
+                            </section>
+                            <section class="col col-2">
+                                <label class="input">
+                                    <input name="dateDepartP" (change)="calculDuree()" required type="date" [(ngModel)]="missionmodif.dateDepartP" >
+                                </label>
+                            </section>
+                            <section class="col col-1.5">
+                                <span class="arabparagraph">تاريخ الاياب</span>
+                            </section>
+                            <section class="col col-2">
+                                <label class="input">
+                                    <input name="dateArriveP" (change)="calculDuree()" required type="date" [(ngModel)]="missionmodif.dateArriveP">
+                                </label>
+                            </section>
+                            <section class="col col-1.5">
+                                <span class="arabparagraph">المدة</span>
+                            </section>
+                            <section class="col col-2">
+                                <label class="input">
+                                    <input style="background-color: whitesmoke;" name="duree" required type="number" disabled value="{{duree}}">
+                                </label>
+                            </section>
+                          </div>
+
+                    </fieldset>
+                  </div>
+            </div>
+        </div>  
+        <br/>                
+        <div class="row ">
+                <div class="panel panel-dark-blue">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-cogs"></i> <span class="arabparagraph">المنتفعين</span>
+                          <button *ngIf="missionaires == true" class="btn-u  rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleMissio()"><i class="fa fa-sort-desc"></i></button>
+                          <button *ngIf="missionaires == false" class="btn-u  rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleMissio()"><i class="fa fa-sort-asc"></i></button>                                                                          
+                        </h3>
+                    </div>
+                    
+            <div class="arabparagraph" *ngIf="missionaires == true">
+                <fieldset>
+                        <div class="row">
+                                <section >         
+                                      <button class="btn-u btn-u-blue pull-right" (click)="toggleModal()" type="button"><span class="arabparagraph"> إضافة منتفع </span></button>
+                                </section>
+                        </div>
+                        <br/>
+                    <div class="row">
+                        <table class=" table table-bordered table-striped" >
+                            <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>رقم الأمر</th>
+                                        <th>
+                                            ر.ب.ت.و
+                                        </th>
+                                        <th>
+                                            الاسم واللقب
+                                        </th>
+                                        <th>المجموعة</th>
+                                        <th>
+                                            تاريخ الذهاب 
+                                        </th>    
+                                     <th>تاريخ الإياب</th>
+                                     <th>التسبقة</th>                            
+                                      <th style="width: 10px;"></th>                         
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let u of tabOrdresMiss | paginate : { itemsPerPage:5, currentPage:p}">
+                                    <td class="text-center"><button type="button" class="btn-u btn-u-red" (click)="deleteOrd(u)"><i class="fa fa-times"></i></button></td>
+                                    <td class="text-center"><button type="button" class="btn-u btn-u-orange" (click)="editord(u)"><i class="fa fa-edit"></i></button></td>  
+                                    <td >{{u.missionaire.numOrdre > 0 ? u.numOrdre : '0' + u.numOrdre }}</td>
+                                    <td>{{u.missionaire.cin}}</td>
+                                    <td>{{u.missionaire.prenomAr}}  {{u.missionaire.nomAr}}</td>
+                                    <td>{{u.missionaire.classe.libClasseAr}}</td>
+                                    <td>{{u.dateDepP}}</td>
+                                    <td>{{u.dateArrP}}</td>
+                                    <td>{{u.avance}}</td>
+                                    <td style="width: 10px;"><button class="btn-u btn-u-xs btn-u-dark arabparagraph">الوجهة والمصاريف</button></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <td colspan="4"></td>
+                                <td class="arabparagraph">المجموع</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              <td></td>
+                              </tfoot>
+                            <tr>
+                                <td colspan="10" class="text-center">
+                               <span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls></span>
+                              </td>
+                            </tr>
+                    </table>
+                    </div>
+                </fieldset>               
+              </div>
+            </div>
+          </div> 
+      </fieldset>
+      <footer>
+        <button class="btn-u pull-right" (click)="update()">تسجيل التغييرات</button>
+    </footer>  
+    </div>
+  </form>
+</div> 
+</div> 
+
+<!--  modal box -->
+<br/> <br/>
+<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" (click)="toggleModal()" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">إضافة منتفع </span></h4>
+            </div>
+            <div class="modal-body">
+              <div class="container content">
+                  <div class="modal-body">
+                          <section class="col col-4">
+                            <label class="select" for="missionaires" class="arabparagraph">إضافة منتفع <input  name="miss"  [(ngModel)]="n" (change)="disp()"  list="missionaires" type="text" class="form-control">            
+                            <datalist  id="missionaires" >
+                              <option *ngFor="let x of missionairesAff" [ngValue]="x"  > : {{x.cin}} {{x.nomAr}} {{x.prenomAr}}</option>
+                            </datalist> 
+                            <i></i>
+                            </label> 
+                        </section>             
+                      </div>
+                      <div class="row">
+                          <div class="col-md-4">
+                              <label class="arabparagraph">الاسم</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.nomAr" class="form-control" type="text"></p>
+                              <label class="arabparagraph">ر.ب.ت.و</label><p><input style="background-color: ghostwhite;" disabled  [(ngModel)]="ordre.missionaire.cin" class="form-control" type="text"></p>
+                              <label class="arabparagraph">المجموعة</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.classe.libClasseFr" class="form-control" type="text"></p>
+                              <label class="arabparagraph">تاريخ الإياب</label><p><input  class="form-control" type="date" (change)="convDur()" [(ngModel)]="ordre.dateArrP"></p>
+                          </div>
+                          <div class="col-md-5">
+                              <label class="arabparagraph">اللقب</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.prenomAr" class="form-control" type="text"></p>
+                              <label class="arabparagraph">المعرف الوحيد</label><p><input style="background-color: ghostwhite;"  [(ngModel)]="ordre.missionaire.matricule" class="form-control" type="text"></p>
+                              <label class="arabparagraph">تاريخ الذهاب</label><p><input class="form-control" type="date" (change)="convDur()"  [(ngModel)]="ordre.dateDepP"></p>
+                              <label class="arabparagraph">المدة </label><p><input class="form-control" type="number" disabled value="{{duree2}}"></p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                  <div class="col-md-13">
+                  <div class="modal-footer">
+                      <button type="button" (click)="toggleModal()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                      <button  type="button" (click)="addMissionaire()" class="btn-u btn-u-primary"><span class="arabparagraph">تأكيد</span></button>
+                </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="modaledit == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" (click)="toggleModalEdit()" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">تغيير المنتفع </span></h4>
+                </div>
+                <div class="modal-body">
+                  <div class="container content">
+                      <div class="modal-body">
+                              <section class="col col-4">
+                                <label class="select" for="missionaires" class="arabparagraph">تغيير المنتفع<input  name="miss"  [(ngModel)]="n" (change)="disp()"  list="missionaires" type="text" class="form-control">            
+                                <datalist  id="missionaires" >
+                                  <option *ngFor="let x of missionairesAff" [ngValue]="x"  > : {{x.cin}} {{x.nomAr}} {{x.prenomAr}}</option>
+                                </datalist> 
+                                <i></i>
+                                </label> 
+                            </section>             
+                          </div>
+                          <div class="row">
+                              <div class="col-md-4">
+                                  <label class="arabparagraph">الاسم</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.nomAr" class="form-control" type="text"></p>
+                                  <label class="arabparagraph">ر.ب.ت.و</label><p><input style="background-color: ghostwhite;" disabled  [(ngModel)]="ordre.missionaire.cin" class="form-control" type="text"></p>
+                                  <label class="arabparagraph">المجموعة</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.classe.libClasseFr" class="form-control" type="text"></p>
+                                  <label class="arabparagraph">تاريخ الإياب</label><p><input  class="form-control" type="date" (change)="convDur()" [(ngModel)]="ordre.dateArrP"></p>
+                              </div>
+                              <div class="col-md-5">
+                                  <label class="arabparagraph">اللقب</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.prenomAr" class="form-control" type="text"></p>
+                                  <label class="arabparagraph">المعرف الوحيد</label><p><input style="background-color: ghostwhite;"  [(ngModel)]="ordre.missionaire.matricule" class="form-control" type="text"></p>
+                                  <label class="arabparagraph">تاريخ الذهاب</label><p><input class="form-control" type="date" (change)="convDur()"  [(ngModel)]="ordre.dateDepP"></p>
+                                  <label class="arabparagraph">المدة </label><p><input class="form-control" type="number" disabled value="{{duree2}}"></p>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                      <div class="col-md-13">
+                      <div class="modal-footer">
+                          <button type="button" (click)="toggleModalEdit()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                          <button type="button" (click)="updateMissionaire()" class="btn-u btn-u-orange"><span class="arabparagraph">تغيير</span></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- End Order Form -->
+<!-- JS Global Compulsory -->			
+<script src="../../assets/plugins/jquery/jquery.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script src="../../assets/plugins/back-to-top.js"></script>
+<script src="../../assets/plugins/smoothScroll.js"></script>
+<script src="../../assets/plugins/jquery.parallax.js"></script>
+<!-- JS Customization -->
+<script src="../../assets/js/custom.js"></script>
+<!-- JS Page Level -->           
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/plugins/style-switcher-rtl.js"></script>
+<script>
+    jQuery(document).ready(function() {
+      	App.init();
+        StyleSwitcher.initStyleSwitcher();        
+    });
+    
+</script>
+</body>

@@ -1,0 +1,52 @@
+/* You can add global styles to this file, and also import other style files */
+
+body{ margin: 0px 0px 0px 0px;}
+@import url(https://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
+.interactive-slider-v3 {
+    -webkit-text-fill-color: rgb(0, 0, 0);
+    -webkit-text-stroke-color: black;
+    padding: 200px 0;
+    position: relative;
+    text-align: center;
+    background: url(assets/img/bg/11.jpg) no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
+.arabtext{
+    font-family: 'Droid Arabic kufi', serif;
+    font-weight: bold;
+    font-size: 120%;
+}
+.arabparagraph{
+    font-family: 'Droid Arabic kufi', serif;
+    font-size: 105%;
+}
+.arabtextbig{
+    font-family: 'Droid Arabic kufi', serif;
+    font-weight: bold;
+    font-size: 300%;
+}
+.scrollup {
+    width: 40px;
+    height: 40px;
+    opacity: 1;
+    position: fixed;
+    bottom: 22px;
+    right: 20px;
+    display: none;
+    text-indent: -9999px;
+    background: url(assets/img/bg/scroll-top-arrow.png) no-repeat left top;
+    z-index: 999;
+    cursor: pointer;
+}
+
+.hidelem{
+    display : none;
+}
+.breadcrumbs{ 
+    background-image: url('/assets/img/breadcrumbs.png');  
+}
+.grey{
+    background-color: whitesmoke;
+}

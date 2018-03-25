@@ -1,0 +1,112 @@
+<head>
+    <title>Departements</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+    <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/animate.css">
+    <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/css/sky-forms-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms-rtl.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <div class="panel panel-dark-blue">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-cogs"></i><span class="arabparagraph">تغيير معطيات المستعمل</span>
+               <button class="btn-u btn-u-xs pull-right" (click)="confirmer()"><i class="fa fa-ban"></i></button>    
+            </h3>
+        </div>
+        <div class="panel-body">
+                <form id="sky-form" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
+                        <header class="arabparagraph">تغيير معطيات مستعمل</header> 
+                        <div class="arabparagraph">
+                            <fieldset>                  
+                              <div class="row ">
+                                  <section class="col col-4 ">
+                                      <label class="input">
+                                          <i class="icon-prepend fa fa-user"></i>
+                                          <input required minlength="5"  type="text" name="name" placeholder="الأسم" [(ngModel)]="user.nomAr">
+                                      </label>
+                                  </section>
+                                  
+                                  <section class="col col-4">
+                                      <label class="input">
+                                          <i class="icon-prepend fa fa-user"></i>
+                                          <input  minlength="5" required type="text" name="surname" placeholder="القب" [(ngModel)]="user.prenomAr">
+                                      </label>
+                                  </section>
+                                  <section class="col col-4">
+                                    <label class="input">
+                                        <i class="icon-prepend fa fa-info"></i>
+                                        <input  minlength="8" maxlength="8" required type="number" name="CIN" placeholder="رقم بطاقة التعريف الوطنية " [(ngModel)]="user.login">
+                                    </label>
+                                </section>
+                                
+                              </div>
+                              <div class="row">
+                                    <section class="col col-4">
+                                            <label class="input">
+                                                <i class="icon-prepend fa fa-user"></i>
+                                                <input  minlength="5" type="text" required name="prenomfr" placeholder="prenom" [(ngModel)]="user.prenomFr">
+                                            </label>
+                                        </section>
+                                    <section class="col col-4">
+                                            <label class="input">
+                                                <i class="icon-prepend fa fa-user"></i>
+                                                <input   minlength="5" type="text" required name="nomfr" placeholder="nom" [(ngModel)]="user.nomFr">
+                                            </label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="select">
+                                            <select required name="job" [(ngModel)]="user.codeProfile" >
+                                                <option value="none" selected disabled>وضيفة المستعمل</option>
+                                                <option value="ordonnateur">آمر بالصرف</option>
+                                                <option value="ordonateurministere">آمر بالصرف بوزارة الاشراف</option>
+                                                <option value="controlleur">مراقب المصاريف</option>
+                                                <option value="payeur">محاسب</option>
+                                                <option value="admin">admin</option>
+                                            </select>
+                                            <i></i>
+                                        </label>
+                                    </section>
+                              </div>
+                              <div class="row">
+                                  <section class="col col-4">
+                                      <label class="input">
+                                          <i class="icon-prepend fa fa-lock"></i>
+                                          <input  minlength="5" type="text" required name="pass1" placeholder="كلمة السر" [(ngModel)]="user.motDePasse">
+                                      </label>
+                                  </section>
+                                  <section class="col col-4">
+                                      <label class="input">
+                                          <i class="icon-prepend fa fa-lock"></i>
+                                          <input  minlength="5"  type="text" required name="pass2" placeholder="تأكيد كلمة السر">
+                                      </label>
+                                  </section>
+                                  <section class="col col-4" *ngIf="departements!=null">
+                                    <label class="select">
+                                        <select  required name="budget"  [(ngModel)]="departement">
+                                            <option value="0"  disabled>المؤسسة / الهيكل المعني</option>
+                                            <option *ngFor="let x of departements" [ngValue]="x" >{{x.libDepAr}}</option>
+                                        </select>
+                                        <i></i>
+                                    </label>
+                                </section>
+                              </div>
+                          </fieldset>
+                          </div>
+                          <footer>
+                              <button (click)="OnSubmit(f)"  class="btn-u">تأكيد</button>
+                              <div class="progress"></div>
+                          </footer>              
+                       </form>
+        </div>
+    </div>	
+
+   

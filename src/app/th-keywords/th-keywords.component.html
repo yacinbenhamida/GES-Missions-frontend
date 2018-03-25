@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<head>
+    <title>Departements</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+    <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/animate.css">
+    <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/css/sky-forms-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms-rtl.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>	
+<body> 
+<div class="wrapper" style="background-image: url('../assets/img/breadcrumbs.png');">   
+    <div class="breadcrumbs">
+        <div class="container arabparagraph">
+            <h1 class="pull-left"><span class="arabtext">كلمات المفاتيح</span></h1>
+            <ul class="pull-right breadcrumb arabparagraph">
+                <li>الثوابت</li>
+                <li>كلمات المفاتيح </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container content ">
+  <div class="row ">
+  <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <header class="arabparagraph">اضافة موضوع
+        <button *ngIf="sujvisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAddSuj()"><i class="fa fa-sort-desc"></i></button>
+        <button *ngIf="sujvisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAddSuj()"><i class="fa fa-sort-asc"></i></button>                  
+  </header> 
+  <div class="arabparagraph" *ngIf="sujvisible == true">
+    <fieldset>                  
+      <div class="row ">
+            <section class="col col-3">
+                    <label class="input">
+                        <i class="icon-prepend fa fa-info"></i>
+                        <input  minlength="4" maxlength="5" required type="text" name="codez" placeholder="رمز الموضوع " [(ngModel)]="theme.codetheme">
+                    </label>
+                </section>
+          <section class="col col-3">
+              <label class="input">
+                  <i class="icon-prepend fa fa-industry"></i>
+                  <input  minlength="4" maxlength="5" required type="text" name="nomfctar" placeholder="اسم الموضوع" [(ngModel)]="theme.libThemeAr">
+              </label>
+          </section>
+          <section class="col col-3 ">
+              <label class="input">
+                  <i class="icon-prepend fa fa-object-ungroup"></i>
+                  <input required minlength="5"  type="text" name="nomfctfr" placeholder=" nom du théme " [(ngModel)]="theme.libThemeFr">
+              </label>
+          </section>
+         <section class="col col-1">
+            <button type="submit" class="btn-u">تأكيد</button>
+         </section>
+      </div>
+  </fieldset>
+</div>            
+ </form>
+</div> 
+</div>
+<div class="container content " >
+  <div class="row ">
+  <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit2(fa)" #fa="ngForm" >
+  <header class="arabparagraph"> اضافة كلمة مفتاح 
+        <button *ngIf="keywvisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAddKw()"><i class="fa fa-sort-desc"></i></button>
+        <button *ngIf="keywvisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAddKw()"><i class="fa fa-sort-asc"></i></button>                  
+  </header> 
+  <div class="arabparagraph" *ngIf="keywvisible==true">
+    <fieldset>
+    <div *ngIf="isEmpty(themes)==true" class="arabparagraph">يجب ادخال مواضيع قبل ادخال كلمات المفاتيح</div>             
+      <div class="row " *ngIf="isEmpty(themes)==false">      
+            <section class="col col-2">
+                    <label class="input">
+                        <i class="icon-prepend fa fa-info"></i>
+                        <input  minlength="4" maxlength="5" required type="text" name="codez" placeholder="رمز كلمة المفتاح " [(ngModel)]="motcle.codeMotCle">
+                    </label>
+                </section>
+          <section class="col col-3">
+              <label class="input">
+                  <i class="icon-prepend fa fa-industry"></i>
+                  <input  minlength="4" maxlength="5" required type="text" name="nomfctar" placeholder="اسم كلمة المفتاح" [(ngModel)]="motcle.libMcAr">
+              </label>
+          </section>
+          <section class="col col-3 ">
+              <label class="input">
+                  <i class="icon-prepend fa fa-object-ungroup"></i>
+                  <input required minlength="5"  type="text" name="nomfctfr" placeholder=" nom du mot clé " [(ngModel)]="motcle.libMcFr">
+              </label>
+          </section>
+          <section class="col col-2" *ngIf="themes!=null">
+            <label class="select">
+                <select  required name="thememc"  [(ngModel)]="motcle.theme">
+                    <option value="0"  disabled>الموضوع</option>
+                    <option *ngFor="let x of themelist" [ngValue]="x" >{{x.libThemeAr}}</option>
+                </select>
+                <i></i>
+            </label>
+        </section>
+         <section class="col col-1">
+            <button type="submit" class="btn-u">تأكيد</button>
+         </section>
+      </div>
+  </fieldset>
+</div>            
+ </form>
+</div> 
+</div>    
+<div class="container content">
+        <div class="row "> 
+                <form>
+                        <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                    <input type="text" class="form-control" name="searchString" placeholder="اسم الموضوع...." [(ngModel)]="searchString">
+                                </div>
+                            </div>
+                    </form>  
+                <div   id="sky-form1" class="sky-form ">
+                <header class="arabparagraph">قائمة المواضيع
+                        <button *ngIf="listvisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
+                        <button *ngIf="listvisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                 
+                </header>  
+                <div *ngIf="isEmpty(themes)==true" class="arabparagraph">لا توجد   مواضيع</div>                
+                <table *ngIf="isEmpty(themes)==false && listvisible == true" class=" table table-bordered table-striped" >
+                        <thead>
+                                <tr>
+                                    <th>
+                                        رمز الموضوع
+                                    </th>
+                                    <th>
+                                        اسم الموضوع
+                                    </th>
+                                    <th>
+                                        nom du théme 
+                                    </th> 
+                                    <th style="width:110px;">قيام بتغيرات</th>                         
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let u of themes | filterfct: 'libThemeAr': searchString; let i = index ">
+                                <td>{{u.codetheme}}</td>
+                                <td>{{u.libThemeAr}}</td>
+                                <td>{{u.libThemeFr}}</td>
+                                <td><button class="btn-u btn-u-red" (click)="deleteTheme(u)"><i class="fa fa-ban"></i></button>
+                                    <button class="btn-u btn-u-blue" (click)="showInfosTheme(u)"><i class="fa fa-cogs"></i></button></td>
+                            </tr>
+                        </tbody>
+                </table>
+                </div>
+        </div>           
+</div>
+<div class="container content">
+    <div class="row">            
+                    <router-outlet></router-outlet>
+    </div> 
+</div>
+<div class="container content">
+  <div class="row ">   
+        <form>
+                <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                            <input type="text" class="form-control" name="searchString2" placeholder="اسم كلمة المفتاح" [(ngModel)]="searchString2">
+                        </div>
+                    </div>
+            </form>
+          <div   id="sky-form1" class="sky-form ">
+          <header class="arabparagraph">قائمة كلمات المفاتيح
+                <button *ngIf="listkwvisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleListKw()"><i class="fa fa-sort-desc"></i></button>
+                <button *ngIf="listkwvisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleListKw()"><i class="fa fa-sort-asc"></i></button>                                
+          </header>  
+          <div *ngIf="isEmpty(motcles)==true" class="arabparagraph">لا توجد كلمات مفاتيح</div>                  
+          <table *ngIf="isEmpty(motcles)==false && listkwvisible == true" class=" table table-bordered table-striped">
+                  <thead>
+                          <tr>
+                              <th>
+                                  رمز كلمة المفتاح
+                              </th>
+                              <th>
+                                  اسم كلمة المفتاح
+                              </th>
+                              <th>
+                                  nom du mot-clé 
+                              </th>    
+                              <th>الموضوع</th>
+                              <th style="width:110px;">قيام بتغيرات</th>                            
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let u of motcles| paginate : { itemsPerPage:5, currentPage:p} | filterfct: 'libMcAr': searchString2; let i = index ">    
+                          <td>{{u.codeMotCle}}</td>
+                          <td>{{u.libMcAr}}</td>
+                          <td>{{u.libMcFr}}</td>
+                          <td>{{u.theme.libThemeAr}}</td>
+                          <td><button class="btn-u  btn-u-red " (click)="deleteMc(u)"><i class="fa fa-ban"></i></button>
+                            <button class="btn-u btn-u-blue" (click)="showInfosMC(u)"><i class="fa fa-cogs"></i></button></td>
+                      </tr>
+                  </tbody>
+                  <tfoot><tr>
+                    <td colspan="5" class="text-center">
+                        <span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls>
+                    </span></td>
+                    </tr>
+                  </tfoot>
+          </table>
+          </div>
+          
+  </div>        
+</div>     
+<!-- End Order Form -->
+<!-- JS Global Compulsory -->			
+<script src="../../assets/plugins/jquery/jquery.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script src="../../assets/plugins/back-to-top.js"></script>
+<script src="../../assets/plugins/smoothScroll.js"></script>
+<script src="../../assets/plugins/jquery.parallax.js"></script>
+<!-- JS Customization -->
+<script src="../../assets/js/custom.js"></script>
+<!-- JS Page Level -->           
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/plugins/style-switcher-rtl.js"></script>
+<script>
+    jQuery(document).ready(function() {
+      	App.init();
+        StyleSwitcher.initStyleSwitcher();        
+    });
+    
+</script>
+</body>

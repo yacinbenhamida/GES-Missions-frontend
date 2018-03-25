@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<head>
+    <title>Departements</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+    <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/animate.css">
+    <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/css/sky-forms-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms-rtl.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>	
+<body> 
+<div class="wrapper">   
+    <div class="breadcrumbs">
+        <div class="container arabparagraph">
+            <h1 class="pull-left"><span class="arabtext">ادخال الاعتمادات السنوية للهيكل</span></h1>
+            <ul class="pull-right breadcrumb arabparagraph">
+                <li>ادخال الاعتمادات السنوتة</li>
+                <li>للهيكل </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container content ">
+    <div class="row">
+        <div class="panel panel-dark-blue">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> <span style="font:arial;font-weight: bold;">{{year}}</span>
+                    </h3>
+                </div>           
+        </div>
+    </div>    
+    
+  <div class="row ">
+  <form   id="sky-form1" class="sky-form " (click)="msg()">
+  <header class="arabparagraph"> ادخال مصاريف الهيكل
+        <button *ngIf="addbudgmiss == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAddBudgMiss()"><i class="fa fa-sort-desc"></i></button>
+        <button *ngIf="addbudgmiss == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAddBudgMiss()"><i class="fa fa-sort-asc"></i></button>                  
+  </header> 
+  <div class="arabparagraph" *ngIf="addbudgmiss == true">
+    <fieldset>                  
+      <div class="row ">
+            <section class="col col-10">
+                    <label class="arabtext">مصاريف المأمورية</label>
+                </section>
+            <section class="col col-6">
+                    <label class="input">
+                        <i class="icon-prepend fa fa-info"></i>
+                        <input [disabled]="canEdit == false"  required type="text" name="codez" placeholder="مرجع الميزانة " [(ngModel)]="budget.refBudgMission">
+                    </label>
+                </section>
+          <section class="col col-6">
+              <label class="input">
+                  <i class="icon-prepend fa fa-dollar"></i>
+                  <input [disabled]="canEdit == false"  required type="text" name="nomfctar" placeholder="المبلغ" [(ngModel)]="budget.montantBudgMission">
+              </label>
+          </section>
+          <section class="col col-10">
+              <label class="arabtext">مصاريف النقل</label>
+          </section>
+          <section class="col col-6">
+                <label class="input">
+                    <i class="icon-prepend fa fa-info"></i>
+                    <input  [disabled]="canEdit == false" required type="text" name="codez" placeholder="مرجع الميزانة " [(ngModel)]="budget.refBudgTransport">
+                </label>
+            </section>
+      <section class="col col-6">
+          <label class="input">
+              <i class="icon-prepend fa fa-dollar"></i>
+              <input  [disabled]="canEdit == false" required type="text" name="nomfctar" placeholder="المبلغ" [(ngModel)]="budget.montantBudgTransport">
+          </label>
+      </section>
+         <section class="col col-1">
+            <button *ngIf="modif == true" (click)="modify()" class="btn-u">تثبيت</button>
+            <button *ngIf="modif == false" [disabled]="canEdit == false" (click)="onSubmit()" class="btn-u">تأكيد</button>
+         </section>
+      </div>
+  </fieldset>
+</div>            
+ </form>
+</div> 
+<br/> <br/>
+<div class="row">
+            <fieldset>
+                    <div class="row ">  
+                            <div   id="sky-form1" class="sky-form ">
+                            <header class="arabparagraph"> الاعتمادات المخصصة للمآموريات
+                                    <button *ngIf="listvisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
+                                    <button *ngIf="listvisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                 
+                            </header>  
+                            <div *ngIf="isEmpty(budgets)==true" class="arabparagraph">لا توجد   اعتمادات حاليا</div>                
+                            <table *ngIf="isEmpty(budgets)==false && listvisible == true" class=" table table-bordered table-striped" >
+                                    <thead>
+                                            <tr>
+                                                <th>
+                                                    الاعتمادات الأولية المخصصة للمآموريات
+                                                </th>
+                                                <th>
+                                                    الاعتمادات المتعهد بها المخصصة للمآموريات
+                                                </th>
+                                                <th>
+                                                    الاعتمادات المتبقية المخصصة للمآموريات
+                                                </th> 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{initialRessources.totalMission}}</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                            </table>
+                            </div>
+                    </div>  
+<br/>
+                    <div class="row ">  
+                        <div   id="sky-form1" class="sky-form ">
+                        <header class="arabparagraph"> الاعتمادات المخصصة للتنقل
+                                <button *ngIf="listvisible2 == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList2()"><i class="fa fa-sort-desc"></i></button>
+                                <button *ngIf="listvisible2 == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList2()"><i class="fa fa-sort-asc"></i></button>                                 
+                        </header>  
+                        <div *ngIf="isEmpty(budgets)==true" class="arabparagraph">لا توجد   اعتمادات حاليا</div>                
+                        <table *ngIf="isEmpty(budgets)==false && listvisible2 == true" class=" table table-bordered table-striped" >
+                                <thead>
+                                        <tr>
+                                            <th>
+                                                الاعتمادات الأولية المخصصة للتنقل
+                                            </th>
+                                            <th>
+                                                الاعتمادات المتعهد بها المخصصة للتنقل
+                                            </th>
+                                            <th>
+                                                الاعتمادات المتبقية المخصصة للتنقل
+                                            </th> 
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{initialRessources.totalTransport}}</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                        </table>
+                        </div>
+                    </div>
+            </fieldset>
+        </div>
+</div>  
+     
+<!-- End Order Form -->
+<!-- JS Global Compulsory -->			
+<script src="../../assets/plugins/jquery/jquery.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script src="../../assets/plugins/back-to-top.js"></script>
+<script src="../../assets/plugins/smoothScroll.js"></script>
+<script src="../../assets/plugins/jquery.parallax.js"></script>
+<!-- JS Customization -->
+<script src="../../assets/js/custom.js"></script>
+<!-- JS Page Level -->           
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/plugins/style-switcher-rtl.js"></script>
+<script>
+    jQuery(document).ready(function() {
+      	App.init();
+        StyleSwitcher.initStyleSwitcher();        
+    });
+    
+</script>
+</body>

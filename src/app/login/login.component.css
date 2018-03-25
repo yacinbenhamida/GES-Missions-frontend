@@ -1,0 +1,17 @@
+body{
+    padding-top: 7%;
+    padding-bottom: 20%;
+    background-image: url(../assets/img/bg/66.jpg);
+    background-size: cover;
+    background-position: top top;
+    position: relative;
+}
+.imgctr{
+    text-align: center;
+}
+.bordertop{
+    
+    border-top-width: 4px;
+    border-top-style: solid;
+    border-top-color: #4765a0;
+}

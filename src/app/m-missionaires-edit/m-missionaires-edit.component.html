@@ -1,0 +1,166 @@
+<head>
+    <title>Departements</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+    <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/animate.css">
+    <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/css/sky-forms-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms-rtl.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>	
+  <body>
+  <div class="panel panel-dark-blue">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-cogs"></i> <span class="arabparagraph">تغيير معطيات منتفع</span>
+                <button class="btn-u btn-u-xs pull-right" (click)="confirmer()"><i class="fa fa-ban"></i></button>
+            </h3>
+        </div>
+        
+    <div class="arabparagraph" >
+        <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <fieldset>                  
+      <div class="row ">
+            <section class="col col-6">
+                    <label class="input">
+                        <i class="icon-prepend fa fa-info"></i>
+                        <input  minlength="8" maxlength="8" required type="number" name="cin" placeholder=" رقم بطاقة التعريف الوطنية" [(ngModel)]="missionaire.cin">
+                    </label>
+            </section>
+            <section class="col col-2">
+                <span style="font-size: 12px;" class="arabparagraph">تاريخ إصدار بطاقة التعريف الوطنية</span>    
+            </section>
+            <section class="col col-4">
+              <label class="input">
+                  <i class="icon-prepend fa fa-calendar"></i>
+                  <input  minlength="8" maxlength="8" required type="date" name="cindate"  placeholder="" [(ngModel)]="missionaire.dateCin">
+              </label>
+             </section>
+            <section class="col col-6 ">
+              <label class="input">
+                  <i class="icon-prepend fa fa-barcode"></i>
+                  <input required minlength="2"  type="number" name="nomcatFr" name="matricule" placeholder="رقم التسجيل" [(ngModel)]="missionaire.matricule">
+              </label>
+          </section>
+          <section class="col col-6">
+              <label class="input">
+                  <i class="icon-prepend fa fa-user"></i>
+                  <input  minlength="2" maxlength="20" required type="text" name="prenomar"  placeholder="اسم المنتفع" [(ngModel)]="missionaire.prenomAr">
+              </label>
+          </section>
+          <section class="col col-6 ">
+              <label class="input">
+                  <i class="icon-prepend fa fa-user"></i>
+                  <input required minlength="2"  type="text" name="prenomfr" placeholder=" prenom du missionaire" [(ngModel)]="missionaire.prenomFr">
+              </label>
+          </section>
+          <section class="col col-6 ">
+              <label class="input">
+                  <i class="icon-prepend fa fa-user"></i>
+                  <input required minlength="2"  type="text" name="nomar"  placeholder="لقب المتنفع" [(ngModel)]="missionaire.nomAr">
+              </label>
+          </section>
+          <section class="col col-6 ">
+            <label class="input">
+                <i class="icon-prepend fa fa-user"></i>
+                <input required minlength="2"  type="text" name="nomfr" placeholder="nom du missionaire" [(ngModel)]="missionaire.nomFr">
+            </label>
+        </section>
+        <section class="col col-6 ">
+          <label class="input">
+              <i class="icon-prepend fa fa-globe"></i>
+              <input required minlength="2"  type="text" name="natioAr" placeholder="الجنسية" [(ngModel)]="missionaire.nationaliteAr">
+          </label>
+      </section>
+      <section class="col col-6 ">
+        <label class="input">
+            <i class="icon-prepend fa fa-globe"></i>
+            <input required minlength="2"  type="text" name="natioFr" placeholder="nationalité" [(ngModel)]="missionaire.nationaliteFr">
+        </label>
+    </section>
+    <section class="col col-1.5">
+        <span style="font-size: 12px;" class="arabparagraph">تاريخ الولادة</span>
+    </section>
+    <section class="col col-5 ">
+      <label class="input">
+          <i class="icon-prepend fa fa-calendar"></i>
+          <input type="date"  required minlength="2"  name="dateAr" [(ngModel)]="missionaire.dateNaissance">
+      </label>
+    </section>
+    <section class="col col-6 ">
+      <label class="input">
+          <i class="icon-prepend fa fa-location-arrow"></i>
+          <input type="text" required minlength="2"  type="text" name="lieuAr" placeholder="مكان الولادة" [(ngModel)]="missionaire.lieuNaissanceAr">
+      </label>
+    </section>
+    <section class="col col-6 ">
+      <label class="input">
+          <i class="icon-prepend fa fa-location-arrow"></i>
+          <input type="text" required minlength="2"  type="text" name="lieuFr" placeholder="lieu de naissance" [(ngModel)]="missionaire.lieuNaissanceFr">
+      </label>
+    </section>
+    <section class="col col-1.5">
+        <span style="font-size: 12px;" class="arabparagraph">الرتبة</span>
+    </section>
+    <section class="col col-5 ">
+        <label class="select">
+            <select  required name="grade"  [(ngModel)]="missionaire.grade">
+                <option value="0"  disabled>الرتبة</option>
+                <option *ngFor="let x of grades" [ngValue]="x" >{{x.libGradeAr}}</option>
+            </select>
+            <i></i>
+        </label>
+    </section>
+    <section class="col col-1.5">
+        <span style="font-size: 12px;" class="arabparagraph">المجموعة</span>
+    </section>
+    <section class="col col-5 ">
+        <label class="select">
+            <select  required name="classe"  [(ngModel)]="missionaire.classe">
+                <option *ngFor="let x of classes" [ngValue]="x"  >{{x.libClasseAr}}</option>
+            </select>
+            <i></i>
+        </label>
+    </section>
+    <section class="col col-1.5">
+        <span style="font-size: 12px;" class="arabparagraph">الصنف</span>
+    </section>
+    <section class="col col-5 ">
+        <label class="select">
+            <select  required name="cats"  [(ngModel)]="missionaire.categorie">
+                <option value="0"  disabled>الصنف</option>
+                <option *ngFor="let x of cats" [ngValue]="x" >{{x.libCatAr}}</option>
+            </select>
+            <i></i>
+        </label>
+    </section>
+    <section class="col col-1.5">
+        <span style="font-size: 12px;" class="arabparagraph">الوظيفة</span>
+    </section>
+    <section class="col col-5 ">
+        <label class="select">
+            <select  required name="fct"  [(ngModel)]="missionaire.fonction">
+                <option value="0"  disabled>الوظيفة</option>
+                <option *ngFor="let x of fonctions" [ngValue]="x" >{{x.libFctAr}}</option>
+            </select>
+            <i></i>
+        </label>
+    </section>
+    </div>
+  </fieldset>
+  <footer>    
+    <button type="submit" class="btn-u  pull-right">تأكيد</button>
+    <button type="reset" class="btn-u btn-u-red"><i class="fa fa-times"></i></button>
+  </footer>
+  </form>
+  </div>  
+</div>
+</body>
+   

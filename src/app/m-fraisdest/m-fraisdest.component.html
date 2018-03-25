@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<head>
+    <title>Classes</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+    <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/animate.css">
+    <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/css/sky-forms-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms-rtl.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>	
+<body> 
+
+<div class="container content ">
+  <div class="row">
+
+        <div class="tag-box tag-box-v6">
+                <span class="arabtext">  آمر بالمأمورية عدد   {{ordremission.numOrdre > 10 ? ordremission.numOrdre : '0' + ordremission.numOrdre }}</span>
+                <p class="arabparagraph">رقم المأمورية {{ordremission.mission.numMission}}</p>
+                <br/>
+                <span class="label rounded label-danger arabparagraph">مدة المأمورية : {{convDur(ordremission.dateDepP,ordremission.dateArrP)}} ايام</span>
+        </div>
+  </div>
+    <div class="row">
+        <section >         
+              <button class="btn-u btn-u-blue pull-right" (click)="addnewcountry()" type="button">
+                  <span class="arabparagraph">اضافة بلد </span></button>
+        </section>
+      </div>
+      <br/>
+  <div class="row ">
+  <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <header class="arabparagraph">البلد
+        <button *ngIf="add == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAdd()"><i class="fa fa-sort-desc"></i></button>
+        <button *ngIf="add == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAdd()"><i class="fa fa-sort-asc"></i></button>                                                                  
+  </header> 
+  <div class="arabparagraph" *ngIf="add == true">
+    <fieldset>      
+      <div class="row">
+          <table class=" table table-bordered table-striped"  *ngIf="add == true">
+              <thead>
+                      <tr>
+                          <th style="visibility: hidden;"></th>
+                          <th style="visibility: hidden;"></th>
+                          <th>وسيلة النقل</th>
+                          <th>
+                              اسم البلد
+                          </th>
+                          <th>
+                              nom du pays
+                          </th>
+                          <td>المدينة</td>
+                          <th>اللغة</th>
+                          <th style="width: 50px;">
+                              المدة
+                          </th>    
+                       <th style="width: 70px;">المصاريف</th>                            
+                                                  
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let x of tabconcerne | paginate : { itemsPerPage:5, currentPage:p} ; let i=index">
+                      <td style="width: 15px;"><button type="button" (click)="cancelCountry(x,i)" class="btn-u btn-u-red" ><i class="fa fa-times"></i></button></td>
+                      <td style="width: 15px;"><button type="button" (click)="editCountry(x)" class="btn-u btn-u-orange"><i class="fa fa-edit"></i></button></td>
+                      <td>{{x.moyTransport}}</td>
+                      <td>{{x.pays.libPaysAr}}</td>
+                      <td>{{x.pays.libPaysFr}}</td>
+                      <td>{{x.ville}}</td>
+                      <td>{{x.pays.langue}}</td>
+                      <td >
+                            {{x.nbJoursP}}                           
+                      </td>
+                      <td><button (click)="gotodepenses(x)" type="button" class="btn-u btn-u-brown"> المصاريف <i class="fa fa-dollar"></i></button></td>
+                  </tr>
+              </tbody>
+              <tfoot>
+                  <tr>
+                      <td colspan="9" class="text-center">
+                          <span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls></span>
+                        </td>
+                  </tr>
+                </tfoot>       
+      </table>
+      </div>
+         
+  </fieldset>    
+</div>
+  </form>
+</div> 
+<br/>
+<div class="row" *ngIf="depensesd == true">
+    <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
+        <div class="panel panel-dark-blue">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-money"></i> <span class="arabparagraph">تحمل المصاريف </span>
+                  <button *ngIf="depenses == true" class="btn-u  rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleDepenses()"><i class="fa fa-sort-desc"></i></button>
+                  <button *ngIf="depenses == false" class="btn-u  rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleDepenses()"><i class="fa fa-sort-asc"></i></button>                                                                          
+                  <button type="button" (click)="depensesd = false" class="btn-u  rounded-2x btn-u-white btn-u-xs pull-right" ><i class="fa fa-times"></i></button>
+                </h3>
+            </div>
+        <div class="arabparagraph" *ngIf="depenses == true">
+          <fieldset>
+            <div class="row">
+              <section>
+                  <table class=" table table-bordered table-striped"  >
+                    <thead> <tr>
+                        
+                        <td colspan="4" style="visibility:hidden;"></td>
+                        <td class="text-center" style="width : 70px;">عدد ايام التكفل</td>
+                        <td style="visibility:hidden;"></td> 
+                    </tr>                  
+                    </thead>  
+                    <tbody>
+                          <!--<tr *ngFor="| paginate : { itemsPerPage:5, currentPage:p}| filterfct: 'dateDepP': searchString; let i = index ">-->
+                          <tr>
+                              <td style="width:10px;" class="text-center">
+                                  <input type="checkbox" [(ngModel)]="departementsup" name="suppdepart"/>
+                              </td>
+                              <td>الهيكل المعني</td>
+                              <td style="width: 150px;">{{departement.libDepAr}}</td>
+                              <td style="width: 150px;font-family: Arial;">{{departement.libDepFr}}</td>
+                              <td >
+                                  <input style="width: 70px;font-family: Arial;" max="{{selectedconcerne.nbJoursP}}" name="duree" required type="number"  [disabled]="departementsup == false">
+                              </td>
+                              <td>
+                                    <button type="button"  [disabled]="departementsup == false" class="btn-u btn-u-sea"><i class="fa fa-unlink"></i> إستثناء </button>
+                              </td>
+                          </tr>
+                          <tr>
+                                <td><input type="checkbox"  [(ngModel)]="orgetrangersup" name="supporget" /></td>
+                                <td>الهيكل المضيف</td>
+                                <td>
+                                    <input style="width: 150px;" [disabled]="orgetrangersup == false" name="nomorgar" required type="text"  placeholder="اسم المؤسسة المتكفلة">
+                                </td>
+                                <td>
+                                    <input style="width: 150px;font-family: Arial;" [disabled]="orgetrangersup == false" name="nomorgfr" required type="text" placeholder="nom de l'organisme" >
+                                </td>
+                                <td>
+                                    <input style="width: 70px;font-family: Arial;" max="{{selectedconcerne.nbJoursP}}" [disabled]="orgetrangersup == false" name="duree"  required type="number"  >
+                                </td>
+                                <td style="width: 70px;">
+                                        <button type="button"  [disabled]="orgetrangersup == false" class="btn-u btn-u-sea" ><i class="fa fa-unlink"></i> إستثناء </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" [(ngModel)]="projetsup" name="suppproj" [disabled]="orgetrangersup == true && departementsup == true"/></td>
+                                <td>المشروع</td>
+                                <td style="width: 150px;">
+                                    <label class="select">
+                                        <select   required  name="projets" [disabled]="projetsup == false"  [(ngModel)]="choosenProjet">
+                                            <option *ngFor="let x of projets" [ngValue]="x" >{{x.libProjAr}}</option>
+                                        </select>
+                                        <i></i>
+                                    </label>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <input [disabled]="projetsup == false" max="{{selectedconcerne.nbJoursP}}" style="width: 70px;font-family: Arial;" name="duree" required type="number"  >    
+                                </td>
+                                <td style="visibility:hidden;"></td>
+                            </tr>
+                      </tbody>
+              </table>
+              </section>
+            </div>
+          </fieldset>
+          <footer>
+                <button type="button" class="btn-u pull-right">تسجيل</button>     
+          </footer>
+        </div> 
+    </div>
+</form>
+
+</div>
+
+ <!-- modal pays box -->
+ <br/> <br/>
+<br/><br/>
+<div *ngIf="modalpays == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 100px; background-color: hsla(0, 0%, 3%, 0.3);">
+        <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" (click)="toggleModalPays()" class="close" type="button">×</button>
+                        <h4 *ngIf="adding == true" id="myLargeModalLabel3" class="modal-title"><span class="arabtext">اضافة بلد</span></h4>
+                        <h4 *ngIf="updating == true" id="myLargeModalLabel3" class="modal-title"><span class="arabtext">تغيير بلد</span></h4>
+                    </div>
+                    <form   id="sky-form1" class="sky-form ">
+                    <div class="modal-body">
+                  
+                        <div class="row">
+                            <section class="col col-2">
+                            <span class="arabparagraph">البلد</span>
+                            </section>
+                            <section class="col col-9">
+                                <label class="select">
+                                    <select   required  name="pays"  [(ngModel)]="choosenPays">
+                                        <option *ngFor="let x of pays" [ngValue]="x" >{{x.libPaysAr}}</option>
+                                    </select>
+                                    <i></i>
+                                </label> 
+                            </section>
+                            </div>
+                            <div class="row">
+                                <section class="col col-2">
+                                    <span class="arabparagraph">وسيلة النقل</span>
+                                    </section>
+                                    <section class="col col-9">
+                                        <label class="select">
+                                            <select   required  name="moytrs"  [(ngModel)]="moytransport">
+                                                <option  value="avion">الطائرة</option>
+                                                <option  value="voiture">السيارة</option>
+                                                <option  value="train">القطار</option>
+                                                <option  value="bateau">الباخرة</option>
+                                            </select>
+                                            <i></i>
+                                        </label> 
+                                    </section>
+                            </div>                           
+                            <div class="row">
+                                <section class="col col-2">
+                                    <span class="arabparagraph">المدينة</span>
+                                    </section>
+                                    <section class="col col-9">
+                                    <label class="input">
+                                        <input type="text" name="ville" required [(ngModel)]="city">
+                                    </label>
+                                    </section>
+                            </div>
+                            <div class="row">
+                                    <section class="col col-2">
+                                        <span class="arabparagraph">المدة</span>
+                                        </section>
+                                        <section class="col col-9">
+                                            <label class="input">
+                                                <input type="number" name="duree" [(ngModel)]="durconcerne">
+                                            </label> 
+                                    </section>
+                            </div>
+                         <div class="row">
+                                <div class="modal-footer">
+                                        <button type="button" (click)="toggleModalPays()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                                        <button  type="button" *ngIf="adding == true" (click)="addPays()" class="btn-u btn-u-primary"><span class="arabparagraph">إضافة</span></button>
+                                        <button  type="button" *ngIf="updating == true" (click)="updatePays()" class="btn-u btn-u-orange"><span class="arabparagraph">تغيير</span></button>
+                                    </div>
+                         </div>
+                    </div>
+                    </form>
+                </div>           
+            </div>
+</div> 
+</div>
+
+
+
+
+
+
+
+
+   
+<!-- End Order Form -->
+<!-- JS Global Compulsory -->			
+<script src="../../assets/plugins/jquery/jquery.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script src="../../assets/plugins/back-to-top.js"></script>
+<script src="../../assets/plugins/smoothScroll.js"></script>
+<script src="../../assets/plugins/jquery.parallax.js"></script>
+<!-- JS Customization -->
+<script src="../../assets/js/custom.js"></script>
+<!-- JS Page Level -->           
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/plugins/style-switcher-rtl.js"></script>
+<script>
+    jQuery(document).ready(function() {
+      	App.init();
+        StyleSwitcher.initStyleSwitcher();        
+    });
+    
+</script>
+</body>

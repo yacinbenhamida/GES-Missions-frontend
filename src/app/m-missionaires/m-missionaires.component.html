@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<head>
+    <title>Classes</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+    <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/animate.css">
+    <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/css/sky-forms-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms-rtl.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>	
+<body> 
+<div class="wrapper" style="background-image: url('../assets/img/breadcrumbs.png');">   
+    <div class="breadcrumbs">
+        <div class="container arabparagraph">
+            <h1 class="pull-left"><span class="arabtext">إدخال المنتفعين</span></h1>
+            <ul class="pull-right breadcrumb arabparagraph">
+                <li>المأموريات</li>
+                <li>إدخال المنتفعين</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container content ">
+  <div class="row ">
+  <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <header class="arabparagraph">إدخال منتفع
+        <button *ngIf="add == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAdd()"><i class="fa fa-sort-desc"></i></button>
+        <button *ngIf="add == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAdd()"><i class="fa fa-sort-asc"></i></button>                                                                  
+  </header> 
+  <div class="arabparagraph" *ngIf="add == true">
+    <fieldset>                  
+      <div class="row ">
+            <section class="col col-6">
+                    <label class="input">
+                        <i class="icon-prepend fa fa-info"></i>
+                        <input  minlength="8" maxlength="8" required type="number" name="cin" placeholder=" رقم بطاقة التعريف الوطنية" [(ngModel)]="missionaire.missionaire.cin">
+                    </label>
+            </section>
+            <section class="col col-2">
+                <span style="font-size: 12px;" class="arabparagraph">تاريخ إصدار بطاقة التعريف الوطنية</span>    
+            </section>
+            <section class="col col-4">
+              <label class="input">
+                  <i class="icon-prepend fa fa-calendar"></i>
+                  <input  minlength="8" maxlength="8" required type="date" name="cindate"  placeholder="" [(ngModel)]="missionaire.missionaire.dateCin">
+              </label>
+             </section>
+            <section class="col col-6 ">
+              <label class="input">
+                  <i class="icon-prepend fa fa-barcode"></i>
+                  <input required minlength="2"  type="number" name="nomcatFr" name="matricule" placeholder="المعرف الوحيد" [(ngModel)]="missionaire.missionaire.matricule">
+              </label>
+          </section>
+          <section class="col col-6">
+              <label class="input">
+                  <i class="icon-prepend fa fa-user"></i>
+                  <input  minlength="2" maxlength="20" required type="text" name="prenomar"  placeholder="اسم المنتفع" [(ngModel)]="missionaire.missionaire.prenomAr">
+              </label>
+          </section>
+          <section class="col col-6 ">
+              <label class="input">
+                  <i class="icon-prepend fa fa-user"></i>
+                  <input required minlength="2"  type="text" name="prenomfr" placeholder=" prenom du missionaire" [(ngModel)]="missionaire.missionaire.prenomFr">
+              </label>
+          </section>
+          <section class="col col-6 ">
+              <label class="input">
+                  <i class="icon-prepend fa fa-user"></i>
+                  <input required minlength="2"  type="text" name="nomar"  placeholder="لقب المتنفع" [(ngModel)]="missionaire.missionaire.nomAr">
+              </label>
+          </section>
+          <section class="col col-6 ">
+            <label class="input">
+                <i class="icon-prepend fa fa-user"></i>
+                <input required minlength="2"  type="text" name="nomfr" placeholder="nom du missionaire" [(ngModel)]="missionaire.missionaire.nomFr">
+            </label>
+        </section>
+        <section class="col col-6 ">
+          <label class="input">
+              <i class="icon-prepend fa fa-globe"></i>
+              <input required minlength="2"  type="text" name="natioAr" placeholder="الجنسية" [(ngModel)]="missionaire.missionaire.nationaliteAr">
+          </label>
+      </section>
+      <section class="col col-6 ">
+        <label class="input">
+            <i class="icon-prepend fa fa-globe"></i>
+            <input required minlength="2"  type="text" name="natioFr" placeholder="nationalité" [(ngModel)]="missionaire.missionaire.nationaliteFr">
+        </label>
+    </section>
+    <section class="col col-1.5">
+        <span style="font-size: 12px;" class="arabparagraph">تاريخ الولادة</span>
+    </section>
+    <section class="col col-5 ">
+      <label class="input">
+          <i class="icon-prepend fa fa-calendar"></i>
+          <input type="date"  required minlength="2"  name="dateAr" [(ngModel)]="missionaire.missionaire.dateNaissance">
+      </label>
+    </section>
+    <section class="col col-6 ">
+      <label class="input">
+          <i class="icon-prepend fa fa-location-arrow"></i>
+          <input type="text" required minlength="2"  type="text" name="lieuAr" placeholder="مكان الولادة" [(ngModel)]="missionaire.missionaire.lieuNaissanceAr">
+      </label>
+    </section>
+    <section class="col col-6 ">
+      <label class="input">
+          <i class="icon-prepend fa fa-location-arrow"></i>
+          <input type="text" required minlength="2"  type="text" name="lieuFr" placeholder="lieu de naissance" [(ngModel)]="missionaire.missionaire.lieuNaissanceFr">
+      </label>
+    </section>
+    <section class="col col-1.5">
+        <span style="font-size: 12px;" class="arabparagraph">الرتبة</span>
+    </section>
+    <section class="col col-5 ">
+        <label class="select">
+            <select  required name="grade"  [(ngModel)]="missionaire.missionaire.grade">
+                <option value="0"  disabled>الرتبة</option>
+                <option *ngFor="let x of grades" [ngValue]="x" >{{x.libGradeAr}}</option>
+            </select>
+            <i></i>
+        </label>
+    </section>
+    <section class="col col-1.5">
+        <span style="font-size: 12px;" class="arabparagraph">المجموعة</span>
+    </section>
+    <section class="col col-5 ">
+        <label class="select">
+            <select  required name="classe"  [(ngModel)]="missionaire.missionaire.classe">
+                <option value="0"  disabled>المجموعة</option>
+                <option *ngFor="let x of classes" [ngValue]="x" >{{x.libClasseAr}}</option>
+            </select>
+            <i></i>
+        </label>
+    </section>
+    <section class="col col-1.5">
+        <span style="font-size: 12px;" class="arabparagraph">الصنف</span>
+    </section>
+    <section class="col col-5 ">
+        <label class="select">
+            <select  required name="cats"  [(ngModel)]="missionaire.missionaire.categorie">
+                <option value="0"  disabled>الصنف</option>
+                <option *ngFor="let x of cats" [ngValue]="x" >{{x.libCatAr}}</option>
+            </select>
+            <i></i>
+        </label>
+    </section>
+    <section class="col col-1.5">
+        <span style="font-size: 12px;" class="arabparagraph">الوظيفة</span>
+    </section>
+    <section class="col col-5 ">
+        <label class="select">
+            <select  required name="cats"  [(ngModel)]="missionaire.missionaire.fonction">
+                <option value="0"  disabled>الوظيفة</option>
+                <option *ngFor="let x of fonctions" [ngValue]="x" >{{x.libFctAr}}</option>
+            </select>
+            <i></i>
+        </label>
+    </section>
+    </div>
+  </fieldset>
+  
+  <footer>    
+    <button type="submit" class="btn-u  pull-right">تأكيد</button>
+    <button type="reset" class="btn-u btn-u-red"><i class="fa fa-times"></i></button>
+  </footer>
+
+</div>            
+ </form>
+</div> 
+</div>
+<div class="container content">
+        <div class="row">            
+                        <router-outlet></router-outlet>
+        </div> 
+</div>  
+<div class="container content">
+        <div class="row "> 
+                <form>
+                        <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                    <input type="text" class="form-control" name="searchString" placeholder="اسم المنتفع..." [(ngModel)]="searchString">
+                                </div>
+                            </div>
+                    </form>  
+                <div  class="sky-form ">
+                <header class="arabparagraph">قائمة المنتفعين
+                        <button *ngIf="list == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
+                        <button *ngIf="list == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                                                  
+                </header>    
+                <table class=" table table-bordered table-striped"  *ngIf="list==true">
+                        <thead>
+                                <tr>
+                                    <th>  رقم بطاقة التعريف</th>
+                                    <th>تاريخ إصدار بطاقة التعريف الوطنية</th>
+                                    <th>المعرف الوحيد</th> 
+                                    <th> اسم المنتفع </th>
+                                    <th style="font-family:Arial;"> nom et prenom du missionaire </th> 
+                                    <th>تاريخ الولادة</th>   
+                                    <th style="width:110px;">قيام بتغيرات</th>                  
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let u of missionaires | paginate : { itemsPerPage:5, currentPage:p}| filterfct: 'nomAr' : searchString; let i = index ">
+                                <td>{{u.missionaire.cin}}</td>
+                                <td>{{u.missionaire.dateCin}}</td>
+                                <td>{{u.missionaire.matricule}}</td>
+                                <td>{{u.missionaire.nomAr}} {{u.missionaire.prenomAr}}</td>
+                                <td style="font-family:arial;">{{u.missionaire.nomFr}} {{u.missionaire.prenomFr}}</td>
+                                <td>{{u.missionaire.dateNaissance}}</td>
+                                <td><button class="btn-u btn-u-red" (click)="deleteMissionaire(u)"><i class="fa fa-ban"></i></button>
+                                    <button class="btn-u btn-u-blue" (click)="showInfosMissionaire(u)"><i class="fa fa-cogs"></i></button></td>
+
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7" class="text-center">
+                                        <span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls>
+                                        </span>
+                                    </td>
+                                </tr> 
+                        </tfoot>
+                </table>
+                </div>
+        </div>           
+</div>     
+<!-- End Order Form -->
+<!-- JS Global Compulsory -->			
+<script src="../../assets/plugins/jquery/jquery.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script src="../../assets/plugins/back-to-top.js"></script>
+<script src="../../assets/plugins/smoothScroll.js"></script>
+<script src="../../assets/plugins/jquery.parallax.js"></script>
+<!-- JS Customization -->
+<script src="../../assets/js/custom.js"></script>
+<!-- JS Page Level -->           
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/plugins/style-switcher-rtl.js"></script>
+<script>
+    jQuery(document).ready(function() {
+      	App.init();
+        StyleSwitcher.initStyleSwitcher();        
+    });
+    
+</script>
+</body>

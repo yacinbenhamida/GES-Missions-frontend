@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<head>
+    <title>Classes</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+    <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/animate.css">
+    <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/css/sky-forms-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms-rtl.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>	
+<body> 
+<div class="wrapper" style="background-image: url('../assets/img/breadcrumbs.png');">   
+    <div class="breadcrumbs">
+        <div class="container arabparagraph">
+            <h1 class="pull-left"><span class="arabtext">المشاريع</span></h1>
+            <ul class="pull-right breadcrumb arabparagraph">
+                <li>الثوابت</li>
+                <li>المشاريع</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container content ">
+  <div class="row ">
+  <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <header class="arabparagraph">اضافة مشروع 
+      <button *ngIf="visibleAdd == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAdd()"><i class="fa fa-sort-desc"></i></button>
+      <button *ngIf="visibleAdd == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAdd()"><i class="fa fa-sort-asc"></i></button>
+    </header> 
+  <div class="arabparagraph" *ngIf="visibleAdd == true">
+    <fieldset>                  
+      <div class="row ">
+            <section class="col col-3">
+                    <label class="input">
+                            <i class="icon-prepend fa fa-barcode"></i>
+                        <input   maxlength="10" required type="text" name="codeprj" placeholder="رمز المشروع" [(ngModel)]="proj.codeProjet">                    </label>
+            </section>
+          <section class="col col-4">
+              <label class="input">
+                  <i class="icon-prepend fa fa-align-justify"></i>
+                  <input  minlength="4" maxlength="10" required type="text" name="nomprjar" placeholder="اسم المشروع" [(ngModel)]="proj.libProjAr">
+              </label>
+          </section>
+          <section class="col col-4 ">
+              <label class="input">
+                  <i class="icon-prepend fa fa-align-justify"></i>
+                  <input required minlength="2"  type="text" name="nomprjfr" placeholder="intitulé du projet" [(ngModel)]="proj.libProjFr">
+              </label>
+          </section>
+      </div>
+  </fieldset>
+  <div class="container content"> 
+        <section class="col col-3">                
+            <button type="button" (click)="onSubmit(f)"  class="btn-u">تأكيد</button>
+             <button  type="reset" class="btn-u btn-u-red"><i class="fa fa-times"></i></button>
+        </section> 
+    </div>
+</div>            
+ </form>
+</div> 
+</div> 
+<div class="container content">
+        <div class="row">            
+                        <router-outlet></router-outlet>
+        </div> 
+</div> 
+<div class="container content">
+        <div class="row "> 
+                <form>
+                        <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                    <input type="text" class="form-control" name="searchString" placeholder="اسم المشروع..." [(ngModel)]="searchString">
+                                </div>
+                            </div>
+                    </form>  
+                <div   id="sky-form1" class="sky-form ">
+                <header class="arabparagraph">قائمة المشاريع 
+                        <button *ngIf="visibleList == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
+                        <button *ngIf="visibleList == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                  
+                </header>  
+                <div *ngIf="isEmpty(projets)" class="arabparagraph">لا توجد مشاريع جاري العمل بها </div>  
+                <table *ngIf="!isEmpty(projets) && visibleList == true" class=" table table-bordered table-striped" >
+                        <thead>
+                                <tr>
+                                    <th rowspan="2">
+                                        رمز المشروع
+                                    </th>
+                                    <th  rowspan="2">
+                                        اسم المشروع
+                                    </th>
+                                    <th  rowspan="2">
+                                       nom du projet 
+                                    </th>
+                                    <th  rowspan="2">المؤسسة</th>
+                                       
+                                 <th style="width:110px;" rowspan="2">قيام بتغيرات</th>                            
+                                                            
+                                </tr>
+                                
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let u of projets| paginate : { itemsPerPage:5, currentPage:p} | filterfct: 'libProjAr': searchString; let i = index ">
+                                <td>{{u.codeProjet}}</td>
+                                <td>{{u.libProjAr}}</td>
+                                <td>{{u.libProjFr}}</td>
+                                <td>{{u.departement.libDepAr}}</td>
+                                <td><button class="btn-u btn-u-red" (click)="deleteProj(u)"><i class="fa fa-ban"></i></button>
+                                    <button class="btn-u btn-u-blue" (click)="showInfosProj(u)"><i class="fa fa-cogs"></i></button></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                        <td colspan="5" class="text-center"> 
+                                <span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls>
+                                </span></td>
+                            
+                        </tr>    
+                        </tfoot>
+                </table>
+                </div>
+        </div>           
+</div>     
+<!-- End Order Form -->
+<!-- JS Global Compulsory -->			
+<script src="../../assets/plugins/jquery/jquery.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script src="../../assets/plugins/back-to-top.js"></script>
+<script src="../../assets/plugins/smoothScroll.js"></script>
+<script src="../../assets/plugins/jquery.parallax.js"></script>
+<!-- JS Customization -->
+<script src="../../assets/js/custom.js"></script>
+<!-- JS Page Level -->           
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/plugins/style-switcher-rtl.js"></script>
+<script>
+    jQuery(document).ready(function() {
+      	App.init();
+        StyleSwitcher.initStyleSwitcher();        
+    });
+    
+</script>
+</body>
