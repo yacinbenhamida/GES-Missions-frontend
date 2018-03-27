@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, Directive, Inp
 import { NavbarService } from './navbar.service';
 import { AppService } from '../app.service';
 import {RouterModule, Router} from '@angular/router';
+import { AppComponent } from '../app.component';
 @Component({
   moduleId: module.id,
   selector: 'sd-navbar',

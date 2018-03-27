@@ -33,6 +33,8 @@ import { MissionService } from "./model/mission.service";
 import {NgxPaginationModule} from "ngx-pagination";
 import { ConcerneServices } from './model/concerne.service';
 import { PaysFraisServices } from './model/paysfrais.service';
+import { TypeFraisServices } from './model/typefrais.service';
+import { LoadingAnimateModule, LoadingAnimateService } from 'ng2-loading-animate';
 
 @NgModule({
   declarations: [
@@ -50,12 +52,14 @@ import { PaysFraisServices } from './model/paysfrais.service';
     FormsModule,
     HttpModule,
     PopupModule.forRoot(),
-    NgxPaginationModule
+    NgxPaginationModule,
+    LoadingAnimateModule.forRoot()
   ],
   providers: [NavbarService,AppService,UtilisateurService,
     DepartementService,CategorieService,ClasseService,FonctionService,GradeService
   ,ZonePaysService,ThemeService,ProjetService,MotCleService,PaysService,BudgetService,
-  MissionaireServices,OrdreMissionService,MissionService,ConcerneServices,PaysFraisServices,PaysService],
+  MissionaireServices,OrdreMissionService,MissionService,ConcerneServices,PaysFraisServices,
+  PaysService,TypeFraisServices,LoadingAnimateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

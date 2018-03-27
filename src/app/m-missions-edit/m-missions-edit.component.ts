@@ -9,6 +9,7 @@ import { Departement } from '../model/departement';
 import { MotCle } from '../model/motcle';
 import { ThemeService } from '../model/theme.service';
 import { MotCleService } from '../model/motcle.service';
+import { MFraisdestComponent } from "../m-fraisdest/m-fraisdest.component";
 
 @Component({
   selector: 'app-m-missions-edit',
@@ -23,8 +24,8 @@ export class MMissionsEditComponent implements OnInit {
   showmodif:boolean = false;
   modal:boolean = false;
   modaledit:boolean = false;
-
-
+  part1:boolean = true;
+  part2:boolean = false;
 
   missionairesAff:Missionaire[] = []
   tabmissions:Mission[] = [];
@@ -39,7 +40,8 @@ export class MMissionsEditComponent implements OnInit {
   n:string = '';
   duree2:number = 0;
   ordre:OrdreMission = new OrdreMission();
-
+  missionconcernee:Mission = new Mission();
+  ordremiss:OrdreMission = new OrdreMission();
   editedordre:OrdreMission = new OrdreMission();
   constructor(public missionsservice:MissionService, public missionaireService:MissionaireServices,
     public ordMService:OrdreMissionService,public thServ:ThemeService,public mocserv:MotCleService) {
@@ -105,20 +107,7 @@ export class MMissionsEditComponent implements OnInit {
         this.calculDuree();
         this.missionaireService.getAllMissionaire(this.dep.codeDep).subscribe(d=>{
           this.missionairesAff = d;
-         /* if(this.tabOrdresMiss.length>0){
-          for (let index = 0; index < this.missionairesAff.length; index++) {
-            for (let j = 0; j < d.length; j++) {
-              if(this.missionairesAff[index].idMissionaire==d[j].idMissionaire){
-                this.missionairesAff[index]= d[j];
-                this.n =   this.missionairesAff[index].cin +" : "+ this.missionairesAff[index].nomAr +" "+ this.missionairesAff[index].prenomAr;
-                this.ordre.missionaire = this.missionairesAff[index];
-                this.ordre.dateDepP = this.missionmodif.dateDepartP;
-                this.ordre.dateArrP = this.missionmodif.dateArriveP;
-              }
-            }
-            }
-          } */
-            
+           
         });
     }
     });
@@ -244,5 +233,16 @@ affdur(dateArr:Date,dateDep:Date){
   }
   toggleModalEdit(){
     this.modaledit = !this.modaledit;
+  }
+  getBack(){
+    this.part2 = false;
+    this.part1 = true;
+  }
+  gotodepenses(u:OrdreMission){
+    this.part1 = false;
+    this.part2 = true;
+    this.ordremiss = u;
+    this.missionconcernee = u.mission;
+    
   }
 }

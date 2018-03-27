@@ -21,7 +21,7 @@ export class TypeFraisServices{
     getAllTypeFrais():Observable<TypeFrais[]>{
         return this.http.get(this.Url+"/allTypes").map(this.extractData).catch(this.handleError);
     }
-    getTypeFrais(id:number):Observable<TypeFrais>{
+    getTypeFrais(id:string):Observable<TypeFrais>{
         const url = `${this.Url}/findType/${id}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }

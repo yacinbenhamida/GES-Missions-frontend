@@ -23,9 +23,8 @@
   <div class="row">
 
         <div class="tag-box tag-box-v6">
-                <span class="arabtext">  آمر بالمأمورية عدد   {{ordremission.numOrdre > 10 ? ordremission.numOrdre : '0' + ordremission.numOrdre }}</span>
-                <p class="arabparagraph">رقم المأمورية {{ordremission.mission.numMission}}</p>
-                <br/>
+                <span class="arabtext">  أمر بالمأمورية عدد    {{ordremission.numOrdre > 10 ? ordremission.numOrdre : '0' + ordremission.numOrdre }}  / {{ordremission.mission.numMission}} / {{departement.codeDep}}  </span>
+                <br/><br/>
                 <span class="label rounded label-danger arabparagraph">مدة المأمورية : {{convDur(ordremission.dateDepP,ordremission.dateArrP)}} ايام</span>
         </div>
   </div>
@@ -111,49 +110,41 @@
             <div class="row">
               <section>
                   <table class=" table table-bordered table-striped"  >
-                    <thead> <tr>
-                        
+                    <thead> <tr>                
                         <td colspan="4" style="visibility:hidden;"></td>
-                        <td class="text-center" style="width : 70px;">عدد ايام التكفل</td>
-                        <td style="visibility:hidden;"></td> 
+                        <td class="text-center" style="width : 100px;">عدد ايام التكفل</td>
                     </tr>                  
                     </thead>  
                     <tbody>
-                          <!--<tr *ngFor="| paginate : { itemsPerPage:5, currentPage:p}| filterfct: 'dateDepP': searchString; let i = index ">-->
                           <tr>
                               <td style="width:10px;" class="text-center">
                                   <input type="checkbox" [(ngModel)]="departementsup" name="suppdepart"/>
                               </td>
                               <td>الهيكل المعني</td>
-                              <td style="width: 150px;">{{departement.libDepAr}}</td>
-                              <td style="width: 150px;font-family: Arial;">{{departement.libDepFr}}</td>
+                              <td style="width: 350px;">{{departement.libDepAr}}</td>
+                              <td style="width: 350px;font-family: Arial;">{{departement.libDepFr}}</td>
                               <td >
-                                  <input style="width: 70px;font-family: Arial;" max="{{selectedconcerne.nbJoursP}}" name="duree" required type="number"  [disabled]="departementsup == false">
-                              </td>
-                              <td>
-                                    <button type="button"  [disabled]="departementsup == false" class="btn-u btn-u-sea"><i class="fa fa-unlink"></i> إستثناء </button>
+                                  <input style="width: 100px;font-family: Arial;"  max="{{selectedconcerne.nbJoursP}}" name="duree" required type="number"  [disabled]="departementsup == false" #depart  (change)="verifDepVal(depart.value)" >
                               </td>
                           </tr>
                           <tr>
                                 <td><input type="checkbox"  [(ngModel)]="orgetrangersup" name="supporget" /></td>
                                 <td>الهيكل المضيف</td>
                                 <td>
-                                    <input style="width: 150px;" [disabled]="orgetrangersup == false" name="nomorgar" required type="text"  placeholder="اسم المؤسسة المتكفلة">
+                                    <input style="width: 350px;" [disabled]="orgetrangersup == false" name="nomorgar" required type="text"  placeholder="اسم المؤسسة المتكفلة">
                                 </td>
                                 <td>
-                                    <input style="width: 150px;font-family: Arial;" [disabled]="orgetrangersup == false" name="nomorgfr" required type="text" placeholder="nom de l'organisme" >
+                                    <input style="width: 350px;font-family: Arial;" [disabled]="orgetrangersup == false" name="nomorgfr" required type="text" placeholder="nom de l'organisme" >
                                 </td>
                                 <td>
-                                    <input style="width: 70px;font-family: Arial;" max="{{selectedconcerne.nbJoursP}}" [disabled]="orgetrangersup == false" name="duree"  required type="number"  >
+                                    <input style="width: 100px;font-family: Arial;" max="{{selectedconcerne.nbJoursP}}" #org (change)="veriforgval(org.value)" [disabled]="orgetrangersup == false" name="duree"  required type="number"  >
                                 </td>
-                                <td style="width: 70px;">
-                                        <button type="button"  [disabled]="orgetrangersup == false" class="btn-u btn-u-sea" ><i class="fa fa-unlink"></i> إستثناء </button>
-                                </td>
+
                             </tr>
                             <tr>
                                 <td><input type="checkbox" [(ngModel)]="projetsup" name="suppproj" [disabled]="orgetrangersup == true && departementsup == true"/></td>
                                 <td>المشروع</td>
-                                <td style="width: 150px;">
+                                <td style="width: 350px;" colspan="2">
                                     <label class="select">
                                         <select   required  name="projets" [disabled]="projetsup == false"  [(ngModel)]="choosenProjet">
                                             <option *ngFor="let x of projets" [ngValue]="x" >{{x.libProjAr}}</option>
@@ -161,19 +152,54 @@
                                         <i></i>
                                     </label>
                                 </td>
-                                <td></td>
                                 <td>
-                                    <input [disabled]="projetsup == false" max="{{selectedconcerne.nbJoursP}}" style="width: 70px;font-family: Arial;" name="duree" required type="number"  >    
+                                    <input [disabled]="projetsup == false" max="{{selectedconcerne.nbJoursP}}" style="width: 100px;font-family: Arial;" name="duree" required type="number" #proj  (change)="verifprojValue(proj.value)">    
                                 </td>
-                                <td style="visibility:hidden;"></td>
                             </tr>
                       </tbody>
               </table>
               </section>
             </div>
-          </fieldset>
+         
+          <div class="row">
+            <section >         
+                  <button class="btn-u btn-u-blue pull-right" (click)="toggleModalFraisDiv()" type="button">اضافة مصاريف </button>
+                      <button type="button" (click)="gotoExceptions()"  [disabled]="orgetrangersup == false && departementsup == false"  class=" btn-u btn-u-sea pull-right" >
+                          <i class="fa fa-unlink"></i> إستثناء </button>
+            </section>
+          </div>
+          <br/>
+          <div class="row">
+              <fieldset>
+                    <table class=" table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th style="visibility: hidden;"></th>
+                                <th colspan="3">بقية المصاريف</th>
+                            </tr>
+                        <tr>
+                            <th style="visibility: hidden;"></th>
+                            <th>نوعية المصاريف </th>
+                            <th>المبلغ</th>
+                            <th>التحمل</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let x of fraisDiversAdded;let i=index">
+                                <td style="width: 10px;">
+                                    <button type="button" (click)="cancelFraisDivers(x,i)" class="btn-u btn-u-red" ><i class="fa fa-times"></i></button>
+                                </td>
+                                <td>{{x.typeFrai.libTypeFraisAr}}</td>
+                                <td>{{x.valeurPrevue}} + 'د.ت'</td>
+                                <td [innerHTML]="convSupport(x.support)"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+          </div>
+        </fieldset>
           <footer>
-                <button type="button" class="btn-u pull-right">تسجيل</button>     
+                <button type="button" class="btn-u pull-right" (click)="saveChanges()">تسجيل</button>     
           </footer>
         </div> 
     </div>
@@ -256,6 +282,128 @@
                 </div>           
             </div>
 </div> 
+
+
+
+<!-- modal exceptions -->
+
+<div *ngIf="modalexceptions == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 100px; background-color: hsla(0, 0%, 3%, 0.3);">
+    <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" (click)="toggleModalExcept()" class="close" type="button">×</button>
+                    <h4  id="myLargeModalLabel3" class="modal-title"><span class="arabtext">نوع الاستثناء</span></h4>
+                </div>
+                <form   id="sky-form1" class="sky-form ">
+                <div class="modal-body">
+              
+                    <div class="row">
+                        <section class="col col-9">
+                                <span class="arabparagraph">عادى بدون استثناء</span>                                                              
+                        </section>
+                        <section class="col col-2">
+                                <input #exception type="radio" name="exception" value="normal"   [(ngModel)]="couverture">
+                        </section>
+                        </div>
+                        <div class="row">
+                            <section class="col col-9">
+                                <span class="arabparagraph">خصم المنحة الي الثلث بداية من اليوم 21</span>
+                            </section>
+                            <section class="col col-2">
+                                    <input #exception type="radio" name="exception" value="reduction"  [(ngModel)]="couverture">
+                            </section>
+                        </div>                           
+                        <div class="row">
+                            <section class="col col-9">
+                                <span class="arabparagraph">تغطية خاصة لنفقات السكن</span>
+                            </section>
+                            <section class="col col-2">
+                                    <input #exception type="radio" name="exception" value="residencepr"  [(ngModel)]="couverture"> 
+                            </section>
+                        </div>
+                        <div class="row">
+                                <section class="col col-5">
+                                        <label class="arabparagraph">قيمة نفقات السكن</label> 
+                                    </section>                              
+                                 <section class="col col-3">                                                                    
+                                        <input type="number" name="val" #cov [(ngModel)]="valeuraff"  [disabled]="couverture != 'residencepr'" style="width: 130px;">                                 
+                                </section>
+                        </div>
+                     <div class="row">
+                            <div class="modal-footer">
+                                    <button type="button" (click)="toggleModalExcept()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                                    <button  type="button" (click)="saveException(exception.value,cov.value)" class="btn-u btn-u-green"><span class="arabparagraph">تسجيل</span></button>
+                                </div>
+                     </div>
+                </div>
+                </form>
+            </div>           
+        </div>
+</div> 
+
+
+<!-- modal frais divers -->
+
+<div *ngIf="modalfraisdiv == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 100px; background-color: hsla(0, 0%, 3%, 0.3);">
+        <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" (click)="toggleModalFraisDiv()" class="close" type="button">×</button>
+                        <h4  id="myLargeModalLabel3" class="modal-title"><span class="arabtext"> اضافة مصاريف</span></h4>
+                    </div>
+                    <form   id="sky-form1" class="sky-form ">
+                    <div class="modal-body">
+                  
+                        <div class="row">
+                            <section class="col col-2">
+                                <span class="arabparagraph">النوع </span>
+                            </section>
+                            <section class="col col-9">
+                                <label class="select">
+                                <select name="typefrais" [(ngModel)]="addedfraidiver.typeFrai">
+                                        <option *ngFor="let a of lstTypeFraisdivers" [ngValue]="a">{{a.libTypeFraisAr}}</option>
+                                </select>
+                            </label>
+                            </section>
+                            </div>
+                           <div class="row">
+                               <section class=" col col-2">
+                                   <span class="arabparagraph">المبلغ</span>
+                               </section>
+                               <section class="col col-9">
+                                   <label class="input">
+                               <input name="valp" type="number" [(ngModel)]="addedfraidiver.valeurPrevue">
+                            </label>
+                                </section>
+                                
+                           </div>
+                           <div class="row">
+                                <section class="col col-2">
+                                        <span class="arabparagraph"> التحمل</span>
+                                    </section>
+                                    <section class="col col-9">
+                                        <label class="select">
+                                        <select name="suppport" [(ngModel)]="addedfraidiver.support">
+                                                <option  value="departement">ميزانية الهيكل</option>
+                                                <option  value="organismehote">هيكل اجنبي</option>
+                                                <option  value="personnel">الحساب الخاص</option>
+                                                <option  value="projet">مشروع</option>
+                                        </select>
+                                        <i></i>
+                                    </label>
+                                    </section>
+                           </div>
+                         <div class="row">
+                                <div class="modal-footer">
+                                        <button type="button" (click)="toggleModalFraisDiv()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                                        <button  type="button" (click)="saveFraisDiv()" class="btn-u btn-u-green"><span class="arabparagraph">تسجيل</span></button>
+                                </div>
+                         </div>
+                    </div>
+                    </form>
+                </div>           
+            </div>
+    </div> 
 </div>
 
 

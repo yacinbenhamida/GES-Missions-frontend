@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>	
 <body> 
+<div *ngIf="part1 == true">
 <div class="wrapper" style="background-image: url('../assets/img/breadcrumbs.png');">   
     <div class="breadcrumbs">
         <div class="container arabparagraph">
@@ -223,7 +224,7 @@
                                     <td>{{u.dateDepP}}</td>
                                     <td>{{u.dateArrP}}</td>
                                     <td>{{u.avance}}</td>
-                                    <td style="width: 10px;"><button class="btn-u btn-u-xs btn-u-dark arabparagraph">الوجهة والمصاريف</button></td>
+                                    <td style="width: 10px;"><button class="btn-u btn-u-xs btn-u-dark arabparagraph" (click)="gotodepenses(u)">الوجهة والمصاريف</button></td>
                                 </tr>
                             </tbody>
                             <tfoot>
@@ -351,7 +352,20 @@
             </div>
         </div>
     </div>
-
+</div>
+<div *ngIf="part2 == true">
+        <div class="wrapper " style="background-image: url('../assets/img/breadcrumbs.png');">   
+            <div class="breadcrumbs ">
+                <div class="container arabparagraph " >
+                    <h1 class="pull-left"><span class="arabtext">الوجهة والمصاريف</span></h1>
+                    <ul class="pull-right breadcrumb arabparagraph">
+                       <li><a (click)="getBack()"><i class="fa fa-chevron-left"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <app-m-fraisdest [id]="1" [missionaire]="missionaire" [missionconcernee]="missionconcerne" [ordremission]="ordremiss"></app-m-fraisdest>
+</div>
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			
 <script src="../../assets/plugins/jquery/jquery.min.js"></script>

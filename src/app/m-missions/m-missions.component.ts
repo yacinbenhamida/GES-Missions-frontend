@@ -46,7 +46,7 @@ export class MMissionsComponent implements OnInit {
   ordre:OrdreMission = new OrdreMission();
   missionaire:Missionaire = new Missionaire();
   part1:boolean = true; // add mission
-  part2:boolean = true; // add direction
+  part2:boolean = false; // add direction
 
   // ordre mission pour depenses part 2
   ordremiss:OrdreMission = new OrdreMission();

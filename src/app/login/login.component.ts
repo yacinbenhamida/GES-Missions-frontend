@@ -9,6 +9,7 @@ import { UtilisateurService } from '../model/utilisateur.service';
 import { Utilisateur } from '../model/utilisateur';
 import { DepartementJS } from '../model/departementjson';
 import { Departement } from '../model/departement';
+import { error } from 'util';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,9 @@ export class LoginComponent implements OnInit,AfterViewInit {
   pw:string = null;
   user:Utilisateur;
   dep:Departement;
-  constructor(public userServ : UtilisateurService,route : ActivatedRoute,private activatedRoute: ActivatedRoute,private router: Router,private nav: NavbarService,public appserv:AppService,public appc:AppComponent) {
+  constructor(public userServ : UtilisateurService,route : ActivatedRoute,
+    private activatedRoute: ActivatedRoute,private router: Router,
+    private nav: NavbarService,public appserv:AppService,public appc:AppComponent) {
     this.router.events.subscribe(path => {
       if((path.id>1) && (path.url=="/")){
         window.location.reload();
@@ -35,76 +38,78 @@ export class LoginComponent implements OnInit,AfterViewInit {
     this.user = new Utilisateur();
     localStorage.clear();
     localStorage.removeItem('Array'); 
+    localStorage.removeItem('org');
     this.appserv.hideNavbar();
     this.appserv.hideFooter();
   }
   public isEmpty(obj) {
     return (obj && (Object.keys(obj).length === 0));
   }
-  ngAfterViewInit(): void {localStorage.clear();}
-onSubmit() {
-  this.userServ.getLoginCredentials(this.username,this.pw).subscribe(user=>this.user=user);
-  console.log(this.user);
-  
-  if(!(this.isEmpty(this.user))){
-    localStorage.setItem('user',JSON.stringify(this.user));
-    if(this.user.codeProfile == "C"){
-      this.userServ.getDepOfUser(this.user.codeUtilisateur).subscribe(data=>{
-        console.log(data);
-        localStorage.setItem('org',JSON.stringify(data));
-        localStorage.removeItem('Array');
-        localStorage.setItem('Array', JSON.stringify("C"));
-        console.log("code "+this.dep.codeDep);
-        console.log("paramcode "+localStorage.getItem('org'));
-        this.router.navigate(['home']);
-        this.appserv.showNavbar();
-});  
-      
-    }
-    else if(this.user.codeProfile == "O"){
-      this.userServ.getDepOfUser(this.user.codeUtilisateur).subscribe(data=>{
-                            console.log(data);
-                            localStorage.setItem('org',JSON.stringify(data));
-                            localStorage.removeItem('Array');
-                            localStorage.setItem('Array', JSON.stringify("O"));
-                            this.router.navigate(['home']);
-                            this.appserv.showNavbar();
-                    });         
-    }
-    else if(this.user.codeProfile == "P"){
-      this.userServ.getDepOfUser(this.user.codeUtilisateur).subscribe(data=>{
-        console.log(data);
-        localStorage.setItem('org',JSON.stringify(data));
-        localStorage.removeItem('Array');
-        localStorage.setItem('Array', JSON.stringify("P"));
-        this.router.navigate(['home']);
-        this.appserv.showNavbar();
-});  
-      
-    } 
-    else if(this.user.codeProfile == "OM"){
-      this.userServ.getDepOfUser(this.user.codeUtilisateur).subscribe(data=>{
-        console.log(data);
-        localStorage.setItem('org',JSON.stringify(data));
-        localStorage.removeItem('Array');
-        localStorage.setItem('Array', JSON.stringify("OM"));
-        this.router.navigate(['home']);
-        this.appserv.showNavbar();
-});  
-      
-    }
-    else if (this.user.codeProfile == "ADMIN"){
-      localStorage.clear();
-      localStorage.removeItem('Array');
-      localStorage.setItem('Array', JSON.stringify("A"));
-      this.router.navigate(['home']);
-      this.appserv.showNavbar();
-    }
-    else {
-      alert("مستعمل غير مسجل");
-    }   
+  ngAfterViewInit(): void {
+    localStorage.clear();
   }
-  else alert("الرجاء التثبة من كلمة السر او رقم البطاقة");
+onSubmit() {
+  this.appc.start();
+  this.userServ.getLoginCredentials(this.username,this.pw).subscribe(user=>
+    {this.user=user;
+      if(!(this.isEmpty(this.user))){
+        localStorage.setItem('user',JSON.stringify(this.user));
+        if(this.user.codeProfile == "C"){
+          this.userServ.getDepOfUser(this.user.codeUtilisateur).subscribe(data=>{
+            localStorage.setItem('org',JSON.stringify(data));
+            localStorage.removeItem('Array');
+            localStorage.setItem('Array', JSON.stringify("C"));
+            this.router.navigate(['home']);
+            this.appserv.showNavbar();
+    });     
+        }
+        else if(this.user.codeProfile == "O"){
+          this.userServ.getDepOfUser(this.user.codeUtilisateur).subscribe(data=>{
+                                localStorage.setItem('org',JSON.stringify(data));
+                                localStorage.removeItem('Array');
+                                localStorage.setItem('Array', JSON.stringify("O"));
+                                this.router.navigate(['home']);
+                                this.appserv.showNavbar();
+                        });         
+        }
+        else if(this.user.codeProfile == "P"){
+          this.userServ.getDepOfUser(this.user.codeUtilisateur).subscribe(data=>{
+            localStorage.setItem('org',JSON.stringify(data));
+            localStorage.removeItem('Array');
+            localStorage.setItem('Array', JSON.stringify("P"));
+            this.router.navigate(['home']);
+            this.appserv.showNavbar();
+    });  
+          
+        } 
+        else if(this.user.codeProfile == "OM"){
+          this.userServ.getDepOfUser(this.user.codeUtilisateur).subscribe(data=>{
+            localStorage.setItem('org',JSON.stringify(data));
+            localStorage.removeItem('Array');
+            localStorage.setItem('Array', JSON.stringify("OM"));
+            this.router.navigate(['home']);
+            this.appserv.showNavbar();
+    });  
+          
+        }
+        else if (this.user.codeProfile == "ADMIN"){
+          localStorage.clear();
+          localStorage.removeItem('Array');
+          localStorage.setItem('Array', JSON.stringify("A"));
+          this.router.navigate(['home']);
+          this.appserv.showNavbar();
+        }
+        else {
+          alert("مستعمل غير مسجل");
+        }   
+      }
+      else alert("الرجاء التثبة من كلمة السر او رقم البطاقة");
+    }
+  ,error=>{
+    alert("الرجاء التثبة من كلمة السر او رقم البطاقة");
+  });
+      setTimeout(()=>{
+        this.appc.stop(); }, 1000);
 }
 
 }
