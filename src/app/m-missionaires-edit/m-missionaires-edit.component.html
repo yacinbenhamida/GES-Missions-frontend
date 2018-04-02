@@ -106,53 +106,53 @@
           <input type="text" required minlength="2"  type="text" name="lieuFr" placeholder="lieu de naissance" [(ngModel)]="missionaire.lieuNaissanceFr">
       </label>
     </section>
-    <section class="col col-1.5">
-        <span style="font-size: 12px;" class="arabparagraph">الرتبة</span>
-    </section>
-    <section class="col col-5 ">
-        <label class="select">
-            <select  required name="grade"  [(ngModel)]="missionaire.grade">
-                <option value="0"  disabled>الرتبة</option>
-                <option *ngFor="let x of grades" [ngValue]="x" >{{x.libGradeAr}}</option>
-            </select>
-            <i></i>
-        </label>
-    </section>
-    <section class="col col-1.5">
-        <span style="font-size: 12px;" class="arabparagraph">المجموعة</span>
-    </section>
-    <section class="col col-5 ">
-        <label class="select">
-            <select  required name="classe"  [(ngModel)]="missionaire.classe">
-                <option *ngFor="let x of classes" [ngValue]="x"  >{{x.libClasseAr}}</option>
-            </select>
-            <i></i>
-        </label>
-    </section>
-    <section class="col col-1.5">
-        <span style="font-size: 12px;" class="arabparagraph">الصنف</span>
-    </section>
-    <section class="col col-5 ">
-        <label class="select">
-            <select  required name="cats"  [(ngModel)]="missionaire.categorie">
-                <option value="0"  disabled>الصنف</option>
-                <option *ngFor="let x of cats" [ngValue]="x" >{{x.libCatAr}}</option>
-            </select>
-            <i></i>
-        </label>
-    </section>
-    <section class="col col-1.5">
-        <span style="font-size: 12px;" class="arabparagraph">الوظيفة</span>
-    </section>
-    <section class="col col-5 ">
-        <label class="select">
-            <select  required name="fct"  [(ngModel)]="missionaire.fonction">
-                <option value="0"  disabled>الوظيفة</option>
-                <option *ngFor="let x of fonctions" [ngValue]="x" >{{x.libFctAr}}</option>
-            </select>
-            <i></i>
-        </label>
-    </section>
+    <section class="col col-1"></section>
+    <section class="col col-2 ">
+            <label class="select">
+                <select  required name="grade"  [(ngModel)]="missionaire.grade">
+                    <option value="null"   [disabled]="true">الرتبة</option>
+                    <option *ngFor="let x of grades" [ngValue]="x" [selected]="x.idgrade == missionaire.grade.idgrade" >{{x.libGradeAr}}</option>
+                </select>
+                <i></i>
+            </label>
+        </section>
+    
+        <section class="col col-2 ">
+            <label class="select">
+                <select  required name="classe"  [(ngModel)]="missionaire.classe">
+                    <option value="null"   [disabled]="true">السلك</option>
+                    <option *ngFor="let x of classes"  [ngValue]="x" [selected]="x.idclasse == missionaire.classe.idclasse">{{x.libClasseAr}}</option>
+                </select>
+                <i></i>
+            </label>
+        </section>
+        <section class="col col-2 ">
+            <label class="select">
+                <select  required name="cats"  [(ngModel)]="missionaire.categorie">
+                    <option value="null" [selected]="true"  [disabled]="true">الصنف</option>
+                    <option *ngFor="let x of cats" [ngValue]="x"  [selected]="x.idcat == missionaire.categorie.idcat">{{x.libCatAr}}</option>
+                </select>
+                <i></i>
+            </label>
+        </section>
+        <section class="col col-2 ">
+            <label class="select">
+                <select  required name="cats"  [(ngModel)]="missionaire.fonction">
+                    <option value="null" [selected]="true"  [disabled]="true">الوظيفة</option>
+                    <option *ngFor="let x of fonctions" [ngValue]="x" [selected]="x.idfct == missionaire.fonction.idfct">{{x.libFctAr}}</option>
+                </select>
+                <i></i>
+            </label>
+        </section>
+        <section class="col col-2 ">
+            <label class="select">
+                <select  required name="classe"  [(ngModel)]="missionaire.groupe">
+                    <option value="null" [selected]="true"  [disabled]="true">المجموعة</option>
+                    <option *ngFor="let x of groupes" [ngValue]="x" >{{x.libGroupeAr}}</option>
+                </select>
+                <i></i>
+            </label>
+        </section>
     </div>
   </fieldset>
   <footer>    

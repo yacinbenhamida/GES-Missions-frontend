@@ -109,7 +109,7 @@ onSubmit() {
     alert("الرجاء التثبة من كلمة السر او رقم البطاقة");
   });
       setTimeout(()=>{
-        this.appc.stop(); }, 1000);
+        this.appc.stop(); }, 1200);
 }
 
 }

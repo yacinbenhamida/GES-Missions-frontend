@@ -117,50 +117,51 @@
           <input type="text" required minlength="2"  type="text" name="lieuFr" placeholder="lieu de naissance" [(ngModel)]="missionaire.missionaire.lieuNaissanceFr">
       </label>
     </section>
-    <section class="col col-1.5">
-        <span style="font-size: 12px;" class="arabparagraph">الرتبة</span>
+    <section class="col col-1">
+        
     </section>
-    <section class="col col-5 ">
+    <section class="col col-2 ">
         <label class="select">
             <select  required name="grade"  [(ngModel)]="missionaire.missionaire.grade">
-                <option value="0"  disabled>الرتبة</option>
+                <option value="null" [selected]="true"  [disabled]="true">الرتبة</option>
                 <option *ngFor="let x of grades" [ngValue]="x" >{{x.libGradeAr}}</option>
             </select>
             <i></i>
         </label>
     </section>
-    <section class="col col-1.5">
-        <span style="font-size: 12px;" class="arabparagraph">المجموعة</span>
-    </section>
-    <section class="col col-5 ">
+
+    <section class="col col-2 ">
         <label class="select">
             <select  required name="classe"  [(ngModel)]="missionaire.missionaire.classe">
-                <option value="0"  disabled>المجموعة</option>
+                <option value="null" [selected]="true"  [disabled]="true">السلك</option>
                 <option *ngFor="let x of classes" [ngValue]="x" >{{x.libClasseAr}}</option>
             </select>
             <i></i>
         </label>
     </section>
-    <section class="col col-1.5">
-        <span style="font-size: 12px;" class="arabparagraph">الصنف</span>
-    </section>
-    <section class="col col-5 ">
+    <section class="col col-2 ">
         <label class="select">
             <select  required name="cats"  [(ngModel)]="missionaire.missionaire.categorie">
-                <option value="0"  disabled>الصنف</option>
+                <option value="null" [selected]="true"  [disabled]="true">الصنف</option>
                 <option *ngFor="let x of cats" [ngValue]="x" >{{x.libCatAr}}</option>
             </select>
             <i></i>
         </label>
     </section>
-    <section class="col col-1.5">
-        <span style="font-size: 12px;" class="arabparagraph">الوظيفة</span>
-    </section>
-    <section class="col col-5 ">
+    <section class="col col-2 ">
         <label class="select">
             <select  required name="cats"  [(ngModel)]="missionaire.missionaire.fonction">
-                <option value="0"  disabled>الوظيفة</option>
+                <option value="null" [selected]="true"  [disabled]="true">الوظيفة</option>
                 <option *ngFor="let x of fonctions" [ngValue]="x" >{{x.libFctAr}}</option>
+            </select>
+            <i></i>
+        </label>
+    </section>
+    <section class="col col-2 ">
+        <label class="select">
+            <select  required name="classe"  [(ngModel)]="missionaire.missionaire.groupe">
+                <option value="null" [selected]="true"  [disabled]="true">المجموعة</option>
+                <option *ngFor="let x of groupes" [ngValue]="x" >{{x.libGroupeAr}}</option>
             </select>
             <i></i>
         </label>
@@ -184,39 +185,41 @@
 </div>  
 <div class="container content">
         <div class="row "> 
-                <form>
-                        <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                                    <input type="text" class="form-control" name="searchString" placeholder="اسم المنتفع..." [(ngModel)]="searchString">
-                                </div>
-                            </div>
-                    </form>  
+                 
                 <div  class="sky-form ">
                 <header class="arabparagraph">قائمة المنتفعين
                         <button *ngIf="list == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
                         <button *ngIf="list == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                                                  
-                </header>    
-                <table class=" table table-bordered table-striped"  *ngIf="list==true">
+                </header>
+                <div class="arabparagraph"  *ngIf="list==true">
+                <fieldset>
+                <div class="row">
+                        <form>
+                                <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                            <input type="text" class="form-control" name="searchString" placeholder="اسم المنتفع..." [(ngModel)]="searchString">
+                                        </div>
+                                    </div>
+                            </form> 
+                <table class=" table table-bordered table-striped"  >
                         <thead>
                                 <tr>
                                     <th>  رقم بطاقة التعريف</th>
-                                    <th>تاريخ إصدار بطاقة التعريف الوطنية</th>
                                     <th>المعرف الوحيد</th> 
-                                    <th> اسم المنتفع </th>
+                                    <th> اسم ولقب المنتفع  </th>
                                     <th style="font-family:Arial;"> nom et prenom du missionaire </th> 
-                                    <th>تاريخ الولادة</th>   
+                                    <th>المجموعة </th>   
                                     <th style="width:110px;">قيام بتغيرات</th>                  
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let u of missionaires | paginate : { itemsPerPage:5, currentPage:p}| filterfct: 'nomAr' : searchString; let i = index ">
                                 <td>{{u.missionaire.cin}}</td>
-                                <td>{{u.missionaire.dateCin}}</td>
                                 <td>{{u.missionaire.matricule}}</td>
                                 <td>{{u.missionaire.nomAr}} {{u.missionaire.prenomAr}}</td>
                                 <td style="font-family:arial;">{{u.missionaire.nomFr}} {{u.missionaire.prenomFr}}</td>
-                                <td>{{u.missionaire.dateNaissance}}</td>
+                                <td>{{u.missionaire.groupe.libGroupeAr}}</td>
                                 <td><button class="btn-u btn-u-red" (click)="deleteMissionaire(u)"><i class="fa fa-ban"></i></button>
                                     <button class="btn-u btn-u-blue" (click)="showInfosMissionaire(u)"><i class="fa fa-cogs"></i></button></td>
 
@@ -224,13 +227,16 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="7" class="text-center">
+                                <td colspan="6" class="text-center">
                                         <span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls>
                                         </span>
                                     </td>
                                 </tr> 
                         </tfoot>
-                </table>
+                    </table>
+                </div>
+                </fieldset>
+                </div>   
                 </div>
         </div>           
 </div>     

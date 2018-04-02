@@ -48,37 +48,26 @@
               <thead>
                       <tr>
                           <th style="visibility: hidden;"></th>
-                          <th style="visibility: hidden;"></th>
+                          <th style="visibility: hidden;"></th>                      
+                          <th>البلد</th>
+                          <th>المدينة</th>
                           <th>وسيلة النقل</th>
-                          <th>
-                              اسم البلد
-                          </th>
-                          <th>
-                              nom du pays
-                          </th>
-                          <td>المدينة</td>
-                          <th>اللغة</th>
-                          <th style="width: 50px;">
-                              المدة
-                          </th>    
-                       <th style="width: 70px;">المصاريف</th>                            
-                                                  
-                  </tr>
+                          <th style="width: 50px;">المدة</th>    
+                          <th style="width: 70px;">المصاريف</th>                                                            
+                    </tr>
               </thead>
               <tbody>
                   <tr *ngFor="let x of tabconcerne | paginate : { itemsPerPage:5, currentPage:p} ; let i=index">
                       <td style="width: 15px;"><button type="button" (click)="cancelCountry(x,i)" class="btn-u btn-u-red" ><i class="fa fa-times"></i></button></td>
                       <td style="width: 15px;"><button type="button" (click)="editCountry(x)" class="btn-u btn-u-orange"><i class="fa fa-edit"></i></button></td>
-                      <td>{{x.moyTransport}}</td>
+
                       <td>{{x.pays.libPaysAr}}</td>
-                      <td>{{x.pays.libPaysFr}}</td>
                       <td>{{x.ville}}</td>
-                      <td>{{x.pays.langue}}</td>
-                      <td >
-                            {{x.nbJoursP}}                           
-                      </td>
-                      <td><button (click)="gotodepenses(x)" type="button" class="btn-u btn-u-brown"> المصاريف <i class="fa fa-dollar"></i></button></td>
+                      <td>{{x.moyTransport}}</td>
+                      <td>{{x.nbJoursP}} </td>
+                      <td><button (click)="gotodepenses(x)" type="button" class="btn-u btn-u-brown"> مصاريف المأمورية <i class="fa fa-dollar"></i></button></td>
                   </tr>
+                  
               </tbody>
               <tfoot>
                   <tr>
@@ -95,11 +84,44 @@
   </form>
 </div> 
 <br/>
+<div class="row arabtext">
+    <button class="btn-u btn-u-dark-blue pull-right" (click)="toggleModalFraisDiv()" type="button">اضافة مصاريف </button>
+</div>
+<div class="row arabparagraph">
+    <div class="panel panel-dark-blue">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-dollar"></i> <span class="arabparagraph">بقية المصاريف </span>
+                </h3>
+            </div>
+
+        <table class=" table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th style="visibility: hidden;"></th>
+                <th>نوعية المصاريف </th>
+                <th>المبلغ</th>
+                <th>التحمل</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let x of fraisDiversAdded;let i=index">
+                    <td style="width: 10px;">
+                        <button type="button" (click)="cancelFraisDivers(x,i)" class="btn-u btn-u-red" ><i class="fa fa-times"></i></button>
+                    </td>
+                    <td>{{x.typeFrai.libTypeFraisAr}}</td>
+                    <td>{{x.valeurPrevue}}</td>
+                    <td [innerHTML]="convSupport(x.support)"></td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+</div>
+<!--  مصاريف المأمورية frais mission -->
 <div class="row" *ngIf="depensesd == true">
-    <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <form   id="sky-form" class="sky-form ">
         <div class="panel panel-dark-blue">
             <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-money"></i> <span class="arabparagraph">تحمل المصاريف </span>
+                <h3 class="panel-title"><i class="fa fa-money"></i> <span class="arabparagraph">مصاريف المأمورية </span>
                   <button *ngIf="depenses == true" class="btn-u  rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleDepenses()"><i class="fa fa-sort-desc"></i></button>
                   <button *ngIf="depenses == false" class="btn-u  rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleDepenses()"><i class="fa fa-sort-asc"></i></button>                                                                          
                   <button type="button" (click)="depensesd = false" class="btn-u  rounded-2x btn-u-white btn-u-xs pull-right" ><i class="fa fa-times"></i></button>
@@ -113,47 +135,58 @@
                     <thead> <tr>                
                         <td colspan="4" style="visibility:hidden;"></td>
                         <td class="text-center" style="width : 100px;">عدد ايام التكفل</td>
+                        <td class="text-center" style="width : 100px;">المبلغ</td>
                     </tr>                  
                     </thead>  
                     <tbody>
                           <tr>
                               <td style="width:10px;" class="text-center">
-                                  <input type="checkbox" [(ngModel)]="departementsup" name="suppdepart"/>
+                                  <!-- DEPARTEMENT -->
+                                  <input type="checkbox" [(ngModel)]="departementsup"  name="suppdepart"/>
                               </td>
                               <td>الهيكل المعني</td>
                               <td style="width: 350px;">{{departement.libDepAr}}</td>
                               <td style="width: 350px;font-family: Arial;">{{departement.libDepFr}}</td>
-                              <td >
-                                  <input style="width: 100px;font-family: Arial;"  max="{{selectedconcerne.nbJoursP}}" name="duree" required type="number"  [disabled]="departementsup == false" #depart  (change)="verifDepVal(depart.value)" >
+                              <td > <!-- nb jours p.e. -->
+                                  <input style="width: 100px;font-family: Arial;"  max="{{selectedconcerne.nbJoursP}}" name="duree" required type="number"  [disabled]="departementsup == false || ((orgetrangersup == false && projetsup == false) &&  departementsup == true)"  >
+                              </td>
+                              <td> <!-- value -->
+                                <input  style="width: 100px;font-family: Arial;"  [(ngModel)]="departementvalue" [disabled]="departementsup == false " name="sommedep"  required type="number"  >
                               </td>
                           </tr>
                           <tr>
+                                <!-- ORGANISME ETRANGER -->
                                 <td><input type="checkbox"  [(ngModel)]="orgetrangersup" name="supporget" /></td>
                                 <td>الهيكل المضيف</td>
                                 <td>
-                                    <input style="width: 350px;" [disabled]="orgetrangersup == false" name="nomorgar" required type="text"  placeholder="اسم المؤسسة المتكفلة">
+                                    <input style="width: 350px;" [(ngModel)]="fraismission.nomOrgAr"  [disabled]="orgetrangersup == false" name="nomorgar"  type="text"  placeholder="اسم المؤسسة المتكفلة">
                                 </td>
                                 <td>
-                                    <input style="width: 350px;font-family: Arial;" [disabled]="orgetrangersup == false" name="nomorgfr" required type="text" placeholder="nom de l'organisme" >
+                                    <input style="width: 350px;font-family: Arial;" [(ngModel)]="fraismission.nomOrgFr"   [disabled]="orgetrangersup == false" name="nomorgfr"  type="text" placeholder="nom de l'organisme" >
                                 </td>
                                 <td>
-                                    <input style="width: 100px;font-family: Arial;" max="{{selectedconcerne.nbJoursP}}" #org (change)="veriforgval(org.value)" [disabled]="orgetrangersup == false" name="duree"  required type="number"  >
+                                    <input style="width: 100px;font-family: Arial;"    [disabled]="orgetrangersup == false  || ((departementsup == false && projetsup == false) && orgetrangersup == true)" name="duree"   type="number"  >
                                 </td>
-
+                                <td>
+                                    <input  style="width: 100px;font-family: Arial;"   [(ngModel)]="orgetvalue" [disabled]="orgetrangersup == false" name="orgetvalue"   type="number"  >
+                                </td>
                             </tr>
-                            <tr>
-                                <td><input type="checkbox" [(ngModel)]="projetsup" name="suppproj" [disabled]="orgetrangersup == true && departementsup == true"/></td>
+                            <tr> <!-- PROJET -->
+                                <td><input type="checkbox" [(ngModel)]="projetsup" name="projetsup" [disabled]="orgetrangersup == true && departementsup == true"/></td>
                                 <td>المشروع</td>
                                 <td style="width: 350px;" colspan="2">
                                     <label class="select">
-                                        <select   required  name="projets" [disabled]="projetsup == false"  [(ngModel)]="choosenProjet">
+                                        <select   required [(ngModel)]="selectedprog"  name="projets" [disabled]="projetsup == false || (orgetrangersup == true && departementsup == true)">
                                             <option *ngFor="let x of projets" [ngValue]="x" >{{x.libProjAr}}</option>
                                         </select>
                                         <i></i>
                                     </label>
                                 </td>
                                 <td>
-                                    <input [disabled]="projetsup == false" max="{{selectedconcerne.nbJoursP}}" style="width: 100px;font-family: Arial;" name="duree" required type="number" #proj  (change)="verifprojValue(proj.value)">    
+                                    <input [disabled]="projetsup == false || (orgetrangersup == true && departementsup == true)"  style="width: 100px;font-family: Arial;" name="duree" required type="number">    
+                                </td>
+                                <td>
+                                    <input  style="width: 100px;font-family: Arial;" [(ngModel)]="projetsupSomme"  [disabled]="projetsup == false || (orgetrangersup == true && departementsup == true)" name="sommeproj"  required type="number"  >
                                 </td>
                             </tr>
                       </tbody>
@@ -163,40 +196,12 @@
          
           <div class="row">
             <section >         
-                  <button class="btn-u btn-u-blue pull-right" (click)="toggleModalFraisDiv()" type="button">اضافة مصاريف </button>
-                      <button type="button" (click)="gotoExceptions()"  [disabled]="orgetrangersup == false && departementsup == false"  class=" btn-u btn-u-sea pull-right" >
+                      <button type="button" (click)="gotoExceptions()" [ngClass]="(orgetrangersup == false && departementsup == false)?'btn-u btn-u-green pull-right disabled': 'btn-u btn-u-sea pull-right'"  [disabled]="orgetrangersup == false && departementsup == false" >
                           <i class="fa fa-unlink"></i> إستثناء </button>
             </section>
           </div>
           <br/>
-          <div class="row">
-              <fieldset>
-                    <table class=" table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th style="visibility: hidden;"></th>
-                                <th colspan="3">بقية المصاريف</th>
-                            </tr>
-                        <tr>
-                            <th style="visibility: hidden;"></th>
-                            <th>نوعية المصاريف </th>
-                            <th>المبلغ</th>
-                            <th>التحمل</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let x of fraisDiversAdded;let i=index">
-                                <td style="width: 10px;">
-                                    <button type="button" (click)="cancelFraisDivers(x,i)" class="btn-u btn-u-red" ><i class="fa fa-times"></i></button>
-                                </td>
-                                <td>{{x.typeFrai.libTypeFraisAr}}</td>
-                                <td>{{x.valeurPrevue}} + 'د.ت'</td>
-                                <td [innerHTML]="convSupport(x.support)"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </fieldset>
-          </div>
+          
         </fieldset>
           <footer>
                 <button type="button" class="btn-u pull-right" (click)="saveChanges()">تسجيل</button>     
@@ -366,24 +371,13 @@
                             </label>
                             </section>
                             </div>
-                           <div class="row">
-                               <section class=" col col-2">
-                                   <span class="arabparagraph">المبلغ</span>
-                               </section>
-                               <section class="col col-9">
-                                   <label class="input">
-                               <input name="valp" type="number" [(ngModel)]="addedfraidiver.valeurPrevue">
-                            </label>
-                                </section>
-                                
-                           </div>
-                           <div class="row">
+                            <div class="row">
                                 <section class="col col-2">
                                         <span class="arabparagraph"> التحمل</span>
                                     </section>
                                     <section class="col col-9">
                                         <label class="select">
-                                        <select name="suppport" [(ngModel)]="addedfraidiver.support">
+                                        <select name="suppport" [(ngModel)]="addedfraidiver.support" (change)="verifPerso()">
                                                 <option  value="departement">ميزانية الهيكل</option>
                                                 <option  value="organismehote">هيكل اجنبي</option>
                                                 <option  value="personnel">الحساب الخاص</option>
@@ -393,6 +387,18 @@
                                     </label>
                                     </section>
                            </div>
+                           <div class="row">
+                               <section class=" col col-2">
+                                   <span class="arabparagraph">المبلغ</span>
+                               </section>
+                               <section class="col col-9">
+                                   <label class="input">
+                               <input name="valp" type="number" [ngClass]="{'disable': disabled == true}" [disabled]="isPersonal == true" [(ngModel)]="addedfraidiver.valeurPrevue">
+                            </label>
+                                </section>
+                                
+                           </div>
+                           
                          <div class="row">
                                 <div class="modal-footer">
                                         <button type="button" (click)="toggleModalFraisDiv()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>

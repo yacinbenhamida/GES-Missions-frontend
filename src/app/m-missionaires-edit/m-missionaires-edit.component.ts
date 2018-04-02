@@ -11,6 +11,7 @@ import { Classe } from '../model/classe';
 import { Grade } from '../model/grade';
 import { Fonction } from '../model/fonction';
 import { NgForm } from '@angular/forms';
+import { Groupe } from '../model/groupe';
 
 @Component({
   selector: 'app-m-missionaires-edit',
@@ -23,6 +24,7 @@ export class MMissionairesEditComponent implements OnInit {
   classes:Classe[] = [];
   grades:Grade[] = [];
   fonctions:Fonction[] = [];
+  groupes:Groupe[] = [];
   constructor(public mserv:MissionaireServices , public fonctserv:FonctionService,
     public gradeServ:GradeService,classServ:ClasseService,
     public catserv:CategorieService,public router:Router,public route:ActivatedRoute) 
@@ -36,6 +38,7 @@ export class MMissionairesEditComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.missionaire.grade = this.missionaire.grade;
   }
   confirmer(){
     this.router.navigate(['m-missionaires']);

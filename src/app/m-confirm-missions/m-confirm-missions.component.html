@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<head>
+    <title>Classes</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+    <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/animate.css">
+    <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/css/sky-forms-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms-rtl.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>	
+<body> 
+
+<div class="wrapper" style="background-image: url('../assets/img/breadcrumbs.png');">   
+    <div class="breadcrumbs">
+        <div class="container arabparagraph">
+            <h1 class="pull-left"><span class="arabtext">مصادقة الآمر بالصرف</span></h1>
+            <ul class="pull-right breadcrumb arabparagraph">
+                <li>المأموريات</li>
+                <li>مصادقة الآمر بالصرف</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container content ">
+  <div class="row ">
+   <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
+   <header class="arabparagraph">المصادقة على المأمورية
+        <button *ngIf="missions == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleMiss()"><i class="fa fa-sort-desc"></i></button>
+        <button *ngIf="missions == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleMiss()"><i class="fa fa-sort-asc"></i></button>                                                                  
+   </header> 
+     <div class="arabparagraph" *ngIf="missions == true">                 
+            <fieldset>      
+              <div class="row text-center">
+                  <label class="select">
+                      <select name="ordremission" [(ngModel)]="choosenord" (change)="loadDetails()">
+                            <option value="null" [disabled]="true" [selected]="true"> <span class="arabparagraph"> رقم الأمر بالمأمورية </span></option>
+                            <option *ngFor="let a of tabOrdresMiss" [ngValue]="a">{{a.numOrdre > 10 ? a.numOrdre : '0' + a.numOrdre }}  / {{a.mission.numMission}} / {{dep.codeDep}}</option>
+                        </select>
+                      <i></i>
+                  </label>
+                  
+              </div> 
+              
+              
+
+          </fieldset> 
+          <footer>
+                <div class="row " *ngIf="details == true">
+                        <div class="panel panel-dark-blue">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-cogs"></i> <span class="arabparagraph">تفاصيل الأمر</span>
+                                  <button *ngIf="ordremisschb == true" class="btn-u  rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleOrdMb()"><i class="fa fa-sort-desc"></i></button>
+                                  <button *ngIf="ordremisschb == false" class="btn-u  rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleOrdMb()"><i class="fa fa-sort-asc"></i></button>                                                                          
+                                  <button type="button" (click)="details = false" class="btn-u rounded-2x btn-u-white btn-u-xs pull-right" ><i class="fa fa-times"></i></button>
+                                </h3>
+                            </div>
+                            <div class="arabparagraph" *ngIf="ordremisschb == true">
+                              <fieldset>
+                                   <br/>
+                                <div class="row">
+                                        <div class="row text-center"  >
+                                                <span style="font-family: arial;" ><span class="arabparagraph">   اذن بالمأمورية عدد   </span><button class="btn btn-u btn-u-sm btn-u-blue disabled">{{choosenord.numOrdre > 10 ? choosenord.numOrdre : '0' + choosenord.numOrdre }}  / {{choosenord.mission.numMission}} / {{dep.codeDep}} </button> </span>
+                                         </div>
+                                         <div class="arabparagraph text-center">
+                                             <span class="arabparagraph"> موضوع المأمورية :  {{choosenord.mission.objectifMissionAr}}  </span>
+                                          </div>   
+                                          <br/>
+                                          <div class="row text-center">
+                                              <span class="arabtext">المعني بالأمر</span>
+                                          </div>   
+                                          <div class="row text-center" >
+                                                <span class="arabparagraph" style="padding: 50px;"> ر.ب.ت.و  :  <button class="btn btn-u btn-u-sm btn-u-red disabled">{{choosenord.missionaire.cin}} </button></span> 
+                                                <span class="arabparagraph" style="padding: 50px;" >الأسم واللقب  :<button class="btn btn-u btn-u-sm btn-u-dark-blue disabled"> {{choosenord.missionaire.nomAr}} {{choosenord.missionaire.prenomAr}} </button> </span>
+                                                <span class="arabparagraph" style="padding: 50px;"> تاريخ الذهاب  : <button class="btn btn-u btn-u-sm btn-u-blue disabled"> {{choosenord.dateDepP}} </button> </span>
+                                                <span class="arabparagraph" style="padding: 50px;">تاريخ الإياب  : <button class="btn btn-u btn-u-sm btn-u-blue disabled"> {{choosenord.dateArrP}} </button></span>
+                                          </div>                                         
+                                        </div>
+                                        <br/>
+                                  <div class="row" style="margin-right:10px;margin-left:10px;">
+                                        <div class="col-md-8">
+                                                <div class="panel panel-sea margin-bottom-40">
+                                                        <div class="panel-heading">
+                                                            <span class="arabparagraph"><i class="fa fa-location-arrow"></i>  الوجهة المقصودة  </span>
+                                                        </div>
+                                                        <table class="table table-hover  table-bordered table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>البلد </th>
+                                                                    <th>المدينة</th>
+                                                                    <th>وسيلة النقل</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr *ngFor="let u of choosenconcerne;let i=index" >
+                                                                        <td>{{u.pays.libPaysAr}}</td>
+                                                                        <td>{{u.ville}}</td>
+                                                                        <td>{{u.moyTransport}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                        </div>
+                                        <div class=" col-md-4">
+                                                <div class="panel panel-sea margin-bottom-40">
+                                                        <div class="panel-heading">
+                                                            <span class="arabparagraph"><i class="fa fa-dollar"></i>  المصاريف </span>
+                                                        </div>
+                                                        <table class="table table-bordered table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>نوعية المصاريف </th>
+                                                                    <th>المبلغ</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr *ngIf="!fraisaff">
+                                                                <td colspan="2"> <span class="arabparagraph">يجب إختيار بلد</span></td>
+                                                            </tr>
+                                                                <tr *ngFor=" let f of fraisaff" >
+                                                                    <td>{{f.typeFrai.libTypeFraisAr}}</td>
+                                                                    <td>{{f.valeurPrevue}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                        </div>
+                                        
+                                  </div>
+                                  <div class="row" style="margin-right:10px;">
+                                        <section class="col-md-3">
+                                            <span class="arabparagraph">
+                                                  التسبقة
+                                            </span>
+                                            <label class="input">
+                                            <input type="number" disabled class="disabled" name="avance" value="{{avance}}">
+                                          </label>
+                                        </section>
+                                    </div>
+                                  <div class="row text-center">
+                                  <button class="btn-u btn-u-lg" type="button" (click)="confirmMission()"> المصادقة</button>
+                                 </div>
+                                 <br/>
+                              </fieldset>
+                            </div>
+                    </div>
+                    </div>                
+          </footer>   
+        </div> 
+      </form>
+  </div>
+<br/>  <br />
+
+
+
+</div>
+
+<!-- End Order Form -->
+<!-- JS Global Compulsory -->			
+<script src="../../assets/plugins/jquery/jquery.min.js"></script>
+<script src="../../assets/plugins/jquery/jquery-migrate.min.js"></script>
+<script src="../../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script src="../../assets/plugins/back-to-top.js"></script>
+<script src="../../assets/plugins/smoothScroll.js"></script>
+<script src="../../assets/plugins/jquery.parallax.js"></script>
+<!-- JS Customization -->
+<script src="../../assets/js/custom.js"></script>
+<!-- JS Page Level -->           
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/plugins/style-switcher-rtl.js"></script>
+<script>
+    jQuery(document).ready(function() {
+      	App.init();
+        StyleSwitcher.initStyleSwitcher();        
+    });
+    
+</script>
+</body>

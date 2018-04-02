@@ -14,6 +14,7 @@ import { Classe } from '../model/classe';
 import { Categorie } from '../model/categorie';
 import { AffectMissDep } from '../model/affectmission';
 import { Router } from '@angular/router';
+import { Groupe } from '../model/groupe';
 
 @Component({
   selector: 'app-m-missionaires',
@@ -31,6 +32,7 @@ export class MMissionairesComponent implements OnInit {
   grades:Grade[] = [];
   classes:Classe[] = [];
   cats:Categorie[] = [];
+  groupes:Groupe[] = [];
   constructor(public mserv:MissionaireServices,public depServ:DepartementService,
     public fonctserv:FonctionService,gradeServ:GradeService,classServ:ClasseService,public catserv:CategorieService,public router:Router) {
       gradeServ.getAllGrades().subscribe(gr=>this.grades = gr);
@@ -42,6 +44,11 @@ export class MMissionairesComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.missionaire.missionaire.fonction = null;
+    this.missionaire.missionaire.categorie = null;
+    this.missionaire.missionaire.classe= null;
+    this.missionaire.missionaire.grade = null;
+    this.missionaire.missionaire.groupe = null;
   }
   toggleAdd(){
     this.add = ! this.add;

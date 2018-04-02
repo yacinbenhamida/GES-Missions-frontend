@@ -126,7 +126,8 @@ export class MMissionsComponent implements OnInit {
         this.ordre.numOrdre = 1;
 
         this.ordre.mission.numMission = Number(this.codeMissPartial);
-        
+        this.ordre.avance = (this.ordre.missionaire.groupe.taux.valTaux) * Number(this.calcduree(this.ordre.dateDepP,this.ordre.dateArrP));
+        alert(this.ordre.avance);
         this.ordm.insertOrdMission(this.ordre).then(x=>{
           x.dateArrP = this.ordre.dateArrP;
           x.dateDepP = this.ordre.dateDepP;
@@ -141,11 +142,13 @@ export class MMissionsComponent implements OnInit {
         this.toggleModal();
       }
       else {
+        
         this.ordm.getLatestORDMISS(Number(this.codeMissPartial)).subscribe(
           x=>{
             this.ordre.numOrdre = Number(x)+1;
             this.ordre.mission.numMission = Number(this.codeMissPartial);
-           
+            this.ordre.avance = (this.ordre.missionaire.groupe.taux.valTaux) * Number(this.calcduree(this.ordre.dateDepP,this.ordre.dateArrP));
+            alert(this.ordre.avance);
             this.ordm.insertOrdMission(this.ordre).then(x=>{
               x.dateArrP = this.ordre.dateArrP;
               x.dateDepP = this.ordre.dateDepP;
@@ -205,7 +208,10 @@ export class MMissionsComponent implements OnInit {
   }
 
   // pt 2 
-
+  calcduree(d1:Date,d2:Date){
+    let diff =  Math.abs(new Date(d2).getTime() - new Date(d1).getTime());
+    return Math.ceil(diff / (1000 * 3600 * 24));
+  }
   redirectDepenses(u:OrdreMission){
     this.ordremiss= u;
     this.mission = u.mission;

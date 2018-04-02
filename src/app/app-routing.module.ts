@@ -39,6 +39,8 @@ import { MMissionairesEditComponent } from './m-missionaires-edit/m-missionaires
 import { MMissionsComponent } from './m-missions/m-missions.component';
 import { MMissionsEditComponent } from './m-missions-edit/m-missions-edit.component';
 import { MFraisdestComponent } from './m-fraisdest/m-fraisdest.component';
+import { MConfirmMissionsComponent } from './m-confirm-missions/m-confirm-missions.component';
+import { ThGroupesComponent } from './th-groupes/th-groupes.component';
 
 const appRoutes: Routes = [
    // missions
@@ -50,6 +52,7 @@ const appRoutes: Routes = [
     { path : 'm-fraisdest' , component : MFraisdestComponent},
     { path : 'm-missions' , component : MMissionsComponent },
     { path: 'm-editmissions' , component : MMissionsEditComponent},
+    { path : 'm-confirmmiss' , component : MConfirmMissionsComponent},
   // end missions
   { path : 'th-users',component : ThUsersComponent,
         children:[
@@ -110,7 +113,8 @@ const appRoutes: Routes = [
   { path : 'th-org', component : ThOrganisationsComponent,
   children:[
       {path : 'editOrg/:id' , component : ThOrganisEditComponent}
-  ] }, 
+  ] },
+  { path : 'th-groupes' , component : ThGroupesComponent}, 
   { path : 'confirmbudg-year' , component : ConfirmbudgYearComponent},
   { path : 'insbud-org',component: EntBudgyearinsertComponent },
   { path :  'insbudg-proj', component : ProjBudgyearinsertComponent },
@@ -138,5 +142,5 @@ export const routingComponents = [ThUsersComponent,HomepageComponent,LoginCompon
     ,NotfoundcomponentComponent,ThProjectsEditComponent,ThUserEditComponent,ThDepartementEditComponent,EntBudgyearinsertComponent
     ,ProjBudgyearinsertComponent, ProjBudgyeareditComponent,EntBudgyeareditComponent,ThOrganisationsComponent,ThOrganisEditComponent
     ,ConfirmbudgYearComponent,MMissionairesComponent,MMissionairesEditComponent,MMissionsComponent
-    ,MMissionsEditComponent,MFraisdestComponent
+    ,MMissionsEditComponent,MFraisdestComponent,MConfirmMissionsComponent,ThGroupesComponent
 ]

@@ -6,8 +6,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch';
 import { Concerne } from "./concerne";
-import { PaysFrais } from "./paysfrais";
-import { TypeFrais } from "./typefrais";
+import {  TypeFrai } from "./typefrais";
 @Injectable()
 export class TypeFraisServices{
     constructor(private http:Http){}
@@ -18,26 +17,26 @@ export class TypeFraisServices{
         let body = res.json();
         return body || [];
     }
-    getAllTypeFrais():Observable<TypeFrais[]>{
+    getAllTypeFrais():Observable<TypeFrai[]>{
         return this.http.get(this.Url+"/allTypes").map(this.extractData).catch(this.handleError);
     }
-    getTypeFrais(id:string):Observable<TypeFrais>{
+    getTypeFrais(id:string):Observable<TypeFrai>{
         const url = `${this.Url}/findType/${id}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
 
-    insertTypeFrais(d:TypeFrais):Promise<TypeFrais>{
+    insertTypeFrais(d:TypeFrai):Promise<TypeFrai>{
         return this.http.post(this.Url+"/insertType",JSON.stringify(d),{headers : this.headers})
-        .toPromise().then(res=>res.json() as TypeFrais).catch(this.handleError);  
+        .toPromise().then(res=>res.json() as TypeFrai).catch(this.handleError);  
     }
-    deleteTypeFrais(d:TypeFrais):Promise<void>{
+    deleteTypeFrais(d:TypeFrai):Promise<void>{
         const url = `${this.Url}/updateType/${d.idtypefrais}`;
     return this.http.get(url, { headers: this.headers })
       .toPromise()
       .then(() => null)
       .catch(this.handleError); 
     }
-    updateTypeFrais(d:TypeFrais):Promise<TypeFrais>{
+    updateTypeFrais(d:TypeFrai):Promise<TypeFrai>{
         return this.http.post(this.Url + "/deleteType",JSON.stringify(d),{headers : this.headers})
         .toPromise().then(()=>null).catch(this.handleError);
     }

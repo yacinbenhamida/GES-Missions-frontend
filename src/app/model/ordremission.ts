@@ -1,6 +1,7 @@
 import { Mission } from "./mission";
 import { Missionaire } from "./missionaire";
 import { Concerne } from "./concerne";
+import { AvoirFrais } from "./avoirfrais";
 
 export class OrdreMission{
     public idOrdre:number;
@@ -15,6 +16,7 @@ export class OrdreMission{
     public mission:Mission;
     public missionaire:Missionaire;
     public concerne:Concerne [];
+    public avoirfrais:AvoirFrais[];
     constructor(){
         this.mission = new Mission();
         this.missionaire = new Missionaire();
@@ -22,6 +24,7 @@ export class OrdreMission{
         this.dateDepP = new Date();
         this.dateDepR = new Date();
         this.dateArrR = new Date();
+        this.avoirfrais = [];
         this.concerne = [];
     }
 }

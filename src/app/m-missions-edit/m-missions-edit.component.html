@@ -62,7 +62,7 @@
                       </thead>
                       <tbody>
                           <tr *ngFor="let u of tabmissions | paginate : { itemsPerPage:5, currentPage:p} | filterfct: 'numMission': searchString; let i = index">
-                              <td>{{u.numMission}}</td>
+                              <td>{{dep.codeDep}}/{{u.numMission}}</td>
                               <td>{{u.objectifMissionAr}}</td>
                               <td>{{u.dateDepartP}}</td>
                               <td>{{u.dateArriveP}}</td>
@@ -220,9 +220,9 @@
                                     <td >{{u.missionaire.numOrdre > 0 ? u.numOrdre : '0' + u.numOrdre }}</td>
                                     <td>{{u.missionaire.cin}}</td>
                                     <td>{{u.missionaire.prenomAr}}  {{u.missionaire.nomAr}}</td>
-                                    <td>{{u.missionaire.classe.libClasseAr}}</td>
-                                    <td>{{u.dateDepP}}</td>
-                                    <td>{{u.dateArrP}}</td>
+                                    <td>{{u.missionaire.groupe.libGroupeAr}}</td>
+                                    <td>{{u.dateDepP | date: 'shortDate':'fr'}}</td>
+                                    <td>{{u.dateArrP | date: 'shortDate':'fr'}}</td>
                                     <td>{{u.avance}}</td>
                                     <td style="width: 10px;"><button class="btn-u btn-u-xs btn-u-dark arabparagraph" (click)="gotodepenses(u)">الوجهة والمصاريف</button></td>
                                 </tr>
@@ -281,7 +281,7 @@
                           <div class="col-md-4">
                               <label class="arabparagraph">الاسم</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.nomAr" class="form-control" type="text"></p>
                               <label class="arabparagraph">ر.ب.ت.و</label><p><input style="background-color: ghostwhite;" disabled  [(ngModel)]="ordre.missionaire.cin" class="form-control" type="text"></p>
-                              <label class="arabparagraph">المجموعة</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.classe.libClasseFr" class="form-control" type="text"></p>
+                              <label class="arabparagraph">المجموعة</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.groupe.libGroupeAr" class="form-control" type="text"></p>
                               <label class="arabparagraph">تاريخ الإياب</label><p><input  class="form-control" type="date" (change)="convDur()" [(ngModel)]="ordre.dateArrP"></p>
                           </div>
                           <div class="col-md-5">

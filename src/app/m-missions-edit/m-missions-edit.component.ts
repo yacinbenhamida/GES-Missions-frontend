@@ -10,7 +10,7 @@ import { MotCle } from '../model/motcle';
 import { ThemeService } from '../model/theme.service';
 import { MotCleService } from '../model/motcle.service';
 import { MFraisdestComponent } from "../m-fraisdest/m-fraisdest.component";
-
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-m-missions-edit',
   templateUrl: './m-missions-edit.component.html',
@@ -43,6 +43,7 @@ export class MMissionsEditComponent implements OnInit {
   missionconcernee:Mission = new Mission();
   ordremiss:OrdreMission = new OrdreMission();
   editedordre:OrdreMission = new OrdreMission();
+  
   constructor(public missionsservice:MissionService, public missionaireService:MissionaireServices,
     public ordMService:OrdreMissionService,public thServ:ThemeService,public mocserv:MotCleService) {
       missionsservice.getAllMissionsOfDep(this.dep.codeDep).subscribe(d=>this.tabmissions=d);
@@ -152,7 +153,8 @@ export class MMissionsEditComponent implements OnInit {
   addMissionaire(){
         if(this.tabOrdresMiss.length==0){
           this.ordre.numOrdre = 1;
-          this.ordre.mission.numMission = Number(this.missionmodif.numMission);    
+          this.ordre.mission.numMission = Number(this.missionmodif.numMission); 
+          this.ordre.avance = (this.ordre.missionaire.groupe.taux.valTaux) * Number(this.calcduree(this.ordre.dateDepP,this.ordre.dateArrP));   
           this.ordMService.insertOrdMission(this.ordre).then(x=>{
             x.dateArrP = this.ordre.dateArrP;
             x.dateDepP = this.ordre.dateDepP;
@@ -171,7 +173,7 @@ export class MMissionsEditComponent implements OnInit {
             x=>{
               this.ordre.numOrdre = Number(x)+1;
               this.ordre.mission.numMission = Number(this.missionmodif.numMission);
-            
+              this.ordre.avance = (this.ordre.missionaire.groupe.taux.valTaux) * Number(this.calcduree(this.ordre.dateDepP,this.ordre.dateArrP));   
               this.ordMService.insertOrdMission(this.ordre).then(x=>{
                 x.dateArrP = this.ordre.dateArrP;
                 x.dateDepP = this.ordre.dateDepP;
@@ -195,7 +197,10 @@ affdur(dateArr:Date,dateDep:Date){
   var diff = Math.abs(date1 - date2);
   return Math.ceil(diff / (1000 * 3600 * 24)) + " يوم ";
 }
-
+calcduree(d1:Date,d2:Date){
+  let diff =  Math.abs(new Date(d2).getTime() - new Date(d1).getTime());
+  return Math.ceil(diff / (1000 * 3600 * 24));
+}
   deleteOrd(u:OrdreMission){
     if(confirm(" هل انت متأكد من إزالة  الامر عدد "+u.numOrdre+" ?")){
       this.ordMService.deleteOrdMission(u).then(()=>{
@@ -219,6 +224,7 @@ affdur(dateArr:Date,dateDep:Date){
   }
   updateMissionaire(){
     let index:number = this.tabOrdresMiss.indexOf(this.editedordre);  
+    this.ordre.avance = (this.ordre.missionaire.groupe.taux.valTaux) * Number(this.calcduree(this.ordre.dateDepP,this.ordre.dateArrP));   
     this.ordMService.updateOrdMission(this.ordre).subscribe(t=>{
       if(index!=-1){   
       //this.tabOrdresMiss = this.tabOrdresMiss.filter(h=>{h!==this.ordre;});

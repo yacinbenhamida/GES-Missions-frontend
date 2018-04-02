@@ -3,6 +3,7 @@ import { Grade } from "./grade";
 import { Categorie } from "./categorie";
 import { Classe } from "./classe";
 import { AffectMissDep } from "./affectmission";
+import { Groupe } from "./groupe";
 
 export class Missionaire{
 idMissionaire:number;
@@ -22,12 +23,14 @@ fonction:Fonction;
 grade:Grade;
 categorie:Categorie;
 classe:Classe;
+groupe:Groupe;
 affectMissDeps:AffectMissDep[];
 constructor(){
     this.fonction = new Fonction();
     this.categorie = new Categorie();
     this.classe = new Classe();
     this.grade = new Grade();
+    this.groupe = new Groupe();
     this.affectMissDeps = [];
 }
 }

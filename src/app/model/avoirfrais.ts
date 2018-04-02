@@ -1,18 +1,20 @@
-import { TypeFrais } from "./typefrais";
-import { PaysFrais } from "./paysfrais";
+import { TypeFrai } from "./typefrais";
+import { OrdreMission } from "./ordremission";
 
 export class AvoirFrais{
     idAvoirfrais:number;
     codeProg:number;
-    codeSupport:number;
+    codeSupport:string;
     observation:string;
     support:string;
     valeurPrevue:number;
     valeurReel:number;
-    typeFrai:TypeFrais;
-    paysfrai:PaysFrais[];
+    typeFrai:TypeFrai;
+    ordreMission:OrdreMission;
+    nomOrgFr:string;
+    nomOrgAr:string;
     constructor(){
-        this.paysfrai = [];
-        this.typeFrai = new TypeFrais();
+        this.typeFrai = new TypeFrai();
+        this.ordreMission = new OrdreMission();
     }
 }
