@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, group } from '@angular/core';
 import { Missionaire } from '../model/missionaire';
 import { NgForm } from '@angular/forms';
 import { MissionaireServices } from '../model/missionaire.service';
@@ -15,6 +15,7 @@ import { Categorie } from '../model/categorie';
 import { AffectMissDep } from '../model/affectmission';
 import { Router } from '@angular/router';
 import { Groupe } from '../model/groupe';
+import { TauxGroupeServices } from '../model/tauxgroupe.service';
 
 @Component({
   selector: 'app-m-missionaires',
@@ -34,13 +35,15 @@ export class MMissionairesComponent implements OnInit {
   cats:Categorie[] = [];
   groupes:Groupe[] = [];
   constructor(public mserv:MissionaireServices,public depServ:DepartementService,
-    public fonctserv:FonctionService,gradeServ:GradeService,classServ:ClasseService,public catserv:CategorieService,public router:Router) {
+    public fonctserv:FonctionService,gradeServ:GradeService,classServ:ClasseService,
+    public catserv:CategorieService,public router:Router,grserv:TauxGroupeServices) {
       gradeServ.getAllGrades().subscribe(gr=>this.grades = gr);
       this.departement = JSON.parse(localStorage.getItem('org'));
       classServ.getAllClasses().subscribe(cl=>this.classes = cl);
       fonctserv.getAlloncts().subscribe(f=>this.fonctions=f);
       catserv.getAllCats().subscribe(c=>this.cats=c);
       mserv.getAllMissOfDep(this.departement.codeDep).subscribe(m=>this.missionaires = m);
+      grserv.getAllGroupes().subscribe(g=>this.groupes = g);
     }
 
   ngOnInit() {

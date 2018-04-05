@@ -133,12 +133,17 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
       concerne.ville = this.city;
       concerne.ordre = this.ordremission;
       this.pays = this.pays.filter(h=>h!==concerne.pays);
-      this.tabconcerne.push(concerne);
-      if(this.tabconcerne.indexOf(concerne)==0 || this.tabconcerne.indexOf(concerne)<0){
+      if((this.tabconcerne.indexOf(concerne)==0 || this.tabconcerne.indexOf(concerne)<0) && this.tabconcerne.length == 0){
         concerne.ordre_dest = 1;
       }
-      else concerne.ordre_dest = this.tabconcerne.indexOf(concerne);
-      this.concerneserv.insertConcerne(concerne).then(x=>null);
+      else concerne.ordre_dest = this.tabconcerne.indexOf(concerne) + 1;
+      this.concerneserv.insertConcerne(concerne).then(x=>{
+        this.concerneserv.getAllConcerneOfORDRE(this.ordremission.idOrdre).subscribe(a=>
+          {
+            this.tabconcerne = a;   
+          });
+      });
+     
       this.toggleModalPays();
     }
     else alert('لقد استنفذتم عدد ايام الامر');
@@ -225,6 +230,7 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
     else alert('لقد استنفذتم عدد ايام الامر');
   }
   gotodepenses(x:Concerne){
+    this.fraismission = new AvoirFrais();
     this.selectedconcerne = x;
     if(x.nbJoursP > 0){
       this.depensesd =  true;
@@ -296,7 +302,9 @@ saveFraisDiv(){
   this.ordserv.updateOrdMission(this.ordremission).subscribe(x=>null);
   this.avoirFraisServ.insertFrais(x).then(ax=>null);
   this.fraisDiversAdded.push(x);
+  this.toggleModalFraisDiv();
   this.addedfraidiver = new AvoirFrais();
+  alert("تمة الإضافة");
 }
 
    // button submit

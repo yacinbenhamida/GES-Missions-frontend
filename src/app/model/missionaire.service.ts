@@ -17,7 +17,10 @@ export class MissionaireServices{
         return body || [];
     }
 
-
+    getAllMissionaireNHAM(deb:Date,end:Date,codeDep:string):Observable<Missionaire[]>{
+        const url = `${this.missUrl}/getallMissionairesNHAM/${deb}/${end}/${codeDep}`;
+        return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }
     getAllMissionaire(id:string):Observable<Missionaire[]>{
         const url = `${this.missUrl}/getallMissionairesOfDEP/${id}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);

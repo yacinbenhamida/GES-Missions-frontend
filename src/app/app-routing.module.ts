@@ -41,8 +41,12 @@ import { MMissionsEditComponent } from './m-missions-edit/m-missions-edit.compon
 import { MFraisdestComponent } from './m-fraisdest/m-fraisdest.component';
 import { MConfirmMissionsComponent } from './m-confirm-missions/m-confirm-missions.component';
 import { ThGroupesComponent } from './th-groupes/th-groupes.component';
+import { SMainpanelComponent } from './s-mainpanel/s-mainpanel.component';
 
 const appRoutes: Routes = [
+    // suivit
+    {path : 'suivi' , component : SMainpanelComponent},
+    //end suivit
    // missions
   { path : 'm-missionaires' , component : MMissionairesComponent,
         children:[
@@ -142,5 +146,5 @@ export const routingComponents = [ThUsersComponent,HomepageComponent,LoginCompon
     ,NotfoundcomponentComponent,ThProjectsEditComponent,ThUserEditComponent,ThDepartementEditComponent,EntBudgyearinsertComponent
     ,ProjBudgyearinsertComponent, ProjBudgyeareditComponent,EntBudgyeareditComponent,ThOrganisationsComponent,ThOrganisEditComponent
     ,ConfirmbudgYearComponent,MMissionairesComponent,MMissionairesEditComponent,MMissionsComponent
-    ,MMissionsEditComponent,MFraisdestComponent,MConfirmMissionsComponent,ThGroupesComponent
+    ,MMissionsEditComponent,MFraisdestComponent,MConfirmMissionsComponent,ThGroupesComponent,SMainpanelComponent
 ]

@@ -137,15 +137,18 @@
                         <!-- End Blog -->
     
                         <!-- المتابعة -->
-                        <li class="dropdown"  *ngIf="nav.ordonnateur || nav.ordonnateurministere">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                              <span class="arabtext">المتابعة</span>  
+
+                        
+                        <li *ngIf="nav.ordonnateur || nav.ordonnateurministere">
+                            <a routerLink="suivi" >
+                              <span class="arabtext">المتابعة</span> 
+                              <i class="fa fa-globe"></i> 
                             </a>        
-                            <ul class="dropdown-menu">
+                           <!-- <ul class="dropdown-menu">
                                     <li><a href="#">المأموريات المنجزة من طرف المؤسسة</a></li>
                                     <li><a href="#">توزيع المأموريات حسب البلدان</a></li>
                                     <li><a href="#">بيان حول استهلاك الإعتمادات</a></li>
-                            </ul>               
+                            </ul>            -->   
                         </li>
                         <!-- End المتابعة -->
     

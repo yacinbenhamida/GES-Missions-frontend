@@ -134,7 +134,7 @@
                   <table class=" table table-bordered table-striped"  >
                     <thead> <tr>                
                         <td colspan="4" style="visibility:hidden;"></td>
-                        <td class="text-center" style="width : 100px;">عدد ايام التكفل</td>
+                     <!--   <td class="text-center" style="width : 100px;">عدد ايام التكفل</td> -->
                         <td class="text-center" style="width : 100px;">المبلغ</td>
                     </tr>                  
                     </thead>  
@@ -147,9 +147,9 @@
                               <td>الهيكل المعني</td>
                               <td style="width: 350px;">{{departement.libDepAr}}</td>
                               <td style="width: 350px;font-family: Arial;">{{departement.libDepFr}}</td>
-                              <td > <!-- nb jours p.e. -->
+                            <!-- <td > 
                                   <input style="width: 100px;font-family: Arial;"  max="{{selectedconcerne.nbJoursP}}" name="duree" required type="number"  [disabled]="departementsup == false || ((orgetrangersup == false && projetsup == false) &&  departementsup == true)"  >
-                              </td>
+                              </td> -->
                               <td> <!-- value -->
                                 <input  style="width: 100px;font-family: Arial;"  [(ngModel)]="departementvalue" [disabled]="departementsup == false " name="sommedep"  required type="number"  >
                               </td>
@@ -164,9 +164,9 @@
                                 <td>
                                     <input style="width: 350px;font-family: Arial;" [(ngModel)]="fraismission.nomOrgFr"   [disabled]="orgetrangersup == false" name="nomorgfr"  type="text" placeholder="nom de l'organisme" >
                                 </td>
-                                <td>
+                               <!--  <td>
                                     <input style="width: 100px;font-family: Arial;"    [disabled]="orgetrangersup == false  || ((departementsup == false && projetsup == false) && orgetrangersup == true)" name="duree"   type="number"  >
-                                </td>
+                                </td> -->
                                 <td>
                                     <input  style="width: 100px;font-family: Arial;"   [(ngModel)]="orgetvalue" [disabled]="orgetrangersup == false" name="orgetvalue"   type="number"  >
                                 </td>
@@ -182,9 +182,9 @@
                                         <i></i>
                                     </label>
                                 </td>
-                                <td>
+                               <!--  <td>
                                     <input [disabled]="projetsup == false || (orgetrangersup == true && departementsup == true)"  style="width: 100px;font-family: Arial;" name="duree" required type="number">    
-                                </td>
+                                </td>-->
                                 <td>
                                     <input  style="width: 100px;font-family: Arial;" [(ngModel)]="projetsupSomme"  [disabled]="projetsup == false || (orgetrangersup == true && departementsup == true)" name="sommeproj"  required type="number"  >
                                 </td>

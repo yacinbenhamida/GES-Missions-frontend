@@ -106,7 +106,7 @@ export class MMissionsEditComponent implements OnInit {
           this.missionmodif.objectifMissionFr = this.choosenMc.libMcFr;
         }
         this.calculDuree();
-        this.missionaireService.getAllMissionaire(this.dep.codeDep).subscribe(d=>{
+        this.missionaireService.getAllMissionaireNHAM(u.dateDepartP,u.dateArriveP,this.dep.codeDep).subscribe(d=>{
           this.missionairesAff = d;
            
         });

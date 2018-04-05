@@ -61,9 +61,7 @@ export class MMissionsComponent implements OnInit {
   }
   ngOnInit() { 
     this.missionaire.idMissionaire = 1;
-    this.miserv.getAllMissionaire(this.departement.codeDep).subscribe(d=>{
-      this.missionairesAff = d;     
-    });
+   
      }
     calculDuree(){
         if(new Date(this.mission.dateDepartP).getTime() > new Date(this.mission.dateArriveP).getTime() )
@@ -127,7 +125,6 @@ export class MMissionsComponent implements OnInit {
 
         this.ordre.mission.numMission = Number(this.codeMissPartial);
         this.ordre.avance = (this.ordre.missionaire.groupe.taux.valTaux) * Number(this.calcduree(this.ordre.dateDepP,this.ordre.dateArrP));
-        alert(this.ordre.avance);
         this.ordm.insertOrdMission(this.ordre).then(x=>{
           x.dateArrP = this.ordre.dateArrP;
           x.dateDepP = this.ordre.dateDepP;
@@ -148,7 +145,6 @@ export class MMissionsComponent implements OnInit {
             this.ordre.numOrdre = Number(x)+1;
             this.ordre.mission.numMission = Number(this.codeMissPartial);
             this.ordre.avance = (this.ordre.missionaire.groupe.taux.valTaux) * Number(this.calcduree(this.ordre.dateDepP,this.ordre.dateArrP));
-            alert(this.ordre.avance);
             this.ordm.insertOrdMission(this.ordre).then(x=>{
               x.dateArrP = this.ordre.dateArrP;
               x.dateDepP = this.ordre.dateDepP;
@@ -176,6 +172,9 @@ export class MMissionsComponent implements OnInit {
     this.mission.numMission = Number(this.codeMissPartial);
     this.mserv.insertMission(this.mission).then(()=>null);
     alert("تم إضافة المأمورية");
+    this.miserv.getAllMissionaireNHAM(this.mission.dateDepartP,this.mission.dateArriveP,this.departement.codeDep).subscribe(d=>{
+      this.missionairesAff = d;     
+    });
     this.inserted = true;
     }
 
@@ -199,7 +198,7 @@ export class MMissionsComponent implements OnInit {
   }
   editMissionaire(){
     this.ordm.updateOrdMission(this.ordre).subscribe(x=>null);
-    alert("done");
+    alert("تم");
   }
 
   getBack(){
