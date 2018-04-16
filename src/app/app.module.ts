@@ -36,6 +36,8 @@ import { TypeFraisServices } from './model/typefrais.service';
 import { LoadingAnimateModule, LoadingAnimateService } from 'ng2-loading-animate';
 import { AvoirFraisService } from './model/avoirfrais.service';
 import { TauxGroupeServices } from './model/tauxgroupe.service';
+import { ReportService } from './model/reporting.service';
+import { SDistribpaysComponent } from './s-distribpays/s-distribpays.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import { TauxGroupeServices } from './model/tauxgroupe.service';
     HomepageComponent,
     FilterPipe,
     FilterPipeObj,
-    NavbarComponent
+    NavbarComponent,
+    SDistribpaysComponent
     ],
   imports: [
     AppRoutingModule,
@@ -60,7 +63,7 @@ import { TauxGroupeServices } from './model/tauxgroupe.service';
     DepartementService,CategorieService,ClasseService,FonctionService,GradeService
   ,ZonePaysService,ThemeService,ProjetService,MotCleService,PaysService,BudgetService,
   MissionaireServices,OrdreMissionService,MissionService,ConcerneServices,AvoirFraisService,
-  PaysService,TypeFraisServices,TauxGroupeServices,LoadingAnimateService],
+  PaysService,TypeFraisServices,TauxGroupeServices,LoadingAnimateService,ReportService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

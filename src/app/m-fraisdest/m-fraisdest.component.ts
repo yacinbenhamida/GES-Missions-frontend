@@ -61,7 +61,6 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
   valeurcouv:number;
   valeurcouvexterne:number;
   d:string;
-  indexflag:number;
   valeuraff:number;
   // frais divers table 
   lstTypeFraisdivers:TypeFrai [] = []
@@ -81,7 +80,12 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
   isPersonal:boolean = false;
   // frais mission مصاريف الإقامة to be calculated
   fraismission:AvoirFrais = new AvoirFrais();
-  
+  // nb jours prise en charge
+  nbjourspecdep:number;
+  nbjourspecorget:number;
+  nbjourspecproj:number;
+  etr:boolean = false; // si le frais divers est pris en charge par un organisme externe (hote)
+  proj:boolean = false; // is pec par un projet
 
   constructor(public route:ActivatedRoute,public ordserv:OrdreMissionService,
     public mserv:MissionaireServices,public ordm:OrdreMissionService,public missionService:MissionService,
@@ -89,7 +93,10 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
     public avoirFraisServ:AvoirFraisService,public typefrais:TypeFraisServices) {
       this.duree = this.convDur(this.ordremission.dateDepP,this.ordremission.dateArrP);
       projserv.getProjectsOfDepartment(this.departement.codeDep).subscribe(pr=>this.projets = pr);
-      typefrais.getAllTypeFrais().subscribe(x=>this.lstTypeFraisdivers = x);
+      typefrais.getAllTypeFrais().subscribe(x=>{
+        this.lstTypeFraisdivers = x;
+        this.lstTypeFraisdivers = this.lstTypeFraisdivers.filter(h=>h.codeTypefr!=='0808');
+      });
       }  
   
 
@@ -99,7 +106,6 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
       else this.tabconcerne = [];
       });
       this.avoirFraisServ.getAllFraisDiversOfOrdre(this.ordremission.idOrdre).subscribe(t=>this.fraisDiversAdded=t);
-      
     }
   ngAfterViewInit(){
     
@@ -112,11 +118,6 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
   }
   toggleModalPays(){
     this.modalpays = !this.modalpays;
-  }
-  disp(){
-  }
-  addMissionaire(){
-  
   }
   addPays(){
     let durtot:number = 0;
@@ -210,13 +211,13 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
     }
     this.payService.getAllPays().subscribe(pay=>{
       this.pays = pay;
-      if(this.tabconcerne.length > 0 ){
+     /* if(this.tabconcerne.length > 0 ){
         for (let index = 0; index < this.pays.length; index++) {
           if(this.tabconcerne[index].pays.codepays == this.pays[index].codepays){
             this.pays = this.pays.filter(h=>h!==this.pays[index]);
           }
-    }
-  }
+        }
+      }*/
     });
     if(durtot<this.convDur(this.ordremission.dateDepP,this.ordremission.dateArrP)){
     this.choosenPays = new Pays();
@@ -244,12 +245,32 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
         else{
           this.depensesd =  true;
             this.depenses = true;
-          switch(a.support){
+          switch(a.support.codeSupport){
+            case 'P' : break;
             case 'I' : this.departementsup = true;this.departementvalue = a.valeurPrevue; break;
-            case 'A' : this.projetsup = true;this.projetsupSomme = a.valeurPrevue;break;
-            case 'E' : this.orgetrangersup = true;this.orgetvalue = a.valeurPrevue;break;
-            case 'IE' : this.departementsup = true;this.orgetrangersup=true;this.departementvalue = a.valeurPrevue;this.orgetvalue = a.valeurPrevue;break;
-            case 'IA' : this.projetsup = true;this.departementsup = true;this.projetsupSomme = a.valeurPrevue;this.departementvalue = a.valeurPrevue;break;
+            case 'A' : this.projetsup = true;this.nbjourspecproj = x.nbJoursPecProj;this.selectedprog.idprojet = a.projet.idprojet;break;
+            case 'E' : this.orgetrangersup = true;this.nbjourspecorget = x.nbJoursPecOrget;break;
+            case 'J' : { // organisme + org hote
+              this.departementsup = true;
+              this.orgetrangersup=true;
+              this.nbjourspecdep = x.nbJoursPecDep;
+              this.nbjourspecorget = x.nbJoursPecOrget;
+              this.fraismission.nomOrgAr = a.nomOrgAr;
+              this.fraismission.nomOrgFr = a.nomOrgFr;
+              break;
+            }
+            case 'M' : { // org hote + projet
+                    this.projetsup = true;
+                    this.orgetrangersup = true;
+                    this.selectedprog = a.projet;
+                    this.selectedprog.idprojet = a.projet.idprojet;
+                    this.nbjourspecorget = x.nbJoursPecOrget;
+                    this.nbjourspecproj = x.nbJoursPecProj;
+                    this.fraismission.nomOrgAr = a.nomOrgAr;
+                    this.fraismission.nomOrgFr = a.nomOrgFr;
+                    
+                    break;
+          }
           }
         this.fraismission=a;
         }
@@ -262,9 +283,14 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
      this.modalexceptions = !this.modalexceptions;
    }
    saveException(d,c){
+     if(this.couverture == "reduction" && this.selectedconcerne.nbJoursP < 21){
+      alert("مدة الأمر لا تتجاوز 20 يوم، لا يمكن إختيار هذا الأستثناء");
+      return;
+     }else {
       this.valeuraff = c;
       this.valeurcouvexterne = c;
       this.toggleModalExcept();
+    }
    }
    gotoExceptions(){
      this.valeuraff = this.valeurcouvexterne;
@@ -285,23 +311,12 @@ saveFraisDiv(){
   let x = new AvoirFrais();
   x = this.addedfraidiver;
   x.ordreMission = this.ordremission;
-  if(x.support == "departement") {
-    x.support = "I";
+  if(x.support.codeSupport == "I") {
     x.codeSupport = this.departement.codeDep;
-  }
-  else if (x.support == "organismehote") {
-    x.support = "E";
-  }
-  else if (x.support == "personnel") {
-    x.support = "P";
-  }
-  else if (x.support == "projet") {
-    x.support = "A";
   }
   this.ordremission.avance = this.ordremission.avance + x.valeurPrevue;
   this.ordserv.updateOrdMission(this.ordremission).subscribe(x=>null);
-  this.avoirFraisServ.insertFrais(x).then(ax=>null);
-  this.fraisDiversAdded.push(x);
+  this.avoirFraisServ.insertFrais(x).then(ax=>this.fraisDiversAdded.push(ax),error=>alert("err"));
   this.toggleModalFraisDiv();
   this.addedfraidiver = new AvoirFrais();
   alert("تمة الإضافة");
@@ -311,42 +326,139 @@ saveFraisDiv(){
    saveChanges(){
      this.typefrais.getTypeFrais("0808").subscribe(a=>{this.fraismission.typeFrai = a;
       this.fraismission.ordreMission = this.ordremission;
-      if (this.departementsup){
-       this.fraismission.support = "I";
+      let taux:number = this.selectedconcerne.ordre.missionaire.groupe.taux.valTaux;
+      if(this.departementsup && this.orgetrangersup){ // departement & org hote
+        if(this.nbjourspecdep < this.selectedconcerne.nbJoursP && this.nbjourspecorget < this.selectedconcerne.nbJoursP && this.nbjourspecdep + this.nbjourspecorget <= this.selectedconcerne.nbJoursP){
+            this.fraismission.valeurPrevue = this.orgetvalue + this.departementvalue;
+            this.fraismission.support.codeSupport = "J";
+            this.selectedconcerne.nbJoursPecDep = this.nbjourspecdep; // nb jours prise  en charge
+            this.selectedconcerne.nbJoursPecOrget = this.nbjourspecorget;
+            this.fraismission.codeSupport = this.departement.codeDep;
+            if(this.selectedconcerne.nbJoursP > 20){
+                if (this.couverture == "reduction"){ // pas de reduction aprés 20 jours
+                  this.fraismission.valeurPrevue = (this.selectedconcerne.nbJoursP * taux / 2);
+                }
+                else if(this.couverture == "pecprive"){
+                  this.fraismission.valeurPrevue = 0;
+                }
+                else if (this.couverture == "residencepr"){
+                  this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux / 3 +this.valeuraff;
+                }
+                else  this.fraismission.valeurPrevue = (20 * taux) + (this.selectedconcerne.nbJoursP-20 * taux)/6;
+            }
+            else  {
+                if (this.couverture == "reduction"){ // pas de reduction aprés 20 jours
+                  this.fraismission.valeurPrevue = (this.selectedconcerne.nbJoursP * taux / 2);
+                }
+                else if(this.couverture == "pecprive"){
+                  this.fraismission.valeurPrevue = 0;
+                }
+                else if (this.couverture == "residencepr"){ // prise en charge des frais logement
+                  this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux / 3 + this.valeuraff;
+                }
+                else this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux / 2;
+              }
+        }else alert("لا يمكن اجتياز مدة الامر");
+       }
+       else if (this.projetsup && this.orgetrangersup){// projet et organisme hote (étranger)
+        if(this.nbjourspecorget < this.selectedconcerne.nbJoursP && this.nbjourspecproj < this.selectedconcerne.nbJoursP && this.nbjourspecproj + this.nbjourspecorget <= this.selectedconcerne.nbJoursP){
+            if(this.selectedconcerne.nbJoursP > 20){
+              this.fraismission.valeurPrevue = (this.selectedconcerne.nbJoursP * taux / 6);
+            } else {this.fraismission.valeurPrevue = (this.selectedconcerne.nbJoursP * taux / 2); }
+              this.fraismission.support.codeSupport = "M";
+              this.fraismission.projet =this.selectedprog;
+              this.selectedconcerne.nbJoursPecOrget = this.nbjourspecorget;
+              this.selectedconcerne.nbJoursPecProj = this.nbjourspecproj;
+      }else alert("لا يمكن اجتياز مدة الامر");
+      }
+      else if (this.departementsup && !this.orgetrangersup && !this.projetsup){
+       this.fraismission.support.codeSupport = "I";
        this.fraismission.codeSupport = this.departement.codeDep;
-       this.fraismission.valeurPrevue = this.departementvalue;
-       this.ordremission.avance = this.ordremission.avance +  this.departementvalue;
-       this.selectedconcerne.fraisMission =  this.fraismission.valeurPrevue;
+       this.selectedconcerne.nbJoursPecDep = this.selectedconcerne.nbJoursP;
+       if(this.selectedconcerne.nbJoursP > 20 ){
+          if (this.couverture == "reduction"){
+            this.fraismission.valeurPrevue = (this.selectedconcerne.nbJoursP * taux);
+          }
+          else if(this.couverture == "pecprive"){
+            this.fraismission.valeurPrevue = 0;
+          }
+          else if (this.couverture == "residencepr"){
+            this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux / 3 +this.valeuraff;
+          }
+          else  this.fraismission.valeurPrevue = (20 * taux) + (this.selectedconcerne.nbJoursP-20 * taux)/3;
+        }
+        else {
+          if (this.couverture == "reduction"){
+            this.fraismission.valeurPrevue = (this.selectedconcerne.nbJoursP * taux);
+          }
+          else if(this.couverture == "pecprive"){
+            this.fraismission.valeurPrevue = 0;
+          }
+          else if (this.couverture == "residencepr"){
+            this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux / 3 +this.valeuraff;
+          }
+          else this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux;       
+        }
       }
-      else if (this.orgetrangersup){
-       this.fraismission.support = "E";
+      else if (this.orgetrangersup && !this.projetsup && !this.departementsup){
+       this.fraismission.support.codeSupport = "E";
        this.fraismission.codeSupport = this.departement.codeDep;
-       this.fraismission.valeurPrevue = Number(this.orgetvalue);
-       this.ordremission.avance = this.ordremission.avance +  this.orgetvalue;
-       this.selectedconcerne.fraisMission =  this.fraismission.valeurPrevue;
+       this.selectedconcerne.nbJoursPecOrget = this.selectedconcerne.nbJoursP;
+       if(this.selectedconcerne.nbJoursP > 20 ){
+          if (this.couverture == "reduction"){
+            this.fraismission.valeurPrevue = (this.selectedconcerne.nbJoursP * taux);
+          }
+          else if(this.couverture == "pecprive"){
+            this.fraismission.valeurPrevue = 0;
+          }
+          else if (this.couverture == "residencepr"){
+            this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux / 3 +this.valeuraff;
+          }
+          else this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux / 9;
+        }
+        else { 
+            if (this.couverture == "reduction"){
+              this.fraismission.valeurPrevue = (this.selectedconcerne.nbJoursP * taux);
+            }
+            else if(this.couverture == "pecprive"){
+              this.fraismission.valeurPrevue = 0;
+            }
+            else if (this.couverture == "residencepr"){
+              this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux / 3 +this.valeuraff;
+            }
+            else this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux  / 3;
+          }
       }
-      else if (this.projetsup){ 
-       this.fraismission.support = "A";
-       this.fraismission.codeProg = Number(this.selectedprog.codeProjet);
-       this.fraismission.valeurPrevue = this.projetsupSomme;
-       this.ordremission.avance = this.ordremission.avance +  this.projetsupSomme;
-       this.selectedconcerne.fraisMission =  this.fraismission.valeurPrevue;
-      }
-      else if(this.departementsup && this.orgetrangersup){
-       this.fraismission.valeurPrevue = this.orgetvalue + this.departementvalue;
-       this.fraismission.support = "IE";
-       this.selectedconcerne.fraisMission =  this.fraismission.valeurPrevue;
-       this.ordremission.avance = this.ordremission.avance +  this.orgetvalue + this.departementvalue;
-       this.fraismission.codeSupport = this.departement.codeDep;
-       this.fraismission.valeurPrevue = this.departementvalue + this.orgetvalue;
-      }
-      else if(this.departementsup && this.projetsup){
-       this.fraismission.valeurPrevue = this.projetsupvalue + this.departementvalue;
-       this.selectedconcerne.fraisMission =  this.fraismission.valeurPrevue;
-       this.fraismission.support = "IA";
-       this.fraismission.codeProg = Number(this.selectedprog.codeProjet);
-       this.ordremission.avance = this.ordremission.avance +  this.projetsupvalue + this.departementvalue;
-      }
+      else if (this.projetsup && !this.departementsup && !this.orgetrangersup){ 
+       this.fraismission.support.codeSupport = "A";
+       this.fraismission.projet = this.selectedprog;
+       this.selectedconcerne.nbJoursPecProj = this.selectedconcerne.nbJoursP;
+          if(this.selectedconcerne.nbJoursP > 20 ){
+            if (this.couverture == "reduction"){
+              this.fraismission.valeurPrevue = (this.selectedconcerne.nbJoursP * taux);
+            }
+            else if(this.couverture == "pecprive"){
+              this.fraismission.valeurPrevue = 0;
+            }
+            else if (this.couverture == "residencepr"){
+              this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux / 3 +this.valeuraff;
+            }
+            else this.fraismission.valeurPrevue = (20 * taux) + (this.selectedconcerne.nbJoursP-20 * taux)/3;
+          }
+          else  {
+            if (this.couverture == "reduction"){
+              this.fraismission.valeurPrevue = (this.selectedconcerne.nbJoursP * taux);
+            }
+            else if(this.couverture == "pecprive"){
+              this.fraismission.valeurPrevue = 0;
+            }
+            else if (this.couverture == "residencepr"){
+              this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux / 3 +this.valeuraff;
+            }
+            else   this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux;}
+      }        
+      this.selectedconcerne.fraisMission =  this.fraismission.valeurPrevue;
+      this.ordremission.avance += this.selectedconcerne.fraisMission;
       this.ordserv.updateOrdMission(this.ordremission).subscribe(x=>null);
       this.concerneserv.updateConcerne(this.selectedconcerne).then(x=>null);
       this.avoirFraisServ.insertFrais(this.fraismission).then(x=>null);
@@ -366,17 +478,30 @@ saveFraisDiv(){
  
 
    verifPerso(){
-     if(this.addedfraidiver.support == "personnel"){
+     if(this.addedfraidiver.support.codeSupport == "P"){
       this.addedfraidiver.valeurPrevue = 0;
       this.isPersonal = true;
+      this.proj = false;
+      this.etr = false;
      }
-     else{
+     else if(this.addedfraidiver.support.codeSupport == "E"){
+      this.proj = false;
+      this.etr = true;
       this.isPersonal = false;
       this.addedfraidiver.valeurPrevue = null;
-
+     }
+     else if (this.addedfraidiver.support.codeSupport == "A"){
+      this.etr = false;
+      this.proj = true;
+      this.isPersonal = false;
+      this.addedfraidiver.valeurPrevue = null;
+     }
+     else{
+      this.proj = false;
+      this.etr = false;
+      this.isPersonal = false;
+      this.addedfraidiver.valeurPrevue = null;
      }
    }
-   // depart param
-
-  
+ 
 }

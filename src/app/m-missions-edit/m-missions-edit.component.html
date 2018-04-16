@@ -195,8 +195,9 @@
                         <table class=" table table-bordered table-striped" >
                             <thead>
                                     <tr>
-                                        <th></th>
-                                        <th></th>
+                                        <th style="visibility: hidden;"></th>
+                                        <th  style="visibility: hidden;"></th>
+                                        <th  style="visibility: hidden;"></th>
                                         <th>رقم الأمر</th>
                                         <th>
                                             ر.ب.ت.و
@@ -215,6 +216,7 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let u of tabOrdresMiss | paginate : { itemsPerPage:5, currentPage:p}">
+                                    <td  class="text-center"><button *ngIf="u.etat == 'V'" type="button" class="btn-u btn-u-sea" (click)="print(u)"><i class="fa fa-print"></i></button></td>
                                     <td class="text-center"><button type="button" class="btn-u btn-u-red" (click)="deleteOrd(u)"><i class="fa fa-times"></i></button></td>
                                     <td class="text-center"><button type="button" class="btn-u btn-u-orange" (click)="editord(u)"><i class="fa fa-edit"></i></button></td>  
                                     <td >{{u.missionaire.numOrdre > 0 ? u.numOrdre : '0' + u.numOrdre }}</td>
@@ -228,7 +230,7 @@
                                 </tr>
                             </tbody>
                             <tfoot>
-                                <td colspan="4"></td>
+                                <td colspan="5"></td>
                                 <td class="arabparagraph">المجموع</td>
                                 <td></td>
                                 <td></td>
@@ -237,7 +239,7 @@
                               <td></td>
                               </tfoot>
                             <tr>
-                                <td colspan="10" class="text-center">
+                                <td colspan="11" class="text-center">
                                <span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls></span>
                               </td>
                             </tr>

@@ -11,6 +11,9 @@ import { ThemeService } from '../model/theme.service';
 import { MotCleService } from '../model/motcle.service';
 import { MFraisdestComponent } from "../m-fraisdest/m-fraisdest.component";
 import { DatePipe } from '@angular/common';
+import { Concerne } from '../model/concerne';
+import { ConcerneServices } from '../model/concerne.service';
+import { AvoirFraisService } from '../model/avoirfrais.service';
 @Component({
   selector: 'app-m-missions-edit',
   templateUrl: './m-missions-edit.component.html',
@@ -45,7 +48,8 @@ export class MMissionsEditComponent implements OnInit {
   editedordre:OrdreMission = new OrdreMission();
   
   constructor(public missionsservice:MissionService, public missionaireService:MissionaireServices,
-    public ordMService:OrdreMissionService,public thServ:ThemeService,public mocserv:MotCleService) {
+    public ordMService:OrdreMissionService,public thServ:ThemeService,public mocserv:MotCleService,
+  public consServ:ConcerneServices,public fraisServ:AvoirFraisService) {
       missionsservice.getAllMissionsOfDep(this.dep.codeDep).subscribe(d=>this.tabmissions=d);
       mocserv.getAllMC().subscribe(d=>this.motcles=d);
      }
@@ -250,5 +254,248 @@ calcduree(d1:Date,d2:Date){
     this.ordremiss = u;
     this.missionconcernee = u.mission;
     
+  }
+  print(u:OrdreMission){
+    let printContents, popupWin;
+    //printContents = document.getElementById('print-section').innerHTML;
+    let destination:string = "";
+    let moytransport: string ="";
+    this.consServ.getAllConcerneOfORDRE(u.idOrdre).subscribe(a=>{
+      //u.concerne = a;
+      for (let index = 0; index < a.length; index++) {
+        if(a.length==1){
+          destination += a[index].pays.libPaysAr 
+          moytransport += a[index].moyTransport;
+        }
+        else {
+          destination += a[index].pays.libPaysAr + " - "
+          moytransport += a[index].moyTransport +" - "
+        }
+      }
+      let supfraismiss:string = "";
+      let supfraislogement:string ="";
+      let supfraispartic:string ="";
+      let supfraistransport:string ="";
+      let fraistransp:number = 0.000;
+      let fraismiss:number = 0.000;
+      let timbre:number = 0.000;
+      let fraislogementtot:number = 0.000;
+      let fraislogement:number = 0.000;
+      let fraisdivers:number = 0.000;
+      this.fraisServ.getAllFraisOfOrdre(u.idOrdre).subscribe(f=>{
+        for (let i = 0; i < f.length; i++) {
+          if (f[i].typeFrai.codeTypefr == "0808"){ // frais missions
+            if(f[i].support.codeSupport=="J"){ // org hote et org parrain
+              supfraismiss =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + u.mission.departement.libDepAr ;
+            }
+            else if(f[i].support.codeSupport=="M"){ // ORG Hote et projet
+              supfraismiss =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + f[i].projet.libProjAr ;
+
+            }
+            else if(f[i].support.codeSupport=="P"){ // compte perso
+              supfraismiss ="الحساب الخاص " ;
+
+            }
+            else if(f[i].support.codeSupport=="E"){  //org hote (etranger)
+              supfraismiss = f[i].nomOrgAr ;
+
+            }
+            else if(f[i].support.codeSupport=="A"){ // projet
+              supfraismiss = f[i].projet.libProjAr ;
+
+            }
+            else if (f[i].support.codeSupport=="I"){
+              supfraismiss = u.mission.departement.libDepAr ;
+            }
+            supfraislogement = supfraismiss;
+            fraismiss = f[i].valeurPrevue;
+          }
+          else if(f[i].typeFrai.codeTypefr == "0606"){ //frais transport 
+              if(f[i].support.codeSupport=="J"){ // org hote et org parrain
+                supfraistransport =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + u.mission.departement.libDepAr ;
+              }
+              else if(f[i].support.codeSupport=="M"){ // ORG Hote et projet
+                supfraistransport =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + f[i].projet.libProjAr ;
+  
+              }
+              else if(f[i].support.codeSupport=="P"){ // compte perso
+                supfraistransport ="الحساب الخاص " ;
+              }
+              else if(f[i].support.codeSupport=="E"){  //org hote (etranger)
+                supfraistransport = f[i].nomOrgAr ;
+              }
+              else if(f[i].support.codeSupport=="A"){ // projet
+                supfraistransport = f[i].projet.libProjAr ;
+              }
+              else if (f[i].support.codeSupport=="I"){
+                supfraistransport = u.mission.departement.libDepAr ;
+              }
+              fraistransp = f[i].valeurPrevue;
+          }
+          else if(f[i].typeFrai.codeTypefr == "0303" || f[i].typeFrai.codeTypefr == "0707" ||f[i].typeFrai.codeTypefr == "0404" ||f[i].typeFrai.codeTypefr == "0202" || f[i].typeFrai.codeTypefr == "0101"){ //frais participation 
+            if (f[i].typeFrai.codeTypefr == "0101"){
+              timbre = f[i].valeurPrevue;
+            }
+            if(f[i].support.codeSupport=="J"){ // org hote et org parrain
+              supfraispartic =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + u.mission.departement.libDepAr ;
+            }
+            else if(f[i].support.codeSupport=="M"){ // ORG Hote et projet
+              supfraispartic =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + f[i].projet.libProjAr ;
+            }
+            else if(f[i].support.codeSupport=="P"){ // compte perso
+              supfraispartic ="الحساب الخاص " ;
+            }
+            else if(f[i].support.codeSupport=="E"){  //org hote (etranger)
+              supfraispartic = f[i].nomOrgAr ;
+            }
+            else if(f[i].support.codeSupport=="A"){ // projet
+              supfraispartic = f[i].projet.libProjAr ;
+            }
+            else if (f[i].support.codeSupport=="I"){
+              supfraispartic = u.mission.departement.libDepAr ;
+            }
+            else supfraispartic = " " ;
+          }           
+        }
+
+        popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+        popupWin.document.open();
+        popupWin.document.write(`
+          <html dir="rtl" lang="ar" >
+            <head>
+              <title>طباعة الأمر </title>
+              <meta charset="utf-8">
+              <link rel="stylesheet" href="../../styles.css">
+              <style>
+              table, th, td {
+                margin-right:50px;
+                border: 1px solid black;
+                border-collapse: collapse;
+                text-align:center;
+            }
+              </style>
+            </head>
+        <body onload="window.print();window.close()">
+        <h1 style="text-align:center;">
+        بطاقة تجميد وطلب تسبقة  <br/> بعنوان مأمورية بالخارج
+        </h1>
+        <p>
+        أمر بالمأمورية عدد : &emsp; ${u.numOrdre > 10 ? u.numOrdre : '0' + u.numOrdre }  / ${u.mission.numMission} / ${u.mission.departement.codeDep}
+        </p>
+        <p>
+          المعرف الوحيد :&emsp;  ${u.missionaire.matricule}
+        </p>
+        <p>
+        الأسم واللقب : &emsp; ${u.missionaire.nomAr}  ${u.missionaire.prenomAr}
+        </p>
+        <p>
+        الرتبة : ${u.missionaire.grade.libGradeAr} &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp; 
+        الصنف أو السلك :  ${u.missionaire.classe.libClasseAr} &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp; 
+        مستوى التأجير : ${u.missionaire.groupe.taux.valTaux} 
+        </p>
+        <p>
+        الخطة الوظيفية : &emsp; ${u.missionaire.fonction.libFctAr}
+        </p>
+        <p>
+        مكان المأمورية : &emsp; ${destination}
+        </p>
+        <p>
+        مدتها : ${this.calcduree(u.dateDepP,u.dateArrP)} أيام &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;  
+        من : ${u.dateDepP} &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; 
+        إلى : ${u.dateArrP} 
+        </p>
+        <p>
+        موضوع المأمورية : &emsp; ${u.mission.objectifMissionAr  !=null ? u.mission.objectifMissionAr : ''}
+        </p>
+        <p>
+        تحمل مصاريف المأمورية على : &emsp; ${supfraismiss  !=null ? supfraismiss : ''}
+        </p>
+        <p>
+        تحمل مصاريف السكن على : &emsp; ${supfraislogement  !=null ? supfraislogement : ''}
+        </p>
+        <p>
+        تحمل مصاريف المشاركة على : &emsp; ${supfraispartic !=null ? supfraispartic : ''}
+        </p>
+        <p>
+        تحمل مصاريف النقل على : &emsp; ${supfraistransport!=null ? supfraistransport : ''}
+        </p>
+        <p>
+        وسيلة النقل :  &emsp;  ${moytransport!=null ? moytransport : ''}
+        <p>
+        <p> 
+        مصاريف النقل :  &emsp; ${fraistransp} دينار 
+        </p>
+        &emsp;
+        <table>
+        <tr>
+          <th> الاعتمادات <br/> (د)</th>
+          <th> الاعتمادات المخصصة<br/> (د)</th>
+          <th> الاعتمادات المجمدة<br/> (د)</th>
+          <th> الاعتمادات المتبقية  <br/> (د)</th>
+          <th> تقدير مصاريف المأمورية <br/> (د)</th>
+        </tr>
+        <tr>
+          <td> مصاريف المأمورية</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> ${fraismiss}</td>
+        </tr>
+        <tr>
+          <td>مصاريف النقل</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td>${fraistransp} </td>
+        </tr>
+        <tr>
+
+        <td colspan='3' style='visibility:hidden;'> </td>
+        <td style='border:0px;'> المجموع</td>
+        <th>${fraistransp + fraismiss} </th>
+        </tr>
+        </table>
+        <h3>بيان حول مصاريف المأمورية بإستثناء مصاريف النقل : </h3>
+        &emsp;
+        <table>
+          <tr>
+            <th> المدة</th>
+            <th> المنحة اليومية <br/> (د) </th>
+            <th> المنحة الجملية <br/> للمأمورية</th>
+            <th> منحة السكن  <br/> اليومية</th>
+            <th> المصاريف الجملية <br/> للسكن</th>
+            <th> الطابع الجبائي <br/> (د)</th>
+            <th> مصاريف أخرى <br/> (د)</th>
+            <th> مبلغ التسبقة  <br/> (د)</th>
+          </tr>
+          <tr>
+            <td>${this.calcduree(u.dateDepP,u.dateArrP)} </td>
+            <td>${u.missionaire.groupe.taux.valTaux}</td>
+            <td>${this.calcduree(u.dateDepP,u.dateArrP) * u.missionaire.groupe.taux.valTaux}</td>
+            <td>${fraislogement}</td>
+            <td>${fraislogementtot}</td>
+            <td>${timbre}</td>
+            <td>${fraisdivers}</td>
+            <td>${u.avance}</td>
+          </tr>
+        </table>
+        <p> ملاحظات :  </p>
+        <p> حرر ب &emsp;&emsp;&emsp;&emsp; في  </p> 
+        <br/>
+        <p>&emsp;&emsp;&emsp;&emsp; آمر بالصرف 
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        سلطة الإشراف
+        </p>
+        </body>
+          </html>`
+        );
+        popupWin.document.close();
+
+      })
+      
+    });
+   
   }
 }

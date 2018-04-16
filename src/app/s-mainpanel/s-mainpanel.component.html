@@ -26,7 +26,7 @@
     </div>
 </div>
 <div class="container content ">
-  <div class="col-md-4"></div>
+ <!-- <div class="col-md-4"></div>
   <div class="col-md-4  text-center">
       <form   id="sky-form1" class="sky-form " >
       <label class="select">
@@ -36,20 +36,184 @@
           <i></i>
       </label> 
     </form>
-  </div>
+  </div>-->
   <br/><br/>
-  <div class="row arabparagraph" >
-      <button style="text-align: right;" class="btn-u btn-u-lg btn-block btn-u-dark-blue" type="button"><i class="fa fa-chevron-right"></i> <span class="arabparagraph">المأموريات المنجزة من طرف المؤسسة </span> <span class="pull-right"> <i class="fa fa-home"></i></span></button>
+  <div class="panel">
+      <div class="panel-heading">
+        <div class="row arabparagraph" >
+            <h3 class="panel-title">
+                    <button *ngIf="!missdep" style="text-align: right;" (click)="toggleMissDep()" class="btn-u btn-u-lg btn-block btn-u-dark-blue" type="button"><i class="fa fa-chevron-right"></i> <span class="arabparagraph">المأموريات المنجزة من طرف المؤسسة </span> <span class="pull-right"> <i class="fa fa-home"></i></span></button>
+                    <button *ngIf="missdep" style="text-align: right;" (click)="toggleMissDep()" class="btn-u btn-u-lg btn-block btn-u-dark-blue" type="button"><i class="fa fa-chevron-down"></i> <span class="arabparagraph">المأموريات المنجزة من طرف المؤسسة </span> <span class="pull-right"> <i class="fa fa-home"></i></span></button>        
+            </h3>
+        </div>
+    </div>
+    <div class="arabparagraph" *ngIf="missdep">
+    <form   id="sky-form1" class="sky-form " >
+        <div class="row">
+            <br/>
+            <section class="col col-1.5"></section>
+            <section class="col col-1.5">
+                <p class="arabparagraph">
+                        من
+                </p> 
+            </section>
+            <section class="col col-3">
+                <label class="input"><i class="icon-prepend fa fa-calendar"></i>
+                    <input type="date" name="de">
+                </label>
+            </section>
+            <section class="col col-1.5">
+                    <p class="arabparagraph">
+                            إلى
+                    </p> 
+                </section>
+                <section class="col col-3">
+                        <label class="input"><i class="icon-prepend fa fa-calendar"></i>
+                            <input type="date" name="a">
+                        </label>
+                </section>   
+            <section class="col col-3">
+                <button type="button" class="btn btn-u"><i class="fa fa-print"></i>  </button>
+            </section>
+        </div>
+    </form>
   </div>
-  <br/>
-  <div class="row arabparagraph" >
-      <button style="text-align: right;" class="btn-u btn-u-lg btn-block btn-u-red" type="button"><i class="fa fa-chevron-right"></i> <span class="arabparagraph">توزيع المأموريات حسب البلدان</span> <span class="pull-right"> <i class="fa fa-list-ol"></i></span></button>
   </div>
-  <br/>
-  <div class="row arabparagraph" >
-      <button style="text-align: right;" class="btn-u btn-u-lg btn-block btn btn-u-sea" type="button"><i class="fa fa-chevron-right"></i> <span class="arabparagraph">بيان حول استهلاك الإعتمادات</span>  <span class="pull-right"> <i class="fa  fa-list-alt"></i></span></button>
-  </div>
-</div>     
+
+  <div class="panel">
+        <div class="panel-heading">
+          <div class="row arabparagraph" >
+              <h3 class="panel-title">
+                    <button *ngIf="!distrpays" (click)="distrpays = true"style="text-align: right;" class="btn-u btn-u-lg btn-block btn-u-red" type="button"><i class="fa fa-chevron-right"></i> <span class="arabparagraph">توزيع المأموريات حسب البلدان</span> <span class="pull-right"> <i class="fa fa-list-ol"></i></span></button>
+                    <button *ngIf="distrpays" (click)="distrpays = false" style="text-align: right;" class="btn-u btn-u-lg btn-block btn-u-red" type="button"><i class="fa fa-chevron-down"></i> <span class="arabparagraph">توزيع المأموريات حسب البلدان</span> <span class="pull-right"> <i class="fa fa-list-ol"></i></span></button>
+                </h3>
+          </div>
+      </div>
+      <div class="arabparagraph" *ngIf="distrpays">
+      <form   id="sky-form1" class="sky-form " >
+          <div class="row">
+              <br/>
+              <section class="col col-1.5"></section>
+              <section class="col col-1.5">
+                  <p class="arabparagraph">
+                          من
+                  </p> 
+              </section>
+              <section class="col col-3">
+                  <label class="input"><i class="icon-prepend fa fa-calendar"></i>
+                      <input type="date" name="de" [(ngModel)]="deb">
+                  </label>
+              </section>
+              <section class="col col-1.5">
+                      <p class="arabparagraph">
+                              إلى
+                      </p> 
+                  </section>
+                  <section class="col col-3">
+                          <label class="input"><i class="icon-prepend fa fa-calendar"></i>
+                              <input type="date" name="a"  [(ngModel)]="fin">
+                          </label>
+                  </section>
+                  <section class="col col-1.5">
+                        <p class="arabparagraph">
+                                البلد
+                        </p> 
+                    </section>
+                    <section class="col col-2">
+                            <label class="select">
+                                <select name="pays" [(ngModel)]="selectedPays">
+                                    <option *ngFor="let p of listPays" [ngValue]="p">{{p.libPaysAr}}</option>
+                                </select>
+                                <i></i>
+                            </label>
+                    </section>   
+              <section class="col col-2">
+                  <button type="button" (click)="showCountries()" class="btn-u btn-u-red"><i class="fa fa-print"></i>  </button>
+              </section>
+          </div>
+      </form>
+    </div>
+    </div>
+
+    <div class="panel">
+            <div class="panel-heading">
+              <div class="row arabparagraph" >
+                  <h3 class="panel-title">
+                        <button *ngIf="!bilan"  (click)="bilan = true" style="text-align: right;" class="btn-u btn-u-lg btn-block btn btn-u-sea" type="button"><i class="fa fa-chevron-right"></i> <span class="arabparagraph">بيان حول استهلاك الإعتمادات</span>  <span class="pull-right"> <i class="fa  fa-list-alt"></i></span></button>
+                        <button *ngIf="bilan" (click)="bilan = false" style="text-align: right;" class="btn-u btn-u-lg btn-block btn btn-u-sea" type="button"><i class="fa fa-chevron-down"></i> <span class="arabparagraph">بيان حول استهلاك الإعتمادات</span>  <span class="pull-right"> <i class="fa  fa-list-alt"></i></span></button>
+                    </h3>
+              </div>
+          </div>
+          <div class="arabparagraph" *ngIf="bilan">
+          <form   id="sky-form1" class="sky-form " >
+              <div class="row">
+                  <br/>
+                  <section class="col col-1.5"></section>
+                  <section class="col col-1.5">
+                      <p class="arabparagraph">
+                            السنة
+                      </p> 
+                  </section>
+                  <section class="col col-3">
+                      <label class="select">
+                          <select>
+                              <option>2018</option>
+                          </select><i></i>
+                      </label>
+                  </section>            
+                  <section class="col col-3">
+                      <button type="button" class="btn-u btn-u-sea"><i class="fa fa-print"></i> </button>
+                  </section>
+              </div>
+          </form>
+        </div>
+        </div>
+
+</div> 
+
+<!-- printing tempalte -->
+<div id="print-section" style="display: none;">
+        <p>الجمهورية التونسية
+                <br/> {{this.currentDep.libDepAr}}</p>
+                <h1 style="text-align:center;">
+                المأموريات المنجزة حسب البلد 
+                </h1>
+                <h3 style="text-align:center;">
+                 من {{this.deb}} إلى {{this.fin}}</h3>    
+           <h2 style="text-align:center;">
+           البلد : {{this.selectedPays.libPaysAr}}
+           </h2>
+           <table>
+                <tr>
+                  <th>المأمورية</th>
+                  <th>رقم الهوية / المعرف الوحيد</th>
+                  <th>الاسم واللقب </th>
+                  <th>تاريخ الذهاب</th>
+                  <th>تاريخ الإياب</th>
+                  <th>المدة</th>
+                  <th>موضوع المأمورية</th>
+                  <th>مصاريف المأمورية</th>
+                  <th>مصاريف النقل</th>
+                  <th>الوضعية</th>
+                  <th>تاريخ التقرير</th>
+                </tr>
+               <tr *ngFor="let a of missionsres">
+                    <td>{{a.mission.numMission}}</td>
+                    <td>{{a.missionaire.matricule}}</td>
+                    <td>{{a.missionaire.nomAr + "  "+ a.missionaire.prenomAr}}</td>
+                    <td>{{a.mission.dateDepartP}}</td>
+                    <td>{{a.mission.dateArriveP}}</td>
+                    <td>{{convDur(a.mission.dateDepartP,a.mission.dateArriveP)}}</td>
+                    <td>{{a.mission.objectifMissionAr}}</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{affichageEtat(a.etat)}}</td>
+                    <td></td>
+
+               </tr>
+            </table>
+
+</div>
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			
 <script src="../../assets/plugins/jquery/jquery.min.js"></script>

@@ -1,0 +1,42 @@
+<p>الجمهورية التونسية
+    <br/> {{this.currentDep.libDepAr}}</p>
+    <h1 style="text-align:center;">
+    المأموريات المنجزة حسب البلد 
+    </h1>
+    <h3 style="text-align:center;">
+     من {{this.deb}} إلى {{this.fin}}</h3>    
+<h2 style="text-align:center;">
+البلد : {{this.selectedPays.libPaysAr}}
+</h2>
+<table>
+   <thead>
+    <tr>
+      <th>المأمورية</th>
+      <th>رقم الهوية / المعرف الوحيد</th>
+      <th>الاسم واللقب </th>
+      <th>تاريخ الذهاب</th>
+      <th>تاريخ الإياب</th>
+      <th>المدة</th>
+      <th>موضوع المأمورية</th>
+      <th>مصاريف المأمورية</th>
+      <th>مصاريف النقل</th>
+      <th>الوضعية</th>
+      <th>تاريخ التقرير</th>
+    </tr>
+   </thead>
+   <tbody>
+   <tr *ngFor="let a of missionsres">
+        <td>{{a.mission.numMission}}</td>
+        <td>{{a.missionaire.matricule}}</td>
+        <td>{{a.mission.dateDepartP}}</td>
+        <td>{{a.mission.dateArriveP}}</td>
+        <td></td>
+        <td>{{a.mission.objectifMissionAr}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+   </tr>
+   </tbody>
+</table>

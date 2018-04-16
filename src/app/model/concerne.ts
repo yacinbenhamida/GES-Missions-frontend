@@ -10,6 +10,9 @@ export class Concerne{
     public ordre:OrdreMission;
     public pays:Pays;
     public ordre_dest:number;
+    public nbJoursPecDep:number;
+    public nbJoursPecOrget:number;
+    public nbJoursPecProj:number;
     constructor(){
         this.ordre = new OrdreMission();
         this.pays = new Pays();
