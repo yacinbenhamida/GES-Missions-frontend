@@ -16,6 +16,10 @@ export class OrdreMissionService{
         return body || [];
     }
 
+    getOrdresValides(codeDep:string):Observable<OrdreMission[]>{
+        const url = `${this.missUrl}/getOrdresvalides/${codeDep}`;
+        return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }
     getLatestORDMISS(nummis:number):Observable<string>{
         const url = `${this.missUrl}/latestOrdMiss/${nummis}`;
         return this.http.get(url).map((res:Response)=>{

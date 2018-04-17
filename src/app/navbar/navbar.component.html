@@ -77,7 +77,7 @@
                         <!-- End الثوابت -->
     
                         <!-- الاعتمادات -->                        
-                        <li class="dropdown"  *ngIf="nav.ordonnateur || nav.controlleur || nav.ordonnateurministere">
+                        <li class="dropdown"  *ngIf="nav.ordonnateur || nav.ordonnateurministere">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
                              <span class="arabtext">الاعتمادات</span>   
                             </a>
@@ -100,7 +100,7 @@
                                         </ul>   
                                 </li>
                             
-                                <li  *ngIf="nav.ordonnateurministere || nav.controlleur">
+                                <li  *ngIf="nav.ordonnateurministere ">
                                        <a routerLink="/confirmbudg-year" class="dropdown-toggle" data-toggle="dropdown" >
                                         المصادقة على اعتمادات الهياكل/ المشاريع
                                        </a>
@@ -111,7 +111,7 @@
                         <!-- End -->
     
                         <!-- مآموريات -->
-                        <li class="dropdown arabtext"  *ngIf="nav.ordonnateur || nav.controlleur ||nav.payeur || nav.ordonnateurministere">
+                        <li class="dropdown arabtext"  *ngIf="nav.ordonnateur ||nav.payeur || nav.ordonnateurministere">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
                               <span class="arabtext">المآموريات</span>  
                             </a>
@@ -126,12 +126,11 @@
                                                 <li><a routerLink="/m-editmissions">تحيين مأمورية</a></li>                                          
                                         </ul>                                                               
                                 </li>
-                                <li *ngIf="nav.ordonnateur || nav.ordonnateurministere">
+                                <li *ngIf="nav.ordonnateur">
                                     <a routerLink="/m-confirmmiss">مصادقة الآمر بالصرف</a>                               
                                 </li>
-                                <li *ngIf="nav.ordonnateurministere"><a href="#" >تأشيرة سلطة الإشراف</a></li>
+                                <li *ngIf="nav.ordonnateurministere"><a routerLink="/m-confirmmiss">تأشيرة سلطة الإشراف</a></li>
                                 <li *ngIf="nav.payeur"><a href="#" >المصادقة على التسبقة</a></li>
-                                <li *ngIf="nav.controlleur"><a href="#" >تأشيرة مراقب المصاريف</a></li>
                             </ul>
                         </li>
                         <!-- End Blog -->
@@ -153,7 +152,7 @@
                         <!-- End المتابعة -->
     
                         <!-- التسوية -->
-                        <li class="dropdown"  *ngIf="nav.ordonnateurministere || nav.controlleur || nav.payeur">
+                        <li class="dropdown"  *ngIf="nav.ordonnateurministere  || nav.payeur">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
                               <span class="arabtext"> التسوية</span> 
                             </a>
@@ -162,7 +161,6 @@
                                 <li *ngIf="nav.ordonnateurministere"><a href="#">تسوية مهمة</a></li>
                                 <li *ngIf="nav.ordonnateurministere"><a href="#">مصادقة الآمر بالصرف</a></li>
                                 <li *ngIf="nav.ordonnateurministere"><a href="#">مصادقة سلطة الإشراف</a></li>
-                                <li *ngIf="nav.controlleur"><a href="#">تآشيرة مراقب المصاريف</a></li>
                                 <li *ngIf="nav.payeur"><a href="#">تآشيرة المحاسب </a></li>
                             </ul>                           
                         </li>  

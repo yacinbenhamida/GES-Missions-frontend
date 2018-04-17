@@ -19,12 +19,10 @@ export class NavbarComponent implements OnInit,AfterViewInit{
     this.user = JSON.parse(localStorage.getItem('Array'));
     switch(this.user){
       case "O":this.username = "ordonnateur";break;
-      case "C":this.username = "controlleur";break;
       case "P" : this.username = "payeur";break;
       case "OM": this.username = "ordonnateur ministeriel";break;
       case "A": this.username = "admin";break;
     }
-    console.log(this.user+" navbar  ");
     this.nav.knowUser(this.user);
    }
   ngAfterViewInit(): void {}

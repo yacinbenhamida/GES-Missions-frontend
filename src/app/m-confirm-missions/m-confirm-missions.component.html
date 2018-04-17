@@ -22,10 +22,12 @@
 <div class="wrapper" style="background-image: url('../assets/img/breadcrumbs.png');">   
     <div class="breadcrumbs">
         <div class="container arabparagraph">
-            <h1 class="pull-left"><span class="arabtext">مصادقة الآمر بالصرف</span></h1>
+            <h1 *ngIf="user == 'O'" class="pull-left"><span class="arabtext">مصادقة الآمر بالصرف</span></h1>
+            <h1 *ngIf="user == 'OM' " class="pull-left"><span class="arabtext">تأشيرة سلطة الإشراف</span></h1>
             <ul class="pull-right breadcrumb arabparagraph">
                 <li>المأموريات</li>
-                <li>مصادقة الآمر بالصرف</li>
+                <li *ngIf="user == 'O' ">مصادقة الآمر بالصرف</li>
+                <li *ngIf="user == 'OM' ">تأشيرة سلطة الإشراف</li>
             </ul>
         </div>
     </div>
@@ -33,21 +35,39 @@
 <div class="container content ">
   <div class="row ">
    <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
-   <header class="arabparagraph">المصادقة على المأمورية
+   <header class="arabparagraph" *ngIf="user == 'O'" >المصادقة على المأمورية
         <button *ngIf="missions == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleMiss()"><i class="fa fa-sort-desc"></i></button>
         <button *ngIf="missions == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleMiss()"><i class="fa fa-sort-asc"></i></button>                                                                  
-   </header> 
+   </header>
+   <header class="arabparagraph" *ngIf="user == 'OM'" >تأشيرة بطاقة تجميد الإعتمادات
+        <button *ngIf="missions == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleMiss()"><i class="fa fa-sort-desc"></i></button>
+        <button *ngIf="missions == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleMiss()"><i class="fa fa-sort-asc"></i></button>                                                                  
+   </header>  
      <div class="arabparagraph" *ngIf="missions == true">                 
             <fieldset>      
               <div class="row text-center">
-                  <label class="select">
+                  <label class="select" *ngIf="user == 'O' ">
                       <select name="ordremission" [(ngModel)]="choosenord" (change)="loadDetails()">
                             <option value="null" [disabled]="true" [selected]="true"> <span class="arabparagraph"> رقم الأمر بالمأمورية </span></option>
                             <option *ngFor="let a of tabOrdresMiss" [ngValue]="a">{{a.numOrdre > 10 ? a.numOrdre : '0' + a.numOrdre }}  / {{a.mission.numMission}} / {{dep.codeDep}}</option>
                         </select>
                       <i></i>
                   </label>
-                  
+                  <section class="col col-1.5" *ngIf="user == 'OM' ">
+                  <span class="arabparagraph">المأمورية عدد </span>
+                  </section>
+                  <section class="col col-6" *ngIf="user == 'OM' ">
+                  <label class="select" >
+                        <select name="ordremission" [(ngModel)]="choosenord" (change)="loadDetails()">
+                              <option value="null" [disabled]="true" [selected]="true"> <span class="arabparagraph"> رقم الأمر بالمأمورية </span></option>
+                              <option *ngFor="let a of tabOrdresMiss" [ngValue]="a">{{a.numOrdre > 10 ? a.numOrdre : '0' + a.numOrdre }}  / {{a.mission.numMission}} / {{a.mission.departement.codeDep}}</option>
+                          </select>
+                        <i></i>
+                    </label>
+                </section>
+                <section class="col-md-4" *ngIf="choosenord!=null && user == 'OM' ">
+                                <p class="arabparagraph" disabled type="text" name="depconc">الهيكل : {{choosenord.mission.departement.libDepAr}}</p>
+                </section>
               </div> 
               
               
@@ -55,6 +75,7 @@
           </fieldset> 
           <footer>
                 <div class="row " *ngIf="details == true">
+                    <div *ngIf="user == 'O'">
                         <div class="panel panel-dark-blue">
                             <div class="panel-heading">
                                 <h3 class="panel-title"><i class="fa fa-cogs"></i> <span class="arabparagraph">تفاصيل الأمر</span>
@@ -144,7 +165,8 @@
                                             <input type="number" disabled class="disabled" name="avance" value="{{avance}}">
                                           </label>
                                         </section>
-                                    </div>
+                                  </div>
+
                                   <div class="row text-center">
                                   <button class="btn-u btn-u-lg" type="button" (click)="confirmMission()"> المصادقة</button>
                                  </div>
@@ -152,7 +174,204 @@
                               </fieldset>
                             </div>
                     </div>
-                    </div>                
+                    </div> 
+                    <div *ngIf="user == 'OM'">
+                        <div class="panel panel-dark-blue">
+                            <div class="panel-heading">
+                                    <h3 class="panel-title"><i class="fa fa-cogs"></i> <span class="arabparagraph">تفاصيل الأمر</span>
+                                        <button *ngIf="ordremisschb == true" class="btn-u  rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleOrdMb()"><i class="fa fa-sort-desc"></i></button>
+                                        <button *ngIf="ordremisschb == false" class="btn-u  rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleOrdMb()"><i class="fa fa-sort-asc"></i></button>                                                                          
+                                        <button type="button" (click)="details = false" class="btn-u rounded-2x btn-u-white btn-u-xs pull-right" ><i class="fa fa-times"></i></button>
+                                    </h3>
+                            </div>
+                            <div class="arabparagraph" *ngIf="ordremisschb == true">
+                                <fieldset>
+                                        <div class="row">
+                                          <div class="col-md-1"><p class="arabparagraph">المعرف الوحيد</p></div>
+                                          <div class="col-md-2">
+                                              <label class="input">
+                                                    <input type="text" *ngIf="choosenord.missionaire.matricule!=null" name="matricule" [value]="choosenord.missionaire.matricule" disabled>
+                                              </label>
+                                          </div>
+                                          <div class="col-md-1"><p class="arabparagraph">الإسم واللقب</p></div>
+                                          <div class="col-md-4">
+                                                <label class="input">
+                                                    <input type="text" name="nomprenom" *ngIf="choosenord.missionaire.nomAr!=null" [value]="choosenord.missionaire.nomAr +'   '+ choosenord.missionaire.prenomAr"  disabled>
+                                                </label>
+                                          </div>
+                                          <div class="col-md-1"><p class="arabparagraph">الرتبة</p></div>
+                                          <div class="col-md-3">
+                                                <label class="input">
+                                                    <input type="text" name="grade" [value]="choosenord.missionaire.grade.libGradeAr" disabled>
+                                                </label>
+                                          </div>   
+                                        </div>
+                                        <div class="row">
+                                                <div class="col col-1.5"><p class="arabparagraph">الصنف والسلك</p></div>
+                                                <div class="col-md-3">
+                                                    <label class="input">
+                                                          <input type="text" name="classcat" [value]="choosenord.missionaire.classe.libClasseAr + ' \ '+  choosenord.missionaire.categorie.libCatAr" disabled>
+                                                    </label>
+                                                </div>
+                                                <div class="col col-1.5"></div>
+
+                                                <div class="col-md-1"><p class="arabparagraph">مستوى التأجير</p></div>
+                                                <div class="col-md-1">
+                                                      <label class="input">
+                                                          <input type="text" [value]="choosenord.missionaire.groupe.taux.valTaux" name="taux" disabled>
+                                                      </label>
+                                                </div>
+                                                &emsp;&emsp;
+                                                <div class="col-md-1"><p class="arabparagraph">الخطة الوظيفية</p></div>
+                                                <div class="col-md-3">
+                                                      <label class="input">
+                                                          <input type="text" name="fctp" [value]="choosenord.missionaire.fonction.libFctAr" disabled>
+                                                      </label>
+                                                </div>  
+                                        </div>
+                                        <div class="row">
+                                                <div class="col col-1.5"><p class="arabparagraph">مكان المأمورية</p></div>
+                                                <div class="col-md-3">
+                                                    <label class="input">
+                                                          <input type="text" name="locatmiss"  disabled>
+                                                    </label>
+                                                </div>
+                                                <div class="col col-1.5"><p class="arabparagraph">مدتها</p></div>
+                                                <div class="col-md-1">
+                                                      <label class="input">
+                                                          <input type="text" name="dur" [value]="convDur(choosenord.dateDepP,choosenord.dateArrP)" disabled>
+                                                      </label>
+                                                </div>
+                                                <div class="col col-1.5"></div>
+                                                <div class="col col-1.5"><p class="arabparagraph">من</p></div>
+                                                <div class="col-md-2">
+                                                      <label class="input">
+                                                          <input type="text" name="deb" [value]="choosenord.dateDepP" disabled>
+                                                      </label>
+                                                </div> 
+                                                <div class="col col-1.5"><p class="arabparagraph">إلى</p></div>
+                                                <div class="col-md-2">
+                                                      <label class="input">
+                                                          <input type="text" name="fin" [value]="choosenord.dateArrP" disabled>
+                                                      </label>
+                                                </div>   
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                    <p class="arabparagraph">موضوع المأمورية</p>
+                                                    <label class="textarea textarea-resizable">
+                                                        <textarea  [value]="choosenord.mission.objectifMissionAr" disabled></textarea>
+                                                    </label>
+                                                </div>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <p class="arabparagraph">تحمل مصاريف المأمورية على</p>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <label class="input">
+                                                    <input type="text" name="fmission" [value]="supfraisM" disabled>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="col-md-2">
+                                                        <p class="arabparagraph">تحمل مصاريف  المشاركة على</p>
+                                                </div>
+                                                <div class="col col-10">
+                                                        <label class="input">
+                                                            <input type="text" name="fpartici" [value]="supfraisP" disabled>
+                                                        </label>
+                                                    </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="col-md-2">
+                                                        <p class="arabparagraph"> تحمل مصاريف النقل على  </p>
+                                                </div>
+                                                <div class="col col-10">
+                                                        <label class="input">
+                                                            <input type="text" name="ftrans" [value]="supfraisT" disabled>
+                                                        </label>
+                                                    </div>
+                                        </div>
+                                        
+                                        <br/>
+                                        <div class="row arabparagraph">
+                                                <div class="panel panel-sea">
+                                                        <div class="panel-heading">
+                                                                <h3 class="panel-title"><i class="fa fa-dollar"></i> <span class="arabparagraph">المصاريف</span>
+                                                                    <button *ngIf="frais == true" class="btn-u btn-u-sea  rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="frais = false"><i class="fa fa-sort-desc"></i></button>
+                                                                    <button *ngIf="frais == false" class="btn-u btn-u-sea  rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="frais = true"><i class="fa fa-sort-asc"></i></button>                                                                          
+                                                                </h3>
+                                                        </div>
+                                                        <div *ngIf="frais==true">
+                                                            <fieldset>
+                                                                <table class="table table-bordered text-center">
+                                                                    <tr>
+                                                                        <td>الإعتمادات</td>
+                                                                        <td>الأعتمادات المرصودة</td>
+                                                                        <td>الأعتمادات المتعهد بها</td>
+                                                                        <td>الإعتمادات المتبقية</td>
+                                                                        <td>تقدير مصاريف المأمورية</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>مصاريف المأمورية</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td>{{valfraisM}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>مصاريف النقل</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td>{{valfraisT}}</td>
+                                                                    </tr>
+                                                                </table>
+                                                            <br/>
+                                                                <table class="table table-striped text-center table-bordered ">
+                                                                    <tr>
+                                                                        <th colspan="7">
+                                                                                بيان حول مصاريف المأمورية
+                                                                        </th>
+                                                                    </tr>
+                                                                    <tr class="text-center">
+                                                                        <th>المدة</th>
+                                                                        <th>المنحة اليومية</th>
+                                                                        <th>المنحة الجملية</th>
+                                                                        <th>مصاريف النقل</th>
+                                                                        <th>الطابع الجبائى</th>
+                                                                        <th>مصاريف اخرى</th>
+                                                                        <th>مبلغ التسبقة</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{{affdur(choosenord.dateArrP,choosenord.dateDepP)}}</td>
+                                                                        <td>{{choosenord.missionaire.groupe.taux.valTaux}}</td>
+                                                                        <td>{{choosenord.missionaire.groupe.taux.valTaux * convDur(choosenord.dateArrP,choosenord.dateDepP)}}</td>
+                                                                        <td>{{valfraisT}}</td>
+                                                                        <td>{{valffraisTimbre}}</td>
+                                                                        <td>{{valfraisDivers + valfraisP}}</td>
+                                                                        <td>{{valfraisT + valfraisDivers + valffraisTimbre + (choosenord.missionaire.groupe.taux.valTaux * convDur(choosenord.dateArrP,choosenord.dateDepP)) + valfraisT}}</td>
+                                                                    </tr>
+                                                                </table>
+                                                                <br/>
+                                                            </fieldset>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </fieldset>
+                                <footer>
+                                        <div class="row text-center">
+                                        <button class="btn-u btn-u-lg" *ngIf="user=='O'" type="button" (click)="confirmMission()"> المصادقة</button>
+                                        <button class="btn-u btn-u-sea btn-u-lg" *ngIf="user=='OM'" type="button" (click)="confirmMission()"> التأشيرة</button>
+                                        </div>
+                                </footer>
+                            </div>
+                        </div>
+                    </div>
+                </div>                  
           </footer>   
         </div> 
       </form>
