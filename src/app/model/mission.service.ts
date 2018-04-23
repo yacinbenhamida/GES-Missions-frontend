@@ -27,9 +27,9 @@ export class MissionService{
         const url = `${this.missUrl}/findMissionByNum/${num}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
-    insertMission(d:Mission):Promise<Mission>{
+    insertMission(d:Mission):Observable<Mission>{
         return this.http.post(this.missUrl+"/insertMission",JSON.stringify(d),{headers : this.headers})
-        .toPromise().then(res=>res.json() as Mission).catch(this.handleError);  
+        .map(this.extractData).catch(this.handleError);  
     }
     deleteMission(d:Mission):Promise<void>{
         const url = `${this.missUrl}/deleteFonct/${d.idMission}`;

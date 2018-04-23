@@ -26,17 +26,6 @@
     </div>
 </div>
 <div class="container content ">
- <!-- <div class="col-md-4"></div>
-  <div class="col-md-4  text-center">
-      <form   id="sky-form1" class="sky-form " >
-      <label class="select">
-          <select required  name="motcle"  >
-              <option >2018</option>
-          </select>
-          <i></i>
-      </label> 
-    </form>
-  </div>-->
   <br/><br/>
   <div class="panel">
       <div class="panel-heading">
@@ -59,7 +48,7 @@
             </section>
             <section class="col col-3">
                 <label class="input"><i class="icon-prepend fa fa-calendar"></i>
-                    <input type="date" name="de">
+                    <input type="date" (change)="chDate()" [(ngModel)]="deball" name="de">
                 </label>
             </section>
             <section class="col col-1.5">
@@ -69,11 +58,11 @@
                 </section>
                 <section class="col col-3">
                         <label class="input"><i class="icon-prepend fa fa-calendar"></i>
-                            <input type="date" name="a">
+                            <input type="date" [(ngModel)]="finall" (change)="chDate()" name="a">
                         </label>
                 </section>   
             <section class="col col-3">
-                <button type="button" class="btn btn-u"><i class="fa fa-print"></i>  </button>
+                <button type="button" (click)="print1()" class="btn btn-u"><i class="fa fa-print"></i>  </button>
             </section>
         </div>
     </form>
@@ -101,7 +90,7 @@
               </section>
               <section class="col col-3">
                   <label class="input"><i class="icon-prepend fa fa-calendar"></i>
-                      <input type="date" name="de" [(ngModel)]="deb">
+                      <input type="date" name="de" [(ngModel)]="deb" (change)="chCountry()">
                   </label>
               </section>
               <section class="col col-1.5">
@@ -111,7 +100,7 @@
                   </section>
                   <section class="col col-3">
                           <label class="input"><i class="icon-prepend fa fa-calendar"></i>
-                              <input type="date" name="a"  [(ngModel)]="fin">
+                              <input type="date" name="a"  [(ngModel)]="fin" (change)="chCountry()">
                           </label>
                   </section>
                   <section class="col col-1.5">
@@ -121,7 +110,7 @@
                     </section>
                     <section class="col col-2">
                             <label class="select">
-                                <select name="pays" [(ngModel)]="selectedPays">
+                                <select name="pays" [(ngModel)]="selectedPays" (change)="chCountry()">
                                     <option *ngFor="let p of listPays" [ngValue]="p">{{p.libPaysAr}}</option>
                                 </select>
                                 <i></i>
@@ -171,7 +160,7 @@
 
 </div> 
 
-<!-- printing tempalte -->
+<!-- printing tempalte pays + deb + fin-->
 <div id="print-section" style="display: none;">
         <p>الجمهورية التونسية
                 <br/> {{this.currentDep.libDepAr}}</p>
@@ -195,9 +184,8 @@
                   <th>مصاريف المأمورية</th>
                   <th>مصاريف النقل</th>
                   <th>الوضعية</th>
-                  <th>تاريخ التقرير</th>
                 </tr>
-               <tr *ngFor="let a of missionsres">
+               <tr *ngFor="let a of missionsres ">
                     <td>{{a.mission.numMission}}</td>
                     <td>{{a.missionaire.matricule}}</td>
                     <td>{{a.missionaire.nomAr + "  "+ a.missionaire.prenomAr}}</td>
@@ -205,15 +193,85 @@
                     <td>{{a.mission.dateArriveP}}</td>
                     <td>{{convDur(a.mission.dateDepartP,a.mission.dateArriveP)}}</td>
                     <td>{{a.mission.objectifMissionAr}}</td>
-                    <td></td>
-                    <td></td>
+                    <td ><span *ngFor="let f of a.avoirfrais">{{f.typeFrai.codeTypefr=='0808' && f!=undefined ?f.valeurPrevue :return}}</span></td>
+                    <td><span *ngFor="let d of a.avoirfrais">{{d.typeFrai.codeTypefr=='0606' && d!=undefined ?d.valeurPrevue :return}}</span></td>
                     <td>{{affichageEtat(a.etat)}}</td>
-                    <td></td>
 
                </tr>
+               <tfoot>
+                   <tr>
+                       <td colspan="11">
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            مجموع المهمات &nbsp;&nbsp;&nbsp; :&nbsp;  {{missionsres.length}} 
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            مجموع عدد الأيام &nbsp;&nbsp; :&nbsp; {{totaljours}}
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            مجموع مصاريف المأموريات &nbsp;:&nbsp; {{totalmiss}} د
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            مجموع مصاريف النقل &nbsp;&nbsp;:&nbsp;&nbsp; {{totaltransport}} د
+                       </td>
+                   </tr>
+               </tfoot>
             </table>
 
 </div>
+<!-- end template pays + deb + fin-->
+<!-- begin template deb + fin-->
+<div id="dates-only" style="display: none;">
+    <p>الجمهورية التونسية
+        <br/> {{this.currentDep.libDepAr}}</p>
+        <h1 style="text-align:center;">
+        المأموريات المنجزة من قبل الهيكل :  
+        </h1>
+        <h3 style="text-align:center;">
+         من {{this.deb}} إلى {{this.fin}}
+        </h3>    
+   <table>
+        <tr>
+          <th>المأمورية</th>
+          <th>بطاقة التعريف</th>
+          <th>الاسم واللقب </th>
+          <th>موضوع المأمورية</th>
+          <th>تاريخ الذهاب</th>
+          <th>تاريخ الإياب</th>
+          <th>المكان</th>
+          <th>المدة</th>
+          <th>مصاريف المأمورية</th>
+          <th>مصاريف النقل</th>
+          <th>الوضعية</th>
+        </tr>
+       <tr *ngFor="let a of mismissionres2 ">
+            <td>{{a.mission.numMission}}</td>
+            <td>{{a.missionaire.cin}}</td>
+            <td>{{a.missionaire.nomAr + "  "+ a.missionaire.prenomAr}}</td>
+            <td>{{a.mission.objectifMissionAr}}</td>
+            <td>{{a.mission.dateDepartP}}</td>
+            <td>{{a.mission.dateArriveP}}</td>
+            <td>{{destinations}}</td>
+            <td>{{convDur(a.mission.dateDepartP,a.mission.dateArriveP)}}</td>
+            <td ><span *ngFor="let f of a.avoirfrais">{{f.typeFrai.codeTypefr=='0808' && f!=undefined ?f.valeurPrevue :return}}</span></td>
+            <td><span *ngFor="let d of a.avoirfrais">{{d.typeFrai.codeTypefr=='0606' && d!=undefined ?d.valeurPrevue :return}}</span></td>
+            <td>{{affichageEtat(a.etat)}}</td>
+       </tr>
+       <tfoot>
+           <tr>
+               <td colspan="11">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    مجموع المهمات &nbsp;&nbsp;&nbsp; :&nbsp;  {{mismissionres2.length}} 
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    مجموع عدد الأيام &nbsp;&nbsp; :&nbsp; {{totaljours}}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    مجموع مصاريف المأموريات &nbsp;:&nbsp; {{totalmiss}} د
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    مجموع مصاريف النقل &nbsp;&nbsp;:&nbsp;&nbsp; {{totaltransport}} د
+               </td>
+           </tr>
+       </tfoot>
+    </table>
+</div>
+<!-- end template deb + fin -->
+
+
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			
 <script src="../../assets/plugins/jquery/jquery.min.js"></script>

@@ -21,7 +21,10 @@ export class ReportService{
         const url = `${this.projetUrl}/getMissionsBTDAC/${p.idpays}/${deb}/${fin}/${dep}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
-    
+    getMissionsBTDA(deb:Date,fin:Date,dep:string):Observable<OrdreMission[]>{
+        const url = `${this.projetUrl}/getMissionsBTDA/${deb}/${fin}/${dep}`;
+        return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }
     private handleError(error: any): Promise<any> {
         console.error('Une erreur a eu lieu dans le service reporting', error);
         return Promise.reject(error.message || error);

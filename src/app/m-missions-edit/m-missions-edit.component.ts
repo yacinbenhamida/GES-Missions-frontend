@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import { Concerne } from '../model/concerne';
 import { ConcerneServices } from '../model/concerne.service';
 import { AvoirFraisService } from '../model/avoirfrais.service';
+import { BudgetService } from '../model/Budget.service';
 @Component({
   selector: 'app-m-missions-edit',
   templateUrl: './m-missions-edit.component.html',
@@ -29,7 +30,7 @@ export class MMissionsEditComponent implements OnInit {
   modaledit:boolean = false;
   part1:boolean = true;
   part2:boolean = false;
-
+  year:number = (new Date()).getFullYear();
   missionairesAff:Missionaire[] = []
   tabmissions:Mission[] = [];
   tabOrdresMiss:OrdreMission[] = [];
@@ -46,10 +47,14 @@ export class MMissionsEditComponent implements OnInit {
   missionconcernee:Mission = new Mission();
   ordremiss:OrdreMission = new OrdreMission();
   editedordre:OrdreMission = new OrdreMission();
-  
+  // valeurs budgets obtenus, promis
+  valbudgobtmissions:number = 0;
+  valbudgobttransport:number = 0;
+  valbudgpromMiss:number = 0;
+  valbudgpromTrans:number = 0;
   constructor(public missionsservice:MissionService, public missionaireService:MissionaireServices,
     public ordMService:OrdreMissionService,public thServ:ThemeService,public mocserv:MotCleService,
-  public consServ:ConcerneServices,public fraisServ:AvoirFraisService) {
+  public consServ:ConcerneServices,public fraisServ:AvoirFraisService,public budgserv:BudgetService) {
       missionsservice.getAllMissionsOfDep(this.dep.codeDep).subscribe(d=>this.tabmissions=d);
       mocserv.getAllMC().subscribe(d=>this.motcles=d);
      }
@@ -77,10 +82,15 @@ export class MMissionsEditComponent implements OnInit {
   numordConv(n:number):string{
     if(n<10) return "0"+n;
   }
+  convEtat(e:string):string{
+    switch(e){
+      case "V":return "مصادق عليه من قبل الآمر بالصرف";
+      case "E": return "في إنتضار المصادقة";
+      case "S": return "مصادق عليه من قبل سلطة الإشراف";
+    }
+  }
   disp(){
     let canadd:boolean = true;
-
-
     this.ordre.mission = this.missionmodif;
     this.ordre.dateDepP = this.missionmodif.dateDepartP;
     this.ordre.dateArrP = this.missionmodif.dateArriveP;
@@ -257,11 +267,18 @@ calcduree(d1:Date,d2:Date){
   }
   print(u:OrdreMission){
     let printContents, popupWin;
-    //printContents = document.getElementById('print-section').innerHTML;
     let destination:string = "";
     let moytransport: string ="";
+    this.budgserv.getSommeBudgMissionObtenus(u.mission.departement.codeDep,this.year)
+    .subscribe(val=>this.valbudgobtmissions=val,error=>this.valbudgobtmissions=0);
+    this.budgserv.getSommeBudgTransportObtenus(u.mission.departement.codeDep,this.year)
+    .subscribe(val=>this.valbudgobttransport=val,error=>this.valbudgobttransport=0);
+    this.fraisServ.getFraisMissionPromis(u.mission.departement.codeDep,this.year)
+    .subscribe(val=>this.valbudgpromMiss=val,error=>this.valbudgpromMiss=0);
+    this.fraisServ.getFraisTransportPromis(u.mission.departement.codeDep,this.year)
+    .subscribe(val=>this.valbudgpromTrans=val,error=>this.valbudgpromTrans=0);
     this.consServ.getAllConcerneOfORDRE(u.idOrdre).subscribe(a=>{
-      //u.concerne = a;
+      u.concerne = a;
       for (let index = 0; index < a.length; index++) {
         if(a.length==1){
           destination += a[index].pays.libPaysAr 
@@ -359,6 +376,7 @@ calcduree(d1:Date,d2:Date){
         }
 
         popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+        //printContents = document.getElementById('print-section').innerHTML;
         popupWin.document.open();
         popupWin.document.write(`
           <html dir="rtl" lang="ar" >
@@ -390,7 +408,7 @@ calcduree(d1:Date,d2:Date){
         </p>
         <p>
         الرتبة : ${u.missionaire.grade.libGradeAr} &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp; 
-        الصنف أو السلك :  ${u.missionaire.classe.libClasseAr} &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp; 
+        الصنف أو السلك :  ${u.missionaire.classe.libClasseAr} &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;
         مستوى التأجير : ${u.missionaire.groupe.taux.valTaux} 
         </p>
         <p>
@@ -436,16 +454,16 @@ calcduree(d1:Date,d2:Date){
         </tr>
         <tr>
           <td> مصاريف المأمورية</td>
-          <td> </td>
-          <td> </td>
-          <td> </td>
+          <td>${this.valbudgobtmissions} </td>
+          <td> ${this.valbudgpromMiss!=undefined?this.valbudgpromMiss:0 }</td>
+          <td>${this.valbudgobtmissions - this.valbudgpromMiss} </td>
           <td> ${fraismiss}</td>
         </tr>
         <tr>
           <td>مصاريف النقل</td>
-          <td> </td>
-          <td> </td>
-          <td> </td>
+          <td>${this.valbudgobttransport} </td>
+          <td>${this.valbudgpromTrans} </td>
+          <td>${this.valbudgobttransport - this.valbudgpromTrans}  </td>
           <td>${fraistransp} </td>
         </tr>
         <tr>
@@ -495,7 +513,9 @@ calcduree(d1:Date,d2:Date){
 
       })
       
-    });
-   
+    }); 
+  }
+  printOrdre(u:OrdreMission){
+    
   }
 }

@@ -104,8 +104,10 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
     this.concerneserv.getAllConcerneOfORDRE(this.ordremission.idOrdre).subscribe(d=>{
       if(d!=null || d!=undefined) this.tabconcerne=d;
       else this.tabconcerne = [];
-      });
-      this.avoirFraisServ.getAllFraisDiversOfOrdre(this.ordremission.idOrdre).subscribe(t=>this.fraisDiversAdded=t);
+      },error=>this.tabconcerne = []);
+      this.avoirFraisServ.getAllFraisDiversOfOrdre(this.ordremission.idOrdre).subscribe(t=>{
+        this.fraisDiversAdded=t;
+      },error=>this.fraisDiversAdded = []);
     }
   ngAfterViewInit(){
     
@@ -473,10 +475,6 @@ saveFraisDiv(){
      else if(x=="P") return "الحساب الخاص";
      else if(x=="A") return "مشروع";
    }
-
-  
- 
-
    verifPerso(){
      if(this.addedfraidiver.support.codeSupport == "P"){
       this.addedfraidiver.valeurPrevue = 0;

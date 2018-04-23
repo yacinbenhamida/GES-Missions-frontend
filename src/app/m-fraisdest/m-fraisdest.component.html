@@ -45,15 +45,15 @@
     <fieldset>      
       <div class="row">
           <table class=" table table-bordered table-striped"  *ngIf="add == true">
-              <thead>
+              <thead class="text-center">
                       <tr>
                           <th style="visibility: hidden;"></th>
                           <th style="visibility: hidden;"></th>                      
                           <th>البلد</th>
                           <th>المدينة</th>
                           <th>وسيلة النقل</th>
-                          <th  style="width: 50px;">مبلغ المأمورية</th>
-                          <th style="width: 50px;">المدة</th>    
+                          <th style="width: 50px;">المدة</th> 
+                          <th  style="width: 50px;">مبلغ المأمورية</th>   
                           <th style="width: 70px;">المصاريف</th>                                                            
                     </tr>
               </thead>
@@ -65,8 +65,8 @@
                       <td>{{x.pays.libPaysAr}}</td>
                       <td>{{x.ville}}</td>
                       <td>{{x.moyTransport}}</td>
-                      <td>{{x.fraisMission}}</td>
                       <td>{{x.nbJoursP}} </td>
+                      <td>{{x.fraisMission}}</td>
                       <td><button (click)="gotodepenses(x)" type="button" class="btn-u btn-u-brown"> مصاريف المأمورية <i class="fa fa-dollar"></i></button></td>
                   </tr>
                   

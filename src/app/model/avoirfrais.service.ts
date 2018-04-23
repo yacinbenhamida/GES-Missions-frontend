@@ -16,10 +16,18 @@ export class AvoirFraisService{
         let body = res.json();
         return body || [];
     }
+
+    getFraisMissionPromis(codeDep:string,year:number):Observable<number>{
+        const url = `${this.frUrl}/getTotFraisMissionPromis/${codeDep}/${year}`;
+        return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }
+    getFraisTransportPromis(codeDep:string,year:number):Observable<number>{
+        const url = `${this.frUrl}/getTotFraisTransportPromis/${codeDep}/${year}`;
+        return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }
     getAllFrais():Observable<AvoirFrais[]>{
         return this.http.get(this.frUrl+"/allFrais").map(this.extractData).catch(this.handleError);
     }
-    // to do 
     getAllFraisOfOrdre(id:number):Observable<AvoirFrais[]>{
         const url = `${this.frUrl}/allFraisoford/${id}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);

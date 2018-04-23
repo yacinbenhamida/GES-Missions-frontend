@@ -233,7 +233,7 @@
                                                 <div class="col col-1.5"><p class="arabparagraph">مكان المأمورية</p></div>
                                                 <div class="col-md-3">
                                                     <label class="input">
-                                                          <input type="text" name="locatmiss"  disabled>
+                                                          <input type="text" class="arabparagraph" name="locatmiss" [value]="destinations" disabled>
                                                     </label>
                                                 </div>
                                                 <div class="col col-1.5"><p class="arabparagraph">مدتها</p></div>
@@ -317,16 +317,16 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td>مصاريف المأمورية</td>
-                                                                        <td></td>
-                                                                        <td></td>
-                                                                        <td></td>
+                                                                        <td>{{valfraismissobt}}</td>
+                                                                        <td>{{valfraismisspromis}}</td>
+                                                                        <td>{{valfraismissobt - valfraismisspromis}}</td>
                                                                         <td>{{valfraisM}}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>مصاريف النقل</td>
-                                                                        <td></td>
-                                                                        <td></td>
-                                                                        <td></td>
+                                                                        <td>{{valfraistranspobt}}</td>
+                                                                        <td>{{valfraistransppromis}}</td>
+                                                                        <td>{{valfraistranspobt - valfraistransppromis}}</td>
                                                                         <td>{{valfraisT}}</td>
                                                                     </tr>
                                                                 </table>

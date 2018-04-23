@@ -11,6 +11,7 @@ import { AvoirFrais } from '../model/avoirfrais';
 import { AvoirFraisService } from '../model/avoirfrais.service';
 import { error } from 'util';
 import { Utilisateur } from '../model/utilisateur';
+import { BudgetService } from '../model/Budget.service';
 @Component({
   selector: 'app-m-confirm-missions',
   templateUrl: './m-confirm-missions.component.html',
@@ -44,8 +45,16 @@ export class MConfirmMissionsComponent implements OnInit,AfterViewInit {
   valfraisT:number=0;
   valffraisTimbre:number=0;
   valfraisDivers:number = 0;
+  d:number = (new Date()).getFullYear();
+  // frais departement
+  valfraistranspobt:number = 0;
+  valfraismissobt:number = 0;
+  valfraistransppromis:number = 0;
+  valfraismisspromis:number = 0;
+  destinations:string = ' ';
   constructor(public missionsService:MissionService,public ordserv:OrdreMissionService,
-    public concerneService:ConcerneServices,public concserv:ConcerneServices,public avserv:AvoirFraisService) {
+    public concerneService:ConcerneServices,public concserv:ConcerneServices,public avserv:AvoirFraisService,
+  public budgserv:BudgetService) {
     this.user = JSON.parse(localStorage.getItem('Array'));
     missionsService.getAllMissionsOfDep(this.dep.codeDep).subscribe(d=>this.tabmissions=d);
     if(this.user == "O"){
@@ -53,6 +62,7 @@ export class MConfirmMissionsComponent implements OnInit,AfterViewInit {
     }else if(this.user=="OM"){
       ordserv.getOrdresValides(this.dep.codeDep).subscribe(t=>this.tabOrdresMiss=t);
       }
+     
     }
 
   ngOnInit() {
@@ -93,10 +103,24 @@ export class MConfirmMissionsComponent implements OnInit,AfterViewInit {
       else if(x=="M") return "تحمل مشترك بين الهيكل المضيف والمشروع";
   }
   loadDetails(){
+    this.destinations=' ';
     this.concerneService.getAllConcerneOfORDRE(this.choosenord.idOrdre).subscribe(t=>
       {
         this.choosenconcerne = t;
+        this.choosenconcerne.forEach(element => {
+          if(this.choosenconcerne.length>1){
+            this.destinations += element.pays.libPaysAr+" - ";
+          } else  this.destinations = element.pays.libPaysAr;
+        });
       });
+      this.budgserv.getSommeBudgMissionObtenus(this.choosenord.mission.departement.codeDep,this.d)
+     .subscribe(val=>this.valfraismissobt=val,error=>this.valfraismissobt =0);
+     this.budgserv.getSommeBudgTransportObtenus(this.choosenord.mission.departement.codeDep,this.d)
+     .subscribe(val=>this.valfraistranspobt=val,error=>this.valfraistranspobt =0);
+     this.avserv.getFraisMissionPromis(this.choosenord.mission.departement.codeDep,this.d)
+     .subscribe(res=>this.valfraismisspromis = res,error=>this.valfraismisspromis =0);
+     this.avserv.getFraisTransportPromis(this.choosenord.mission.departement.codeDep,this.d)
+     .subscribe(res=>this.valfraistransppromis = res,error=>this.valfraistransppromis =0);
       this.avserv.getAllFraisOfOrdre(this.choosenord.idOrdre).subscribe(t=>{
         this.fraisaff = t;
         if(this.user=="OM"){

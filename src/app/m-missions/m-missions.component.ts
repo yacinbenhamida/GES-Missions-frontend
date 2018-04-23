@@ -47,7 +47,7 @@ export class MMissionsComponent implements OnInit {
   missionaire:Missionaire = new Missionaire();
   part1:boolean = true; // add mission
   part2:boolean = false; // add direction
-
+  missionins:Mission = new Mission();
   // ordre mission pour depenses part 2
   ordremiss:OrdreMission = new OrdreMission();
   missionconcerne:Mission = new Mission();
@@ -126,16 +126,16 @@ export class MMissionsComponent implements OnInit {
         this.ordre.mission.numMission = Number(this.codeMissPartial);
         this.ordre.avance = (this.ordre.missionaire.groupe.taux.valTaux) * Number(this.calcduree(this.ordre.dateDepP,this.ordre.dateArrP));
         this.ordm.insertOrdMission(this.ordre).then(x=>{
-          x.dateArrP = this.ordre.dateArrP;
-          x.dateDepP = this.ordre.dateDepP;
-          this.missionaires.push(x);      
-          const index:number = this.missionairesAff.indexOf(this.ordre.missionaire);
+          this.ordm.getOrdMission(x.idOrdre,this.mission.numMission).subscribe(a=>{
+            this.missionaires.push(a);
+          }); 
+          let index:number = this.missionairesAff.indexOf(this.ordre.missionaire);
               if(index!==-1){
                 this.n='';
                 this.missionairesAff.splice(index,1);
-                this.ordre = new OrdreMission();
               }
         });
+        this.ordre = new OrdreMission();
         this.toggleModal();
       }
       else {
@@ -146,9 +146,9 @@ export class MMissionsComponent implements OnInit {
             this.ordre.mission.numMission = Number(this.codeMissPartial);
             this.ordre.avance = (this.ordre.missionaire.groupe.taux.valTaux) * Number(this.calcduree(this.ordre.dateDepP,this.ordre.dateArrP));
             this.ordm.insertOrdMission(this.ordre).then(x=>{
-              x.dateArrP = this.ordre.dateArrP;
-              x.dateDepP = this.ordre.dateDepP;
-              this.missionaires.push(x);  
+              this.ordm.getOrdMission(x.idOrdre,this.mission.numMission).subscribe(a=>{
+                this.missionaires.push(a);
+              });
               const index:number = this.missionairesAff.indexOf(this.ordre.missionaire);
               if(index!==-1){
                 this.n='';
@@ -156,7 +156,7 @@ export class MMissionsComponent implements OnInit {
                 this.ordre = new OrdreMission();
               }
             });
-
+            this.ordre = new OrdreMission();
             this.toggleModal();
           }
         )
@@ -170,7 +170,7 @@ export class MMissionsComponent implements OnInit {
   onSubmit(f:NgForm){
     this.mission.departement = this.departement;
     this.mission.numMission = Number(this.codeMissPartial);
-    this.mserv.insertMission(this.mission).then(()=>null);
+    this.mserv.insertMission(this.mission).subscribe(a=>this.mission.idMission = a.idMission,error=>alert("error."));
     alert("تم إضافة المأمورية");
     this.miserv.getAllMissionaireNHAM(this.mission.dateDepartP,this.mission.dateArriveP,this.departement.codeDep).subscribe(d=>{
       this.missionairesAff = d;     

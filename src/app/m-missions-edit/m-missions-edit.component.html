@@ -192,7 +192,7 @@
                         </div>
                         <br/>
                     <div class="row">
-                        <table class=" table table-bordered table-striped" >
+                        <table class=" table table-bordered table-striped text-center" >
                             <thead>
                                     <tr>
                                         <th style="visibility: hidden;"></th>
@@ -210,13 +210,17 @@
                                             تاريخ الذهاب 
                                         </th>    
                                      <th>تاريخ الإياب</th>
-                                     <th>التسبقة</th>                            
+                                     <th>التسبقة</th>
+                                     <th>الوضعية</th>                            
                                       <th style="width: 10px;"></th>                         
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let u of tabOrdresMiss | paginate : { itemsPerPage:5, currentPage:p}">
-                                    <td  class="text-center"><button *ngIf="u.etat == 'V'" type="button" class="btn-u btn-u-sea" (click)="print(u)"><i class="fa fa-print"></i></button></td>
+                                    <td  class="text-center">
+                                        <button *ngIf="u.etat == 'V'" type="button" class="btn-u btn-u-sea" (click)="print(u)"><i class="fa fa-print"></i></button>
+                                        <button *ngIf="u.etat == 'S'" type="button" class="btn-u" (click)="printOrdre(u)"><i class="fa fa-print"></i></button>
+                                    </td>
                                     <td class="text-center"><button type="button" class="btn-u btn-u-red" (click)="deleteOrd(u)"><i class="fa fa-times"></i></button></td>
                                     <td class="text-center"><button type="button" class="btn-u btn-u-orange" (click)="editord(u)"><i class="fa fa-edit"></i></button></td>  
                                     <td >{{u.missionaire.numOrdre > 0 ? u.numOrdre : '0' + u.numOrdre }}</td>
@@ -226,20 +230,12 @@
                                     <td>{{u.dateDepP | date: 'shortDate':'fr'}}</td>
                                     <td>{{u.dateArrP | date: 'shortDate':'fr'}}</td>
                                     <td>{{u.avance}}</td>
+                                    <td>{{convEtat(u.etat)}}</td>
                                     <td style="width: 10px;"><button class="btn-u btn-u-xs btn-u-dark arabparagraph" (click)="gotodepenses(u)">الوجهة والمصاريف</button></td>
                                 </tr>
                             </tbody>
-                            <tfoot>
-                                <td colspan="5"></td>
-                                <td class="arabparagraph">المجموع</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                              <td></td>
-                              </tfoot>
                             <tr>
-                                <td colspan="11" class="text-center">
+                                <td colspan="12" class="text-center">
                                <span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls></span>
                               </td>
                             </tr>
@@ -368,6 +364,124 @@
         </div>
         <app-m-fraisdest [id]="1" [missionaire]="missionaire" [missionconcernee]="missionconcerne" [ordremission]="ordremiss"></app-m-fraisdest>
 </div>
+
+<!--
+<div id="print-section" style="display: none;">
+
+    <h1 style="text-align:center;">
+        بطاقة تجميد وطلب تسبقة  <br/> بعنوان مأمورية بالخارج
+        </h1>
+        <p>
+        أمر بالمأمورية عدد : &emsp; {{u.numOrdre > 10 ? u.numOrdre : '0' + u.numOrdre }}  / {{u.mission.numMission}} / {{u.mission.departement.codeDep}}
+        </p>
+        <p>
+          المعرف الوحيد :&emsp;  {{u.missionaire.matricule}}
+        </p>
+        <p>
+        الأسم واللقب : &emsp; {{u.missionaire.nomAr}}  {{u.missionaire.prenomAr}}
+        </p>
+        <p>
+        الرتبة : {{u.missionaire.grade.libGradeAr}} &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp; 
+        الصنف أو السلك :  {{u.missionaire.classe.libClasseAr}} &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp; 
+        مستوى التأجير : {{u.missionaire.groupe.taux.valTaux}} 
+        </p>
+        <p>
+        الخطة الوظيفية : &emsp; {{u.missionaire.fonction.libFctAr}}
+        </p>
+        <p>
+        مكان المأمورية : &emsp; {{destination}}
+        </p>
+        <p>
+        مدتها : {{this.calcduree(u.dateDepP,u.dateArrP)}} أيام &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;  
+        من : {{u.dateDepP}} &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; 
+        إلى : {{u.dateArrP}} 
+        </p>
+        <p>
+        موضوع المأمورية : &emsp; {{u.mission.objectifMissionAr  !=null ? u.mission.objectifMissionAr : ''}}
+        </p>
+        <p>
+        تحمل مصاريف المأمورية على : &emsp; {{supfraismiss  !=null ? supfraismiss : ''}}
+        </p>
+        <p>
+        تحمل مصاريف السكن على : &emsp; {{supfraislogement  !=null ? supfraislogement : ''}}
+        </p>
+        <p>
+        تحمل مصاريف المشاركة على : &emsp; {{supfraispartic !=null ? supfraispartic : ''}}
+        </p>
+        <p>
+        تحمل مصاريف النقل على : &emsp; {{supfraistransport!=null ? supfraistransport : ''}}
+        </p>
+        <p>
+        وسيلة النقل :  &emsp;  {{moytransport!=null ? moytransport : ''}}
+        <p>
+        <p> 
+        مصاريف النقل :  &emsp; {{fraistransp}} دينار 
+        </p>
+        &emsp;
+        <table>
+        <tr>
+          <th> الاعتمادات <br/> (د)</th>
+          <th> الاعتمادات المخصصة<br/> (د)</th>
+          <th> الاعتمادات المجمدة<br/> (د)</th>
+          <th> الاعتمادات المتبقية  <br/> (د)</th>
+          <th> تقدير مصاريف المأمورية <br/> (د)</th>
+        </tr>
+        <tr>
+          <td> مصاريف المأمورية</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> {{fraismiss}}</td>
+        </tr>
+        <tr>
+          <td>مصاريف النقل</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td>{{fraistransp}}</td>
+        </tr>
+        <tr>
+
+        <td colspan='3' style='visibility:hidden;'> </td>
+        <td style='border:0px;'> المجموع</td>
+        <th>{{fraistransp + fraismiss}} </th>
+        </tr>
+        </table>
+        <h3>بيان حول مصاريف المأمورية بإستثناء مصاريف النقل : </h3>
+        &emsp;
+        <table>
+          <tr>
+            <th> المدة</th>
+            <th> المنحة اليومية <br/> (د) </th>
+            <th> المنحة الجملية <br/> للمأمورية</th>
+            <th> منحة السكن  <br/> اليومية</th>
+            <th> المصاريف الجملية <br/> للسكن</th>
+            <th> الطابع الجبائي <br/> (د)</th>
+            <th> مصاريف أخرى <br/> (د)</th>
+            <th> مبلغ التسبقة  <br/> (د)</th>
+          </tr>
+          <tr>
+            <td>{{this.calcduree(u.dateDepP,u.dateArrP)}} </td>
+            <td>{{u.missionaire.groupe.taux.valTaux}}</td>
+            <td>{{this.calcduree(u.dateDepP,u.dateArrP) * u.missionaire.groupe.taux.valTaux}}</td>
+            <td>{{fraislogement}}</td>
+            <td>{{fraislogementtot}}</td>
+            <td>{{timbre}}</td>
+            <td>{{fraisdivers}}</td>
+            <td>{{u.avance}}</td>
+          </tr>
+        </table>
+        <p> ملاحظات :  </p>
+        <p> حرر ب &emsp;&emsp;&emsp;&emsp; في  </p> 
+        <br/>
+        <p>&emsp;&emsp;&emsp;&emsp; آمر بالصرف 
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        سلطة الإشراف
+        </p>
+</div>
+-->
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			
 <script src="../../assets/plugins/jquery/jquery.min.js"></script>

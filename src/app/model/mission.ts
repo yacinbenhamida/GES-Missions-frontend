@@ -16,5 +16,7 @@ export class Mission{
         this.departement = new Departement();
         this.ordresMission = [];
         this.theme = new Theme();
+        this.dateArriveP = new Date();
+        this.dateDepartP = new Date();
     }
 }

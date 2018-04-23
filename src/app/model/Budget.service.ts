@@ -89,6 +89,14 @@ export class BudgetService{
 
     // departements budgets 
 
+    getSommeBudgMissionObtenus(codedep:string,year:number):Observable<number>{
+        const url = `${this.projUrl}/getSommeBudgetsMission/${codedep}/${year}`;
+        return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }
+    getSommeBudgTransportObtenus(codedep:string,year:number):Observable<number>{
+        const url = `${this.projUrl}/getSommeBudgetsTransport/${codedep}/${year}`;
+        return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }
     getAllBudgetsOfDep():Observable<AvoirBudgDep[]>{
         return this.http.get(this.projUrl+"/allDepBudgets").map(this.extractData).catch(this.handleError);
     }
