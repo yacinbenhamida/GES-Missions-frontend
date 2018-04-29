@@ -38,10 +38,17 @@ export class ThGroupesComponent implements OnInit {
     this.add = !this.add;
   }
   onSubmit(f:NgForm){
-
+    this.tauxgrservice.insertGroupe(this.groupeadd).then(x=>{
+      alert("تمة الاضافة");
+      this.grps.push(x);
+      f.reset();
+    });
   }
   validate(){
-    this.tauxgrservice.insertGroupe(this.groupeadd).then(x=>alert("تمة الاضافة"));
+    this.tauxgrservice.insertTaux(this.tauxtoadd).then(x=>{
+      alert("تمة الاضافة");
+      this.taux.push(x);
+    });
   }
   showInfosGrp(x:Groupe){
     this.modal = true;
@@ -62,5 +69,11 @@ export class ThGroupesComponent implements OnInit {
     if(confirm("هل انتا متأكد من التخلي عن هذه المجموعة ؟")){
       this.tauxgrservice.deleteGroupe(g).then(x=>alert("تم"),error=>alert("لا يمكن الغاء هذه المجموعة"));
     }
+  }
+  exitEdit(){
+    this.tauxgrservice.getAllGroupes().subscribe(a=>{
+      this.grps=a;
+      this.modal = false;
+    });
   }
 }

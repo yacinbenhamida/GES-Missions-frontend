@@ -32,7 +32,7 @@ export class MMissionAffectComponent implements OnInit {
     public mserv:MissionaireServices,public ordm:OrdreMissionService,public missionService:MissionService) {
     this.route.params.subscribe((params:Params)=>{
       this.nummiss = params['id'];
-      missionService.findMissionByNum(params['id']).subscribe(m=>this.mission=m);
+     // missionService.findMissionByNum(params['id']).subscribe(m=>this.mission=m);
     });
     ordserv.getAllOrdMissionsOfMiss(this.nummiss).subscribe(d=>this.missionaires=d);
    }

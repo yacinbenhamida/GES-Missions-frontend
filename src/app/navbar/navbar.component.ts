@@ -3,6 +3,7 @@ import { NavbarService } from './navbar.service';
 import { AppService } from '../app.service';
 import {RouterModule, Router} from '@angular/router';
 import { AppComponent } from '../app.component';
+import { Departement } from '../model/departement';
 @Component({
   moduleId: module.id,
   selector: 'sd-navbar',
@@ -12,6 +13,7 @@ import { AppComponent } from '../app.component';
 export class NavbarComponent implements OnInit,AfterViewInit{
   user:string;
   username:string;
+  dep:Departement = JSON.parse(localStorage.getItem('org'));
   constructor(public nav: NavbarService, public route:Router) {
     this.ngOnInit();
   }

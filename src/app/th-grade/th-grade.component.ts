@@ -14,6 +14,8 @@ export class ThGradeComponent implements OnInit {
   add:boolean;
   list:boolean;
   searchString:string;
+  modal:boolean = false;
+  grade:Grade = new Grade();
   constructor(public gradServ:GradeService,public router:Router) { }
 
   ngOnInit() {
@@ -23,8 +25,8 @@ export class ThGradeComponent implements OnInit {
     this.gradServ.getAllGrades().subscribe(data =>this.grds = data);
   }
   onSubmit(f:NgForm){
-    this.gradServ.insertGrade(this.grd).then(()=>null);
-    this.grds.push(this.grd);
+    this.gradServ.insertGrade(this.grd).then(x=>this.grds.push(x));
+    f.reset();
   }
   deleteGrade(g:Grade){
     if(confirm("هل انت متأكد من إزالة "+g.libGradeAr+" ?")){
@@ -33,12 +35,29 @@ export class ThGradeComponent implements OnInit {
       }
   }
   showInfosGrade(g:Grade){
-      this.router.navigate(['th-grade/editGrade',g.idgrade]);
-    }
+      this.toggleModal();
+      this.grade = g;
+  }
   toggleGadd(){
     this.add = !this.add;
   }
   toggleList(){
     this.list = !this.list;
+  }
+  toggleModal(){
+    this.modal = !this.modal;
+  }
+  editGrade(){
+    this.gradServ.updateGrade(this.grade).then(x=>null);
+    this.toggleModal();
+    alert("تم");
+  }
+  exitEdit(){
+    this.gradServ.getAllGrades().subscribe(
+      t=>{
+        this.grds = t;
+        this.toggleModal();
+      }
+    )
   }
 } 

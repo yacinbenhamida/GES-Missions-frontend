@@ -23,8 +23,8 @@ export class MissionService{
         const url = `${this.missUrl}/findMission/${id}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
-    findMissionByNum(num:number):Observable<Mission>{
-        const url = `${this.missUrl}/findMissionByNum/${num}`;
+    findMissionByNum(num:number,codeDep:string):Observable<Mission>{
+        const url = `${this.missUrl}/findMissionByNum/${num}/${codeDep}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
     insertMission(d:Mission):Observable<Mission>{

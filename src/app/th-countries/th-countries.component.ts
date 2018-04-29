@@ -18,7 +18,9 @@ export class ThCountriesComponent implements OnInit {
   addC:boolean;
   listC:boolean;
   searchString:string;
-  constructor(public paysServ:PaysService,public zoneserv:ZonePaysService,public router:Router) { }
+  modal:boolean = false;
+  pays2:Pays = new Pays();
+  constructor(public paysServ:PaysService,public zoneserv:ZonePaysService) { }
 
   ngOnInit() {
     this.zoneserv.getAllZones().subscribe(data=>this.zones =data);
@@ -26,6 +28,9 @@ export class ThCountriesComponent implements OnInit {
     this.paysServ.getAllPays().subscribe(data=>this.countries = data);
     this.addC = true;
     this.listC = true;
+    this.zones= null;
+    this.pays.langue = null;
+    this.pays.zonepays = null;
   }
   deleteCountry(country:Pays){
     if(confirm("هل انت متأكد من إزالة "+country.libPaysAr+" ?")){
@@ -34,16 +39,32 @@ export class ThCountriesComponent implements OnInit {
       }
   }
   showInfosCountry(country:Pays){
-    this.router.navigate(['th-countries/editCountry',country.idpays]);
+    this.toggleModal();
+    this.pays2 = country;
+    this.pays2.zonepays = country.zonepays;
   }
   onSubmit(f:NgForm){
-    this.paysServ.insertPays(this.pays).then(()=>null);
-    this.countries.push(this.pays);
+    this.paysServ.insertPays(this.pays).then(a=>this.countries.push(a));
   }
   toggleAddC(){
     this.addC = ! this.addC;
   }
   toggleListC(){
     this.listC = ! this.listC;
+  }
+  toggleModal(){
+    this.modal = !this.modal
+  }
+  editPays(){
+    this.paysServ.updatePays(this.pays2).then(x=>null);
+    this.toggleModal();
+  }
+  exitEdit(){
+    this.paysServ.getAllPays().subscribe(
+      a=>{
+        this.countries = a;
+        this.toggleModal();
+      }
+    )
   }
 }

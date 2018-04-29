@@ -137,15 +137,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let u of budgets | paginate : { itemsPerPage:5, currentPage:p}">
-                                <td>{{u.refBudgMission}}</td>
+                            <tr *ngFor="let u of budgets| paginate : { itemsPerPage:5, currentPage:p}">
+                                <td >{{u.refBudgMission}}</td>
                                 <td>{{u.valeurBudgMission}}</td>
                                 <td>{{u.refBudgTransport}}</td>
                                 <td>{{u.valeurBudgTransport}}</td>
                                 <td [innerHTML]="convertEtat(u.etat)"></td>
                                 <td>{{u.dateMaj}}</td>
-                                <td class="text-center"><button [ngClass]="{'btn-u btn-u-gray': u.etat=='O','btn-u btn-u-blue' : u.etat=='N'}" [disabled]="verifEtatN(u)" (click)="saveEdition(u)"><i class="fa fa-save"></i></button></td>
-                                <td  class="text-center"><button [ngClass]="{'btn-u btn-u-gray': u.etat=='O','btn-u btn-u-red' : u.etat=='N'}" [disabled]="verifEtatN(u)" (click)="delEdition(u)"><i class="fa fa-ban"></i></button></td>
+                                <td class="text-center"><button *ngIf="u.etat!='S'" [ngClass]="{'btn-u btn-u-gray': u.etat=='O','btn-u btn-u-blue' : u.etat=='N'}" [disabled]="verifEtatN(u)" (click)="saveEdition(u)"><i class="fa fa-save"></i></button></td>
+                                <td  class="text-center"><button *ngIf="u.etat!='S'"  [ngClass]="{'btn-u btn-u-gray': u.etat=='O','btn-u btn-u-red' : u.etat=='N'}" [disabled]="verifEtatN(u)" (click)="delEdition(u)"><i class="fa fa-ban"></i></button></td>
                             </tr>
                         </tbody>
                         <tfoot>

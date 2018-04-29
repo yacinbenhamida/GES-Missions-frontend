@@ -14,7 +14,9 @@ export class ThClassesComponent implements OnInit {
   add:boolean;
   list:boolean;
   searchString:string;
-  constructor(public clserv:ClasseService,public router:Router) { }
+  modal:boolean = false;
+  classe1:Classe = new Classe();
+  constructor(public clserv:ClasseService) { }
 
   ngOnInit() {
     this.add = true;
@@ -23,9 +25,8 @@ export class ThClassesComponent implements OnInit {
     this.clserv.getAllClasses().subscribe(data=>this.classes = data);
   }
   onSubmit(f:NgForm){
-    this.clserv.insertClasse(this.classe).then(()=>null);
-    alert("تم اضافة المجموعة");
-    this.classes.push(this.classe);
+    this.clserv.insertClasse(this.classe).then(a=>this.classes.push(a));
+    alert("تم اضافة السلك");
   }
   deleteClasse(cl:Classe){
     if(confirm("هل انت متأكد من إزالة "+cl.libClasseAr+" ?")){
@@ -34,12 +35,25 @@ export class ThClassesComponent implements OnInit {
       }
   }
   showInfosClasse(cl:Classe){
-    this.router.navigate(['th-classes/editClass',cl.idclasse]);
+    this.toggleModal();
+    this.classe1 = cl;
   }
   toggleCadd(){
     this.add = ! this.add;
   }
   toggleList(){
     this.list = !this.list;
+  }
+  toggleModal(){
+    this.modal =!this.modal;
+  }
+  editClasse(){
+    this.clserv.updateClasse(this.classe1).then(w=>null);
+    alert("تم ");
+    this.toggleModal();
+  }
+  exitEdit(){
+    this.clserv.getAllClasses().subscribe(data=>{this.classes = data;this.toggleModal()});
+
   }
 }

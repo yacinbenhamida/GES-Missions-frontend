@@ -266,10 +266,10 @@
             <div class="modal-body">
               <div class="container content">
                   <div class="modal-body">
-                          <section class="col col-4">
+                          <section class="col col-3">
                             <label class="select" for="missionaires" class="arabparagraph">إضافة منتفع <input  name="miss"  [(ngModel)]="n" (change)="disp()"  list="missionaires" type="text" class="form-control">            
                             <datalist  id="missionaires" >
-                              <option *ngFor="let x of missionairesAff" [ngValue]="x"  > : {{x.cin}} {{x.nomAr}} {{x.prenomAr}}</option>
+                              <option *ngFor="let x of missionairesAff" [ngValue]="x"  >  {{x.cin}} : {{x.nomAr}} {{x.prenomAr}}</option>
                             </datalist> 
                             <i></i>
                             </label> 
@@ -317,7 +317,7 @@
                               <section class="col col-4">
                                 <label class="select" for="missionaires" class="arabparagraph">تغيير المنتفع<input  name="miss"  [(ngModel)]="n" (change)="disp()"  list="missionaires" type="text" class="form-control">            
                                 <datalist  id="missionaires" >
-                                  <option *ngFor="let x of missionairesAff" [ngValue]="x"  > : {{x.cin}} {{x.nomAr}} {{x.prenomAr}}</option>
+                                  <option *ngFor="let x of missionairesAff" [ngValue]="x"  >  {{x.cin}} : {{x.nomAr}} {{x.prenomAr}}</option>
                                 </datalist> 
                                 <i></i>
                                 </label> 

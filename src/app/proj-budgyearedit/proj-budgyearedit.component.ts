@@ -20,20 +20,15 @@ export class ProjBudgyeareditComponent implements OnInit {
   departement:Departement;
    year:number;
    addbudgmiss:boolean;
-   projets:Projet[];
+   projets:Projet[] = [];
    budgets:MajBudgProg[];
    listvisible:boolean;
    signe:string;
    controller:Departement;
-    u:Utilisateur;
+    u:Utilisateur = JSON.parse(localStorage.getItem('user'));;
     canEdit:boolean = true;
   constructor(public budgserv:BudgetService,public projserv:ProjetService) { 
     this.departement = new Departement();
-    this.u = JSON.parse(localStorage.getItem('user'));
-    this.projets =[];
-    if(this.projets.length == 1){
-      this.canEdit = false;
-    }
   }
 
   ngOnInit() {
@@ -43,7 +38,17 @@ export class ProjBudgyeareditComponent implements OnInit {
     this.addbudgmiss = true;
     this.departement = JSON.parse(localStorage.getItem('org'));
     this.budgserv.getAllBudgProgMajOfUser(this.u.codeUtilisateur,this.departement.codeDep).subscribe(data=>this.budgets = data);
-    this.projserv.getProjectsOfDepartment(this.departement.codeDep).subscribe(data=>this.projets = data);
+    this.projserv.getProjectsOfDepartment(this.departement.codeDep)
+    .subscribe(data=>{
+      if(data.length == 0){
+        this.canEdit = false;
+        alert("يجب إدخال على الأقل مشروع كي تتمكن من تحيين اعتماداته");
+      }
+      else {
+        this.projets = data; 
+        this.canEdit = true;
+        }
+    });
   }
 
   isEmpty(obj){

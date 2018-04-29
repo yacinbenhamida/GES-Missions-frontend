@@ -38,6 +38,7 @@ import { AvoirFraisService } from './model/avoirfrais.service';
 import { TauxGroupeServices } from './model/tauxgroupe.service';
 import { ReportService } from './model/reporting.service';
 import { SDistribpaysComponent } from './s-distribpays/s-distribpays.component';
+import {SelectModule} from 'ng2-select';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { SDistribpaysComponent } from './s-distribpays/s-distribpays.component';
     HttpModule,
     PopupModule.forRoot(),
     NgxPaginationModule,
+    SelectModule,
     LoadingAnimateModule.forRoot()
   ],
   providers: [NavbarService,AppService,UtilisateurService,

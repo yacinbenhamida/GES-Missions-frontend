@@ -21,10 +21,10 @@
 <div class="wrapper" style="background-image: url('../assets/img/breadcrumbs.png');">   
     <div class="breadcrumbs">
         <div class="container arabparagraph">
-            <h1 class="pull-left"><span class="arabtext">المجموعات</span></h1>
+            <h1 class="pull-left"><span class="arabtext">الأسلاك</span></h1>
             <ul class="pull-right breadcrumb arabparagraph">
                 <li>الثوابت</li>
-                <li>المجموعات</li>
+                <li>الأسلاك</li>
             </ul>
         </div>
     </div>
@@ -32,7 +32,7 @@
 <div class="container content ">
   <div class="row ">
   <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
-  <header class="arabparagraph">اضافة مجموعة
+  <header class="arabparagraph">اضافة سلك
         <button *ngIf="add == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleCadd()"><i class="fa fa-sort-desc"></i></button>
         <button *ngIf="add == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleCadd()"><i class="fa fa-sort-asc"></i></button>                                                  
   </header> 
@@ -42,13 +42,13 @@
             <section class="col col-4">
                     <label class="input">
                         <i class="icon-prepend fa fa-align-justify"></i>
-                        <input  minlength="4" maxlength="10" required type="text" name="codeclasse" placeholder="رمز المجموعة" [(ngModel)]="classe.codeClasse">
+                        <input  minlength="4" maxlength="10" required type="text" name="codeclasse" placeholder="رمز السلك" [(ngModel)]="classe.codeClasse">
                     </label>
                 </section>
           <section class="col col-4">
               <label class="input">
                   <i class="icon-prepend fa fa-align-justify"></i>
-                  <input  minlength="4" maxlength="10" required type="text" name="nomgrpar" placeholder="اسم المجموعة" [(ngModel)]="classe.libClasseAr">
+                  <input  minlength="4" maxlength="10" required type="text" name="nomgrpar" placeholder="اسم السلك" [(ngModel)]="classe.libClasseAr">
               </label>
           </section>
           <section class="col col-4 ">
@@ -57,44 +57,40 @@
                   <input required minlength="2"  type="text" name="nomgrfr" placeholder=" nom de la classe" [(ngModel)]="classe.libClasseFr">
               </label>
           </section>
-         <section class="col col-2">
-            <button type="submit" class="btn-u">تأكيد</button>
-            <div class="progress"></div>
-         </section>
       </div>
   </fieldset>
+  <footer>
+        <button type="submit" class="btn-u">تأكيد</button>
+  </footer>
 </div>            
  </form>
 </div> 
-</div>  
-<div class="container content">
-        <div class="row">            
-                        <router-outlet></router-outlet>
-        </div> 
-</div>  
+</div>   
 <div class="container content">
         <div class="row ">
-                <form>
-                        <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                                    <input type="text" class="form-control" name="searchString" placeholder="اسم المجموعة..." [(ngModel)]="searchString">
-                                </div>
-                            </div>
-                    </form>    
+                   
                 <div   id="sky-form1" class="sky-form ">
                 <header class="arabparagraph">قائمة المجموعات
                         <button *ngIf="list == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
                         <button *ngIf="list == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                                                  
-                </header>    
-                <table class=" table table-bordered table-striped"  *ngIf="list == true">
+                </header> 
+                <fieldset  *ngIf="list == true">
+                        <form>
+                                <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                            <input type="text" class="form-control" name="searchString" placeholder="اسم السلك..." [(ngModel)]="searchString">
+                                        </div>
+                                    </div>
+                            </form>   
+                <table class=" table table-bordered table-striped" >
                         <thead>
                                 <tr>
                                     <th>
-                                        رمز المجموعة
+                                        رمز السلك
                                     </th>
                                     <th>
-                                       اسم المجموعة
+                                       اسم السلك
                                     </th>
                                     <th>
                                         nom de la classe 
@@ -118,9 +114,61 @@
                         </tr>
                         </tfoot>
                 </table>
+            </fieldset> 
                 </div>
         </div>           
 </div>     
+<!-- modal -->
+
+<br/> <br/>
+<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px; background-color: hsla(0, 0%, 3%, 0.3);">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" (click)="exitEdit()" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">تغيير سلك </span></h4>
+            </div>
+            <div class="modal-body arabparagraph">
+                    <div class="container content">
+                            <form   id="sky-form1" class="sky-form " style="width: 800px;">
+                                    <fieldset>                  
+                                            <div class="row ">
+                                                <section class="col col-6 ">رمز السلك
+                                                    <label class="input">
+                                                        <i class="icon-prepend fa fa-user"></i>
+                                                        <input required minlength="5"  type="text" name="name"  [(ngModel)]="classe1.codeClasse">
+                                                    </label>
+                                                </section>
+                                                
+                                                <section class="col col-6">اسم السلك
+                                                    <label class="input">
+                                                        <i class="icon-prepend fa fa-user"></i>
+                                                        <input  minlength="5" required type="text" name="surname"  [(ngModel)]="classe1.libClasseAr">
+                                                    </label>
+                                                </section>
+                                                
+                                              
+                                            </div>
+                                            <div class="row">
+                                                  <section class="col col-6">nom de la classe
+                                                          <label class="input">
+                                                              <i class="icon-prepend fa fa-user"></i>
+                                                              <input  minlength="5" type="text" required name="prenomfr"  [(ngModel)]="classe1.libClasseAr">
+                                                          </label>
+                                                      </section>
+                                                    
+                                            </div>
+                                        </fieldset>
+                                        <footer>
+                                                <button type="button" (click)="exitEdit()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                                                <button  type="button" (click)="editClasse()" class="btn-u btn-u-primary"><span class="arabparagraph">تأكيد</span></button>                                  
+                                        </footer>
+                            </form>
+                        </div>
+                    </div>
+        </div>
+    </div>
+</div>
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			
 <script src="../../assets/plugins/jquery/jquery.min.js"></script>

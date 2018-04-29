@@ -3,3 +3,6 @@ input{
     font-family: 'Droid Arabic kufi', serif;
     font-size: 105%;
 }
+.hide{
+    visibility: hidden;
+}

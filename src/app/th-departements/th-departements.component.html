@@ -71,27 +71,25 @@
  </form>
 </div> 
 </div> 
-<div class="container content">
-    <div class="row">            
-                    <router-outlet></router-outlet>
-    </div> 
-</div>  
+  
 <div class="container content">
         <div class="row ">   
-                <form>
-                        <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                                    <input type="text" class="form-control" name="searchString" placeholder="اسم الوزاراة..." [(ngModel)]="searchString">
-                                </div>
-                            </div>
-                    </form>
+               
                 <div   id="sky-form1" class="sky-form ">
                 <header class="arabparagraph">قائمة الوزارات
                         <button *ngIf="list == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
                         <button *ngIf="list == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                                  
-                </header>    
-                <table class=" table table-bordered table-striped"  *ngIf="list == true">
+                </header>   
+                <fieldset *ngIf="list == true">
+                        <form>
+                                <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                            <input type="text" class="form-control" name="searchString" placeholder="اسم الوزاراة..." [(ngModel)]="searchString">
+                                        </div>
+                                    </div>
+                            </form>
+                <table class=" table table-bordered table-striped"  >
                         <thead>
                                 <tr>
                                     <th>
@@ -120,9 +118,60 @@
                             </td></tr>
                         </tfoot>
                 </table>
+            </fieldset> 
                 </div>
         </div>           
-</div>     
+</div> 
+
+<br/> <br/>
+<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px; background-color: hsla(0, 0%, 3%, 0.3);">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" (click)="exitEdit()" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">تغيير وزارة </span></h4>
+            </div>
+            <div class="modal-body arabparagraph">
+                    <div class="container content">
+                            <form   id="sky-form1" class="sky-form " style="width: 800px;">
+                                    <fieldset>                  
+                                            <div class="row ">
+                                                <section class="col col-6 ">رمز الوزارة
+                                                    <label class="input">
+                                                        <i class="icon-prepend fa fa-user"></i>
+                                                        <input required minlength="5"  type="text" name="name"  [(ngModel)]="dep2.codeDep">
+                                                    </label>
+                                                </section>
+                                                
+                                                <section class="col col-6">اسم الوزارة
+                                                    <label class="input">
+                                                        <i class="icon-prepend fa fa-user"></i>
+                                                        <input  minlength="5" required type="text" name="surname"  [(ngModel)]="dep2.libDepAr">
+                                                    </label>
+                                                </section>
+                                                
+                                              
+                                            </div>
+                                            <div class="row">
+                                                  <section class="col col-6">nom du ministére
+                                                          <label class="input">
+                                                              <i class="icon-prepend fa fa-user"></i>
+                                                              <input  minlength="5" type="text" required name="prenomfr"  [(ngModel)]="dep2.libDepFr">
+                                                          </label>
+                                                      </section>
+                                                    
+                                            </div>
+                                        </fieldset>
+                                        <footer>
+                                                <button type="button" (click)="exitEdit()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                                                <button  type="button" (click)="editDep()" class="btn-u btn-u-primary"><span class="arabparagraph">تأكيد</span></button>                                  
+                                        </footer>
+                            </form>
+                        </div>
+                    </div>
+        </div>
+    </div>
+</div>
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			
 <script src="../../assets/plugins/jquery/jquery.min.js"></script>

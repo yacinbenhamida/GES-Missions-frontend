@@ -16,7 +16,7 @@ import { error } from 'util';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit,AfterViewInit {
+export class LoginComponent implements OnInit,AfterViewInit{
   username:number = null;
   pw:string = null;
   user:Utilisateur;

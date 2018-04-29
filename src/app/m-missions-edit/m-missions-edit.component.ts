@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Mission } from '../model/mission';
 import { OrdreMission } from '../model/ordremission';
 import { Missionaire } from '../model/missionaire';
@@ -15,6 +15,7 @@ import { Concerne } from '../model/concerne';
 import { ConcerneServices } from '../model/concerne.service';
 import { AvoirFraisService } from '../model/avoirfrais.service';
 import { BudgetService } from '../model/Budget.service';
+import {SelectModule} from 'ng2-select';
 @Component({
   selector: 'app-m-missions-edit',
   templateUrl: './m-missions-edit.component.html',
@@ -31,7 +32,8 @@ export class MMissionsEditComponent implements OnInit {
   part1:boolean = true;
   part2:boolean = false;
   year:number = (new Date()).getFullYear();
-  missionairesAff:Missionaire[] = []
+  missionairesAff:Missionaire[] = [];
+  items:Array<any> =[];
   tabmissions:Mission[] = [];
   tabOrdresMiss:OrdreMission[] = [];
   tabMissionaires:Missionaire[] = [];
@@ -94,7 +96,7 @@ export class MMissionsEditComponent implements OnInit {
     this.ordre.mission = this.missionmodif;
     this.ordre.dateDepP = this.missionmodif.dateDepartP;
     this.ordre.dateArrP = this.missionmodif.dateArriveP;
-    this.missionaireService.getMissionaireByCin(Number(this.n.substr(this.n.indexOf(":")+2,8)))
+    this.missionaireService.getMissionaireByCin(Number(this.n.substr(this.n.indexOf(":")-9,9)))
     .subscribe(d=>{
       for (let index = 0; index < this.tabOrdresMiss.length; index++) {
         if(this.tabOrdresMiss[index].missionaire.idMissionaire == d.idMissionaire){
@@ -111,7 +113,7 @@ export class MMissionsEditComponent implements OnInit {
 
   }
   editMiss(u:Mission){
-    this.missionsservice.findMissionByNum(u.numMission).subscribe(m=>{
+    this.missionsservice.findMissionByNum(u.numMission,this.dep.codeDep).subscribe(m=>{
       this.missionmodif = m;
       for (let index = 0; index < this.motcles.length; index++) {
         if(this.motcles[index].theme.idtheme==m.theme.idtheme){
@@ -122,11 +124,10 @@ export class MMissionsEditComponent implements OnInit {
         this.calculDuree();
         this.missionaireService.getAllMissionaireNHAM(u.dateDepartP,u.dateArriveP,this.dep.codeDep).subscribe(d=>{
           this.missionairesAff = d;
-           
         });
     }
     });
-    this.ordMService.getAllOrdMissionsOfMiss(u.numMission).subscribe(t=>this.tabOrdresMiss=t);   
+    this.ordMService.getAllOrdMissionsOfMiss(u.numMission,this.dep.codeDep).subscribe(t=>this.tabOrdresMiss=t);   
     this.showmodif = true;
   }
   fetchTheme(){
@@ -148,19 +149,27 @@ export class MMissionsEditComponent implements OnInit {
     else { this.duree = 0;}
   }
   editord(u:OrdreMission){
+    this.editedordre = new OrdreMission();
     this.editedordre = u;
-    this.ordMService.getOrdMission(u.numOrdre,this.missionmodif.numMission).subscribe(ord=>{this.ordre=ord;
+    this.ordre = new OrdreMission();
+    this.n =   u.missionaire.cin +" : "+ u.missionaire.nomAr +" "+ u.missionaire.prenomAr;
+    this.ordre.missionaire = u.missionaire;
+    this.ordre.dateDepP = this.missionmodif.dateDepartP;
+    this.ordre.dateArrP = this.missionmodif.dateArriveP;
+    this.ordre.dateDepP = this.missionmodif.dateDepartP;
+    this.ordre.dateArrP = this.missionmodif.dateArriveP;
+    /*this.ordMService.getOrdMission(u.numOrdre,this.missionmodif.numMission).subscribe(ord=>{
+      this.ordre=ord;
       for (let index = 0; index < this.missionairesAff.length; index++) {
 
-          if(this.missionairesAff[index].idMissionaire==ord.missionaire.idMissionaire){
-            this.missionairesAff[index] = ord.missionaire;
-            this.n =   this.missionairesAff[index].cin +" : "+ this.missionairesAff[index].nomAr +" "+ this.missionairesAff[index].prenomAr;
-            this.ordre.missionaire = this.missionairesAff[index];
-            this.ordre.dateDepP = this.missionmodif.dateDepartP;
-            this.ordre.dateArrP = this.missionmodif.dateArriveP;
+          if(this.missionairesAff[index].idMissionaire==ord.missionaire.idMissionaire){ 
+            //this.missionairesAff[index] = ord.missionaire;
+            //this.n =   this.missionairesAff[index].cin +" : "+ this.missionairesAff[index].nomAr +" "+ this.missionairesAff[index].prenomAr;
+            //this.ordre.missionaire = this.missionairesAff[index];
+       
           }
         }
-      });
+      });*/
     this.toggleModalEdit();
   }
 

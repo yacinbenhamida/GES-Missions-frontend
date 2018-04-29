@@ -30,7 +30,10 @@ export class ThUsersComponent implements OnInit,AfterViewInit {
   nomuser:string;
   controlleur:Utilisateur;
   depctrl:Departement;
-  constructor(private popup:Popup,public usserv:UtilisateurService,public depserv:DepartementService,public router:Router,public route:ActivatedRoute) {
+  modal:boolean = false;
+  user1:Utilisateur = new Utilisateur();
+  constructor(private popup:Popup,public usserv:UtilisateurService
+    ,public depserv:DepartementService,public router:Router,public route:ActivatedRoute) {
   }
    getDeps(){
      this.depserv.getAllDeps().subscribe(
@@ -49,6 +52,8 @@ departt:Departement;
     this.userstruct = new UserStructs();
     this.departement = new Departement();
     this.user = new Utilisateur();
+    this.user.codeProfile="none";
+    this.departement = null;
     this.getDeps();
     this.usserv.getUsers().subscribe(
     us=>this.allusers = us);
@@ -57,9 +62,6 @@ departt:Departement;
   onSubmit(f:NgForm){
       if(this.user.codeProfile=="ordonnateur"){
         this.user.codeProfile = "O";
-      }
-      else if(this.user.codeProfile=="controlleur"){
-        this.user.codeProfile = "C";
       }
       else if(this.user.codeProfile=="ordonateurministere"){
         this.user.codeProfile = "OM";
@@ -82,7 +84,8 @@ departt:Departement;
       }
   }
   showInfosU(u:Utilisateur){
-    this.router.navigate(['th-users/editUser',u.codeUtilisateur]);
+    this.toggleModal();
+    this.user1 = u;
   }
   toggleAddUser(){
     this.adduserv = !(this.adduserv);
@@ -90,6 +93,7 @@ departt:Departement;
   toggleList(){
     this.listusers = !(this.listusers);
   }
+  toggleModal(){this.modal = !this.modal;}
   affectations(u:Utilisateur){
     
     this.usserv.getAllUserStructs(u).subscribe(data=>this.lstStruct = data);
@@ -114,5 +118,25 @@ departt:Departement;
       this.usserv.deleteUserStruct(u.idUserStruct).then(()=>{
         this.lstStruct = this.lstStruct.filter(h=>h!==u);  });
       }
+  }
+  updateUser(){
+    this.usserv.updateUsers(this.user1).then(x=>null);
+    this.toggleModal();
+    alert("تم");
+  }
+  exitEdit(){
+    this.usserv.getUsers().subscribe(us=>{
+      this.allusers = us;
+      this.toggleModal();
+    }
+      );
+  }
+  convCodeUser(x:string){
+    switch(x){
+      case 'P' :  return 'دافع المؤسسة';
+      case 'O' : return 'آمر بالصرف';
+      case 'OM' : return 'آمر بالصرف لدى الوزارة';
+      case 'ADMIN' : return 'تقني' ;
+    }
   }
 }

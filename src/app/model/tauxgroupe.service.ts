@@ -51,7 +51,7 @@ export class TauxGroupeServices{
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
 
-    insertTaux(d:Groupe):Promise<Taux>{
+    insertTaux(d:Taux):Promise<Taux>{
         return this.http.post(this.Url+"/insertTaux",JSON.stringify(d),{headers : this.headers})
         .toPromise().then(res=>res.json() as Taux).catch(this.handleError);  
     }

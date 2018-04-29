@@ -78,26 +78,28 @@
               <input  [disabled]="canEdit == false" required type="text" name="nomfctar" placeholder="المبلغ" [(ngModel)]="budget.montantBudgTransport">
           </label>
       </section>
-         <section class="col col-1">
-            <button *ngIf="modif == true" (click)="modify()" class="btn-u">تثبيت</button>
-            <button *ngIf="modif == false" [disabled]="canEdit == false" (click)="onSubmit()" class="btn-u">تأكيد</button>
-         </section>
       </div>
   </fieldset>
+  <footer>
+    <button *ngIf="canEdit == true && isApproved == false" (click)="modify()" class="btn-u btn-u-dark">تثبيت</button>
+    <button *ngIf="canEdit == false && isApproved == false" [disabled]="canEdit == false" (click)="onSubmit()" class="btn-u">تأكيد</button>
+  </footer>
 </div>            
  </form>
 </div> 
 <br/> <br/>
-<div class="row">
             <fieldset>
-                    <div class="row ">  
+                    <div class="row "> 
+                        <div class="col-md-6"> 
                             <div   id="sky-form1" class="sky-form ">
                             <header class="arabparagraph"> الاعتمادات المخصصة للمآموريات
                                     <button *ngIf="listvisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
                                     <button *ngIf="listvisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                 
                             </header>  
+                            <div class="arabparagraph"  *ngIf="listvisible == true">
+                            <fieldset>
                             <div *ngIf="isEmpty(budgets)==true" class="arabparagraph">لا توجد   اعتمادات حاليا</div>                
-                            <table *ngIf="isEmpty(budgets)==false && listvisible == true" class=" table table-bordered table-striped" >
+                            <table *ngIf="isEmpty(budgets)==false && listvisible == true" class=" table table-bordered text-center" >
                                     <thead>
                                             <tr>
                                                 <th>
@@ -118,18 +120,22 @@
                                             <td></td>
                                         </tr>
                                     </tbody>
-                            </table>
+                                </table>
+                            </fieldset>
                             </div>
-                    </div>  
-<br/>
-                    <div class="row ">  
+                            </div>
+                        </div>
+
+                        <div class="col-md-6"> 
                         <div   id="sky-form1" class="sky-form ">
                         <header class="arabparagraph"> الاعتمادات المخصصة للتنقل
                                 <button *ngIf="listvisible2 == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList2()"><i class="fa fa-sort-desc"></i></button>
                                 <button *ngIf="listvisible2 == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList2()"><i class="fa fa-sort-asc"></i></button>                                 
                         </header>  
+                        <div class="arabparagraph" *ngIf="listvisible2 == true">
+                        <fieldset>
                         <div *ngIf="isEmpty(budgets)==true" class="arabparagraph">لا توجد   اعتمادات حاليا</div>                
-                        <table *ngIf="isEmpty(budgets)==false && listvisible2 == true" class=" table table-bordered table-striped" >
+                        <table *ngIf="isEmpty(budgets)==false && listvisible2 == true" class=" table table-bordered text-center" >
                                 <thead>
                                         <tr>
                                             <th>
@@ -150,11 +156,13 @@
                                         <td></td>
                                     </tr>
                                 </tbody>
-                        </table>
+                            </table>
+                        </fieldset>
+                        </div>
                         </div>
                     </div>
+                    </div>
             </fieldset>
-        </div>
 </div>  
      
 <!-- End Order Form -->

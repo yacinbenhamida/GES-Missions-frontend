@@ -5,6 +5,7 @@ import {NgForm} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Departement } from '../model/departement';
 import {FilterPipe } from '../pipes/filter.pipe';
+import { FnParam } from '@angular/compiler/src/output/output_ast';
 @Component({
   selector: 'app-th-fonctions',
   templateUrl: './th-fonctions.component.html',
@@ -18,7 +19,9 @@ export class ThFonctionsComponent implements OnInit {
   departement:Departement;
   fonctionitem:Fonction;
   searchString:string;
-  constructor(public fonctServ:FonctionService,public router:Router) { }
+  modal:boolean = false;
+  fonct:Fonction = new Fonction();
+  constructor(public fonctServ:FonctionService) { }
   isEmpty(obj){
     return (obj && (Object.keys(obj).length === 0));
   }
@@ -31,12 +34,12 @@ export class ThFonctionsComponent implements OnInit {
      this.fonctServ.getAlloncts().subscribe(data=>this.fcts = data);
   }
   onSubmit(f:NgForm){
-    this.fct.codeFonction = Number(this.departement.codeDep + ""+ this.fct.codeFonction);
-    this.fonctServ.insertFonct(this.fct).then(()=>null);
-    this.fcts.push(this.fct);
+    this.fonctServ.insertFonct(this.fct).then(fct=>{this.fcts.push(fct);});
+    alert("تم")
   }
   showInfosFct(fonction:Fonction){
-    this.router.navigate(['/th-fonct/editFct',fonction.idfct]);
+    this.toggleModal();
+    this.fonct = fonction;
   }
 
   deleteFonction(f:Fonction){
@@ -55,5 +58,18 @@ export class ThFonctionsComponent implements OnInit {
       if(this.searchString!='' || this.searchString != undefined){
      this.fcts=  this.fcts.filter(data=>data.libFctFr === this.searchString);}
      else this.fonctServ.getAlloncts().subscribe(data=>this.fcts = data);
+    }
+    toggleModal(){
+      this.modal = !this.modal;
+    }
+    editFonct(){
+      this.fonctServ.updateFonct(this.fonct).then(x=>alert("تم"));
+      this.toggleModal();
+    }
+    exitEdit(){
+      this.fonctServ.getAlloncts().subscribe(d=>{
+        this.fcts = d;
+        this.toggleModal();
+      })
     }
 }

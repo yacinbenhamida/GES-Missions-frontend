@@ -47,7 +47,7 @@ export class EntBudgyearinsertComponent implements OnInit {
    
     this.budgserv.verifyIfThereisnoBudgetsDep(this.dp.codeDep).subscribe(data=>{
       this.verifMaj = data;
-      if(this.verifMaj.length>1 || this.verifMaj[0].etat=="R"){
+      if(this.verifMaj.length>1 && this.verifMaj[0].etat=="R"){
          this.canEdit = true;
         this.budget.montantBudgMission = this.verifMaj[0].valeurBudgMission;
         this.budget.montantBudgTransport = this.verifMaj[0].valeurBudgTransport;
@@ -79,7 +79,7 @@ export class EntBudgyearinsertComponent implements OnInit {
       }
       else if (this.verifMaj.length == 1 && this.verifMaj[0].etat=="O"){
           this.isFirstelem = true;
-          this.canEdit =false;
+          this.canEdit = false;
           this.budget.montantBudgMission = this.verifMaj[0].valeurBudgMission;
         this.budget.montantBudgTransport = this.verifMaj[0].valeurBudgTransport;
         this.budget.refBudgMission = this.verifMaj[0].refBudgMission;
@@ -87,6 +87,19 @@ export class EntBudgyearinsertComponent implements OnInit {
         this.budget.idBudgDep = this.verifMaj[0].budget.idBudgDep;
         this.budget.dateBudg = this.verifMaj[0].budget.dateBudg;
         this.budget.anneeAttr = this.year;
+      }
+      else if(this.verifMaj.length > 1 && (this.verifMaj[0].etat=="S" || this.verifMaj[1].etat=="S")){
+        this.isApproved = true;
+        this.canEdit = false;
+        this.budget.montantBudgMission = this.verifMaj[0].valeurBudgMission;
+        this.budget.montantBudgTransport = this.verifMaj[0].valeurBudgTransport;
+        this.budget.refBudgMission = this.verifMaj[0].refBudgMission;
+        this.budget.refBudgTransport = this.verifMaj[0].refBudgTransport;
+        this.budget.idBudgDep = this.verifMaj[0].budget.idBudgDep;
+        this.budget.dateBudg = this.verifMaj[0].budget.dateBudg;
+        this.budget.anneeAttr = this.year;
+        this.isApproved =true;
+        this.budgserv.getBudgDep(this.dp.codeDep,this.year).subscribe(d=>this.initialRessources=d);
       }
       else if (this.verifMaj.length == 0){
         this.canEdit = true;

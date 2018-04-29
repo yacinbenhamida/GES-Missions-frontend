@@ -23,7 +23,7 @@
 </head>
 
     <!--=== Header ===-->    
-    <div class="header">
+    <div class="header" style="border-top: 3px solid rgb(33, 30, 192);">
             <div class="container">
                 <!-- Logo -->
                 <a class="logo" href="index.html">
@@ -34,11 +34,15 @@
                 <!-- Topbar -->
                 <div class="topbar header-dark">
                     <ul class="loginbar pull-right">
-                       <li>مرحبا</li>
+                        <li class="arabparagraph" style="color:  rgb(33, 30, 192);">  المؤسسة : {{dep.libDepAr}} </li>
+                        <li class="topbar-devider"></li> <li class="topbar-devider"></li>   
+                        <li class="arabparagraph">مرحبا</li>
                         <li class="topbar-devider"></li>   
                         <li>{{username}}</li>
                         <li class="topbar-devider"></li>   
-                        <li><a (click)="disconnect()">Logout</a></li>   
+                        <li><a (click)="disconnect()" class="arabparagraph">الخروج</a></li>   
+                    </ul><br/><br/>
+                    <ul class="loginbar pull-right">
                     </ul>
                 </div>
             </div>
@@ -63,7 +67,7 @@
                                 <li *ngIf="nav.ordonnateur || nav.ordonnateurministere"><a routerLink="th-fonct" class="arabtext">الوضيفة</a></li>
                                 <li *ngIf="nav.admin"><a routerLink="th-grade" class="arabtext">الرتب</a></li>
                                 <li *ngIf="nav.admin"><a routerLink="th-departements" class="arabtext">الوزارات</a></li>
-                                <li *ngIf="nav.admin"><a routerLink="th-classes" class="arabtext">المجموعات</a></li>
+                                <li *ngIf="nav.admin"><a routerLink="th-classes" class="arabtext">الأسلاك</a></li>
                                 <li *ngIf="nav.admin"><a routerLink="th-categories" class="arabtext">الاصناف</a></li>
                                 <li *ngIf="nav.ordonnateur || nav.ordonnateurministere"><a routerLink="th-projects" class="arabtext">المشاريع</a></li>
                                 <li *ngIf="nav.admin"><a routerLink="th-typefrais" *ngIf="val" class="arabtext">انواع المصاريف</a></li>
@@ -128,6 +132,9 @@
                                 </li>
                                 <li *ngIf="nav.ordonnateur">
                                     <a routerLink="/m-confirmmiss">مصادقة الآمر بالصرف</a>                               
+                                </li>
+                                <li *ngIf="nav.ordonnateurministere">
+                                    <a routerLink="/confirmmissions"> مصادقة الآمر بالصرف لدى الوزارة</a>                               
                                 </li>
                                 <li *ngIf="nav.ordonnateurministere"><a routerLink="/m-confirmmiss">تأشيرة سلطة الإشراف</a></li>
                                 <li *ngIf="nav.payeur"><a href="#" >المصادقة على التسبقة</a></li>

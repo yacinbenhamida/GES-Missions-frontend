@@ -58,36 +58,31 @@
           </section>
       </div>
   </fieldset>
-  <div class="container content"> 
-        <section class="col col-3">                
-            <button type="button" (click)="onSubmit(f)"  class="btn-u">تأكيد</button>
-             <button  type="reset" class="btn-u btn-u-red"><i class="fa fa-times"></i></button>
-        </section> 
-    </div>
+  <footer>
+    <button type="button" (click)="onSubmit(f)"  class="btn-u">تأكيد</button>
+    <button  type="reset" class="btn-u btn-u-red"><i class="fa fa-times"></i></button>
+  </footer>
 </div>            
  </form>
 </div> 
-</div> 
-<div class="container content">
-        <div class="row">            
-                        <router-outlet></router-outlet>
-        </div> 
-</div> 
+</div>  
 <div class="container content">
         <div class="row "> 
-                <form>
-                        <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                                    <input type="text" class="form-control" name="searchString" placeholder="اسم المشروع..." [(ngModel)]="searchString">
-                                </div>
-                            </div>
-                    </form>  
+                
                 <div   id="sky-form1" class="sky-form ">
                 <header class="arabparagraph">قائمة المشاريع 
                         <button *ngIf="visibleList == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
                         <button *ngIf="visibleList == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                  
-                </header>  
+                </header>
+                <fieldset>
+                        <form *ngIf="visibleList == true">
+                                <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                            <input type="text" class="form-control" name="searchString" placeholder="اسم المشروع..." [(ngModel)]="searchString">
+                                        </div>
+                                    </div>
+                            </form>  
                 <div *ngIf="isEmpty(projets)" class="arabparagraph">لا توجد مشاريع جاري العمل بها </div>  
                 <table *ngIf="!isEmpty(projets) && visibleList == true" class=" table table-bordered table-striped" >
                         <thead>
@@ -127,9 +122,56 @@
                         </tr>    
                         </tfoot>
                 </table>
+            </fieldset>  
                 </div>
         </div>           
-</div>     
+</div> 
+
+<!-- modal edit -->
+
+<br/> <br/>
+<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; background-color: hsla(0, 0%, 3%, 0.3);">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" (click)="toggleModal()" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">تغيير مشروع </span></h4>
+            </div>
+            <div class="modal-body arabparagraph">
+              <div class="container content" >  
+                    <form   id="sky-form1" class="sky-form " style="width: 800px;">
+                            <fieldset>
+                    <div class="row ">
+                            <section class="col col-6">رمز المشروع
+                                    <label class="input">
+                                        <i class="icon-prepend fa fa-info"></i>
+                                        <input type="number" minlength="4" maxlength="25" required type="text" name="codefct"  [(ngModel)]="proj1.codeProjet">
+                                    </label>
+                            </section>
+                            <section class="col col-6">اسم المشروع
+                              <label class="input">
+                                  <i class="icon-prepend fa fa-industry"></i>
+                                  <input  minlength="3" maxlength="25" required type="text" name="nomfctar"  [(ngModel)]="proj1.libProjAr">
+                              </label>
+                            </section>
+                            <section class="col col-6 "> nom du projet
+                              <label class="input">
+                                  <i class="icon-prepend fa fa-object-ungroup"></i>
+                                  <input required   type="text" name="nomfctfr" [(ngModel)]="proj1.libProjFr">
+                              </label>
+                            </section>             
+                    </div>
+                </fieldset>
+                <footer>
+                        <button type="button" (click)="exitEdit()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                        <button  type="button" (click)="editProj()" class="btn-u btn-u-primary"><span class="arabparagraph">تأكيد</span></button>                
+                </footer>
+                </form>
+                </div>         
+            </div>
+        </div>
+    </div>
+</div>
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			
 <script src="../../assets/plugins/jquery/jquery.min.js"></script>

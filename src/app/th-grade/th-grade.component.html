@@ -57,37 +57,35 @@
                   <input required minlength="2"  type="text" name="nomgrfr" placeholder=" nom du grade" [(ngModel)]="grd.libGradeFr">
               </label>
           </section>
-         <section class="col col-3">
-            <button type="submit" class="btn-u">تأكيد</button>
-            <div class="progress"></div>
-         </section>
       </div>
   </fieldset>
+  <footer>
+        <button type="submit" class="btn-u">تسجيل الرتبة</button>
+        <button type="reset" class="btn-u btn-u-red"><i class="fa fa-times"></i></button>
+  </footer>
 </div>            
  </form>
 </div> 
 </div> 
+
 <div class="container content">
-        <div class="row">            
-                        <router-outlet></router-outlet>
-        </div> 
-</div>  
-<div class="container content">
-        <form>
-                <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                            <input type="text" class="form-control" name="searchString" placeholder="اسم الرتبة..." [(ngModel)]="searchString">
-                        </div>
-                    </div>
-            </form>
+        
         <div class="row ">   
                 <div   id="sky-form1" class="sky-form ">
                 <header class="arabparagraph">قائمة الرتب
                         <button *ngIf="list == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
                         <button *ngIf="list == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                                  
-                </header>    
-                <table class=" table table-bordered table-striped"  *ngIf="list==true">
+                </header>  
+                <fieldset *ngIf="list==true"> 
+                        <form>
+                                <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                            <input type="text" class="form-control" name="searchString" placeholder="اسم الرتبة..." [(ngModel)]="searchString">
+                                        </div>
+                                    </div>
+                            </form> 
+                <table class=" table table-bordered table-striped" >
                         <thead>
                                 <tr>
                                     <th>
@@ -118,9 +116,56 @@
                             </tr>
                         </tfoot>
                 </table>
+            </fieldset>
                 </div>
         </div>           
-</div>     
+</div>
+
+
+
+<!-- modal edit -->
+<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 100px; background-color: hsla(0, 0%, 3%, 0.3);">
+        <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" (click)="exitEdit()" class="close" type="button">×</button>
+                        <h4  id="myLargeModalLabel3" class="modal-title"><span class="arabtext">تغيير رتبة</span></h4>
+                    </div>
+                    <form   id="sky-form1" class="sky-form ">
+                    <div class="modal-body">
+                      <fieldset>                  
+                            <div class="row">
+                              <label class="arabparagraph">رمز الرتبة</label>
+                              <label class="input">
+                                <input type="text" name="code" [(ngModel)]="grade.codeGrade">
+                              </label>
+                            </div>
+                            <div class="row">
+                                <label class="arabparagraph">اسم الرتبة</label>
+                                <label class="input">
+                                  <input type="text" name="nom" [(ngModel)]="grade.libGradeAr">
+                                </label>  
+                            </div>
+                            <div class="row">
+                                <label class="arabparagraph">nom du grade</label>
+                                <label class="input">
+                                  <input type="text" name="nfr" [(ngModel)]="grade.libGradeFr">
+                                </label>  
+                            </div>
+                            </fieldset>
+                         <div class="row">
+                                <div class="modal-footer">
+                                        <button type="button" (click)="exitEdit()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                                        <button  type="button" (click)="editGrade()" class="btn-u btn-u-green"><span class="arabparagraph">تسجيل</span></button>
+                                    </div>
+                         </div>
+                        
+                    </div>
+                    </form>
+                </div>           
+            </div>
+    </div> 
+    <!-- end modal -->
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			
 <script src="../../assets/plugins/jquery/jquery.min.js"></script>

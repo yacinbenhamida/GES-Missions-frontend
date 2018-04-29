@@ -64,33 +64,35 @@
 
       </div>
       <div class="row">
-            <section class="col col-5 ">
+            <section class="col col-1.5">
+                    <span class="arabparagraph">اسم المؤسسة</span>
+              </section>
+            <section class="col col-4 ">
                 <label class="input">
                     <i class="icon-prepend fa fa-home"></i>
                     <input required minlength="5"  type="text" name="nomdepar" placeholder="اسم المؤسسة" [(ngModel)]="dep.libDepAr">
                 </label>
             </section>
-            <section class="col col-5">
+            <section class="col col-1.5">
+                    <span class="arabparagraph">nom de l'organisme</span>
+              </section>
+            <section class="col col-4">
                 <label class="input">
                     <i class="icon-prepend fa fa-home"></i>
                     <input  minlength="5" required type="text" name="nomdepfr" placeholder="nom de l'organisme " [(ngModel)]="dep.libDepFr">
                 </label>
             </section>
-           <section class="col col-1">
-              <button type="submit" class="btn-u">تأكيد</button>
-              <div class="progress"></div>
-           </section>
           </div>
   </fieldset>
+  <footer>
+        <button type="submit" class="btn-u">تأكيد</button>
+
+  </footer>
 </div>            
  </form>
 </div> 
 </div> 
-<div class="container content">
-    <div class="row">            
-                    <router-outlet></router-outlet>
-    </div> 
-</div>  
+
 <div class="container content">
         <div class="row ">   
                 <form>
@@ -143,7 +145,71 @@
                 </table>
                 </div>
         </div>           
-</div>     
+</div>  
+
+
+<!-- modal -->
+
+<br/> <br/>
+<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px; background-color: hsla(0, 0%, 3%, 0.3);">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" (click)="toggleModal()" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">تغيير مؤسسة </span></h4>
+            </div>
+            <div class="modal-body arabparagraph">
+              <div class="container content">  
+                    <form   id="sky-form1" class="sky-form " style="width: 800px;">
+                            <fieldset>
+                                    <div class="row ">
+                                            <section class="col col-1.5">
+                                                    <span class="arabparagraph">صبغة المؤسسة</span>
+                                              </section>
+                                              <section class="col col-4" *ngIf="typedeps!=null">
+                                                    <label class="select">
+                                                        <select  required name="nature" (change)="modifcode2()"  [(ngModel)]="dep2.typedep">
+                                                            <option value="0"  disabled>صبغة المؤسسة</option>
+                                                            <option *ngFor="let x of typedeps" [ngValue]="x" >{{x.libTypeDepFr}}</option>
+                                                        </select>
+                                                        <i></i>
+                                                    </label>
+                                                </section>
+                                                <section class="col col-1.5">
+                                                        <span class="arabparagraph">رمز المؤسسة</span>
+                                                  </section>
+                                          <section class="col col-4">
+                                              <label class="input">
+                                                  <i class="icon-prepend fa fa-barcode"></i>
+                                                  <input style="background-color: whitesmoke;" minlength="4" maxlength="5" disabled required type="text" name="codeDepModif" placeholder="رمز المؤسسة" [(ngModel)]="dep2.codeDep" value="{{newcodeDep2}}">
+                                              </label>
+                                          </section>        
+                                      </div>
+                                      <div class="row">
+                                            <section class="col col-5 ">
+                                                <label class="input">
+                                                    <i class="icon-prepend fa fa-home"></i>
+                                                    <input required minlength="5"  type="text" name="nomdepar" placeholder="اسم المؤسسة" [(ngModel)]="dep2.libDepAr">
+                                                </label>
+                                            </section>
+                                            <section class="col col-5">
+                                                <label class="input">
+                                                    <i class="icon-prepend fa fa-home"></i>
+                                                    <input  minlength="5" required type="text" name="nomdepfr" placeholder="nom de l'organisme " [(ngModel)]="dep2.libDepFr">
+                                                </label>
+                                            </section>
+                                          </div>
+                            </fieldset>
+                            <footer>
+                                    <button type="button" (click)="toggleModal()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                                    <button  type="button" (click)="editDep()" class="btn-u btn-u-primary"><span class="arabparagraph">تأكيد</span></button>                
+                            </footer>
+                </form>
+                </div>         
+            </div>
+        </div>
+    </div>
+</div>
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			
 <script src="../../assets/plugins/jquery/jquery.min.js"></script>

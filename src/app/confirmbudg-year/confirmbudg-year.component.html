@@ -33,19 +33,22 @@
     <div class="row">
         <div class="panel panel-dark-blue">
                 <div class="panel-heading">
-                    <h3 class="panel-title"> <span style="font:arial;font-weight: bold;">{{year}}</span>
+                    <h3 class="panel-title">  <span class="arabparagraph">السنة الإدارية : </span> <span style="font:arial;font-weight: bold;">{{year}} </span>
                     </h3>
                 </div>           
         </div>
     </div> 
     <br/>   
     <div class="row">
-        <span   id="sky-form1" class="sky-form " >
-          <section class="col col-2">
+        <form   id="sky-form1" class="sky-form " >
+        <div class="row text-center">
+            <br/>
+            <section class="col col-2"></section>
+         <section class="col col-2 ">
             <span class="arabparagraph"> الهيكل المعني</span>
           </section>
             <section class="col col-4" *ngIf="departements!=null">
-                <label class="select">
+                <label class="select"> 
                     <select  required name="departements" (change)="fetchDepBudgs()"  [(ngModel)]="selecteddepartement">
                         <option value="0"  disabled>  الهيكل المعني</option>
                         <option *ngFor="let x of departements"  [ngValue]="x" >{{x.libDepAr}}</option>
@@ -53,7 +56,8 @@
                     <i></i>
                 </label>
             </section>
-        </span>
+        </div>
+        </form>
     </div>
     
 <br/> <br/>

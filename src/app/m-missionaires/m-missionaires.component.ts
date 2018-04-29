@@ -34,6 +34,8 @@ export class MMissionairesComponent implements OnInit {
   classes:Classe[] = [];
   cats:Categorie[] = [];
   groupes:Groupe[] = [];
+  modal:boolean = false;
+  missionaire1:AffectMissDep = new AffectMissDep();
   constructor(public mserv:MissionaireServices,public depServ:DepartementService,
     public fonctserv:FonctionService,gradeServ:GradeService,classServ:ClasseService,
     public catserv:CategorieService,public router:Router,grserv:TauxGroupeServices) {
@@ -66,10 +68,29 @@ export class MMissionairesComponent implements OnInit {
       }
   }
   showInfosMissionaire(m:AffectMissDep){
-    this.router.navigate(['m-missionaires/editMissionaire',m.missionaire.idMissionaire]);
+    this.missionaire1 = m;
+    this.missionaire1.missionaire.grade.codeGrade = m.missionaire.grade.codeGrade;
+    this.toggleModal();
   }
   onSubmit(f:NgForm){
     this.missionaire.departement = this.departement;
-    this.mserv.insertMissionaire(this.missionaire).subscribe(data=>this.missionaires.push(this.missionaire));
+    this.mserv.insertMissionaire(this.missionaire).subscribe(data=>this.missionaires.push(data));
+  }
+  toggleModal(){this.modal = !this.modal;}
+  updateUser(){
+    this.mserv.updateAffectMissionaire(this.missionaire1).subscribe(res=>{
+      this.toggleModal();
+      this.missionaire1 = new AffectMissDep();
+      alert("تم");
+    })
+  }
+  exitModal(){
+    
+    this.mserv.getAllMissOfDep(this.departement.codeDep).subscribe(a=>{
+      this.toggleModal();
+      this.missionaire1 = new AffectMissDep();
+      this.missionaires = [];
+      this.missionaires = a;
+    })
   }
 }

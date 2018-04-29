@@ -21,7 +21,8 @@ export class ThProjectsComponent implements OnInit {
   visibleList :boolean;
   departement:Departement;
   searchString:string;
- 
+  modal:boolean = false;
+  proj1:Projet = new Projet();
   constructor(public router:Router,public projserv:ProjetService) {
    
     
@@ -37,14 +38,16 @@ export class ThProjectsComponent implements OnInit {
     this.visibleList = true;
   }
   onSubmit(f:NgForm){
-   //   this.budget.anneeAttr=Number.parseInt(this.budget.dateBudg.toString().substring(0,4));
       this.proj.departement = this.departement;
-      this.projserv.insertProjet(this.proj).then(()=>null);
-      this.projets.push(this.proj);  
-      alert("تم");
+      this.projserv.insertProjet(this.proj).then((b)=>{
+        this.projets.push(b);  
+        alert("تم");
+      });
+
   }
   showInfosProj(p:Projet){
-    this.router.navigate(['th-projects/editProject',p.idprojet]);
+    this.proj1 = p;
+    this.toggleModal();
   }
   deleteProj(p:Projet){
     if(confirm("هل انت متأكد من إزالة "+p.libProjAr+" ?")){
@@ -56,5 +59,15 @@ export class ThProjectsComponent implements OnInit {
   }
   toggleList(){
     this.visibleList = !(this.visibleList);
+  }
+  toggleModal(){this.modal = !this.modal;}
+  editProj(){
+    this.projserv.updateProjet(this.proj1).then(a=>{alert("تم التغيير");this.toggleModal()});
+  }
+  exitEdit(){
+    this.projserv.getProjectsOfDepartment(this.departement.codeDep).subscribe(data=>{
+      this.projets = data
+      this.toggleModal();
+        });
   }
 }

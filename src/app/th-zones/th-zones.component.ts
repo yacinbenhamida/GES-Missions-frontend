@@ -15,6 +15,8 @@ export class ThZonesComponent implements OnInit {
   add:boolean;
   list:boolean;
   searchString:string;
+  modal:boolean = false;
+  zone2:Zonepays = new Zonepays();
   constructor(public zoneserv:ZonePaysService,public router:Router) { }
 
   ngOnInit() {
@@ -24,11 +26,10 @@ export class ThZonesComponent implements OnInit {
     this.zoneserv.getAllZones().subscribe(data =>this.zones = data);
   }
   onSubmit(f:NgForm){
-    this.zoneserv.insertZone(this.zone).then(()=>null);
-    this.zoneserv.getAllZones().subscribe(data=>this.zones.push(this.zone));
-  }
+    this.zoneserv.insertZone(this.zone).then(a=>this.zones.push(a));  }
   showInfosZ(z:Zonepays){
-    this.router.navigate(['th-zone/editZone',z.idZone]);
+    this.zone2 = z;
+    this.toggleModal();
   }
   deleteZ(z:Zonepays){
     if(confirm("هل انت متأكد من إزالة "+z.libZoneAr+" ?")){
@@ -41,5 +42,17 @@ export class ThZonesComponent implements OnInit {
   }
   toggleList(){
     this.list = !this.list;
+  }
+  toggleModal(){
+    this.modal = !this.modal;
+  }
+  editZone(){
+    this.zoneserv.updateZone(this.zone2).then(a=>null);
+    alert("تم");
+    this.toggleModal();
+  }
+  exitEdit(){
+    this.zoneserv.getAllZones().subscribe(data =>{this.zones = data;this.toggleModal()});
+
   }
 }

@@ -19,6 +19,10 @@ private extractData(res:Response) {
     let body = res.json();
     return body || [];
 }
+updateUsers(u:Utilisateur):Promise<Utilisateur[]>{
+    return this.http.post(this.usersUrl+"/updateUsers",JSON.stringify(u),{headers : this.headers})
+    .toPromise().then(()=>null).catch(this.handleError); 
+}
 getUsers():Observable<Utilisateur[]>{
     return this.http.get(this.usersUrl+"/allUsers").map(this.extractData).catch(this.handleError);
 }
@@ -41,8 +45,6 @@ getDepOfUser(id:number):Observable<Departement>{
         return res.json() as Departement;}).catch(this.handleError);
 }   
 insertUser(u:UserStructs){
-   // this.http.post(this.usersUrl +"/insertUser",JSON.stringify(u.utilisateur),{headers : this.headers})
-   // .toPromise().then(()=>null).catch(this.handleError);
     return this.http.post(this.usersUrl+"/userStruct",JSON.stringify(u),{headers : this.headers})
         .toPromise().then(()=>null).catch(this.handleError);   
 }

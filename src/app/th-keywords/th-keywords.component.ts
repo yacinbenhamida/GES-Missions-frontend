@@ -24,7 +24,11 @@ export class ThKeywordsComponent implements OnInit {
   listkwvisible:boolean;
   searchString:string;
   searchString2:string;
-  constructor(public motcleServ:MotCleService,public themeServ:ThemeService,public router:Router) {
+  modal:boolean = false; // edit theme
+  modal2:boolean = false; // edit KW
+  theme2:Theme = new Theme();
+  motcle2:MotCle = new MotCle();
+  constructor(public motcleServ:MotCleService,public themeServ:ThemeService) {
     themeServ.getAllThemes().subscribe(data=>this.themelist = data);
    }
 
@@ -52,10 +56,13 @@ export class ThKeywordsComponent implements OnInit {
   );
   }
   showInfosTheme(th:Theme){
-    this.router.navigate(['/th-keywords/editTheme',th.idtheme]);
+    this.toggleModal();
+    this.theme2 = th;
   }
   showInfosMC(mc:MotCle){
-    this.router.navigate(['/th-keywords/editkeyWord',mc.idmotCle]);
+    this.toggleModal2();
+    this.motcle2 = mc;this.motcle2.theme.idtheme = mc.theme.idtheme;
+
   }
   deleteTheme(th:Theme){
     if(confirm("هل انت متأكد من إزالة "+th.libThemeAr+" ?")){
@@ -81,5 +88,30 @@ export class ThKeywordsComponent implements OnInit {
   }
   toggleListKw(){
     this.listkwvisible = !(this.listkwvisible);
+  }
+  toggleModal(){ this.modal = !this.modal }
+  toggleModal2(){ this.modal2 = !this.modal2 }
+
+  editSujet(){
+    this.themeServ.updateTheme(this.theme2).then(x=>null);
+    alert("تم");
+    this.toggleModal();
+  }
+  editKW(){
+    this.motcleServ.updateMC(this.motcle2).then(x=>null);
+    this.toggleModal2();
+    alert("تم");
+  }
+  exitEditT(){
+    this.themeServ.getAllThemes().subscribe(data=>{
+      this.themelist = data;
+      this.toggleModal();
+    });
+
+  }
+  exitEditK(){
+    this.motcleServ.getAllMC().subscribe(data=>{
+      this.motcles = data;
+      this.toggleModal2();});
   }
 }

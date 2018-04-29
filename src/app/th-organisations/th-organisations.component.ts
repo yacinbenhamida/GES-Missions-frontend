@@ -19,13 +19,24 @@ export class ThOrganisationsComponent implements OnInit {
   currentDep:Departement;
   ministere:string;
   newcodeDep:string = '';
+  newcodeDep2:string = '';
+  dep2:Departement = new Departement();
+  modal:boolean = false;
   constructor(public depserv:DepartementService,public router:Router) { 
     this.dep = new Departement();
     this.currentDep = JSON.parse(localStorage.getItem('org'));
     this.ministere = this.currentDep.codeDep;
     this.newcodeDep = this.ministere;
     depserv.getAllOrgsFromOfcurrentm(this.ministere).subscribe(dep=>this.deps = dep);
-    depserv.getAllTypeDeps().subscribe(t=>this.typedeps = t);
+    depserv.getAllTypeDeps().subscribe(t=>{
+      this.typedeps = t;
+      this.typedeps.forEach(element => {
+          if(element.idtypedep == 5){
+            this.typedeps = this.typedeps.filter(h=>h!==element);
+          }
+      });
+      
+    });
   }
 
   ngOnInit() {
@@ -34,8 +45,7 @@ export class ThOrganisationsComponent implements OnInit {
   }
   onSubmit(f:NgForm){
     this.dep.codeDep = this.newcodeDep;
-      this.depserv.insertDep(this.dep).then(()=>null);
-     this.deps.push(this.dep);
+      this.depserv.insertDep(this.dep).then(depa=>this.deps.push(depa));
   }
 
   deleteDep(dep:Departement){
@@ -45,7 +55,8 @@ export class ThOrganisationsComponent implements OnInit {
       }
   }
   showInfosDep(dep:Departement){
-    this.router.navigate(['th-org/editOrg',dep.codeDep]);
+    this.toggleModal();
+    this.dep2 = dep;
   }
   toggleList(){
     this.list = ! this.list;
@@ -63,9 +74,24 @@ export class ThOrganisationsComponent implements OnInit {
       }
       else return;
     });
-  /*  if((this.newcodeDep.substring(3,this.newcodeDep.length)) == null ||  (this.newcodeDep.substring(3,this.newcodeDep.length)==undefined)){
-      this.newcodeDep = this.newcodeDep+"000";
-    }*/
-    //this.newcodeDep = this.newcodeDep.substring(0,2) + this.dep.typedep.idtypedep + this.newcodeDep.substring(3,this.newcodeDep.length);
+  }
+  modifcode2(){
+    this.depserv.getLatestDepCode(this.ministere,this.dep2.typedep.idtypedep+"").
+    subscribe(d=>{
+      if(d!=null && d!=undefined && d!='' && d.substring(4,d.length)!=null && d.length!=0 && d.length>3){
+      this.newcodeDep2 =(Number(d)+1).toString()}
+      else if(d!=null || d!=undefined && d=='' && d.length <= 3 && this.newcodeDep.length<6){
+        this.newcodeDep2 = this.ministere+d+this.dep2.typedep.idtypedep +"001";
+      }
+      else return;
+    });
+  }
+  toggleModal(){
+    this.modal = !this.modal;
+  }
+  editDep(){
+    this.dep2.codeDep = this.newcodeDep2;
+    this.depserv.updateDep(this.dep2).then(x=>alert("تم"));
+    this.toggleModal();
   }
 }

@@ -15,9 +15,11 @@ export class ThDepartementsComponent implements OnInit {
   deps:Departement[];
   add:boolean;
   list:boolean;
-  constructor(public depserv:DepartementService,public router:Router) { 
+  modal:boolean = false;
+  dep2:Departement = new Departement();
+  constructor(public depserv:DepartementService) { 
     this.dep = new Departement();
-    this.depserv.getAllDepsOfCurrentType(5).subscribe(dep=>this.deps = dep);
+    this.depserv.getAllDepsOfCurrentType(5).subscribe(dep=>this.deps = dep); // id =5 ministéres 
   }
 
   ngOnInit() {
@@ -26,7 +28,9 @@ export class ThDepartementsComponent implements OnInit {
   }
   onSubmit(f:NgForm){
     this.dep.typedep.idtypedep = 5;
-      this.depserv.insertDep(this.dep).then(()=>null);
+      this.depserv.insertDep(this.dep).then(a=>this.deps.push(a));
+      alert("تم");
+
   }
 
   deleteDep(dep:Departement){
@@ -36,7 +40,8 @@ export class ThDepartementsComponent implements OnInit {
       }
   }
   showInfosDep(dep:Departement){
-    this.router.navigate(['th-departements/editDep',dep.codeDep]);
+    this.dep2 = dep;
+    this.toggleModal();
   }
   toggleList(){
     this.list = ! this.list;
@@ -44,4 +49,20 @@ export class ThDepartementsComponent implements OnInit {
   toggleDadd(){
     this.add = ! this.add;
   }
+  toggleModal(){
+    this.modal = !this.modal;
+  }
+  editDep(){
+    this.depserv.updateDep(this.dep2).then(x=>null);
+    alert("تم");
+    this.toggleModal();
+  }
+  exitEdit(){
+    this.depserv.getAllDepsOfCurrentType(5).subscribe(dep=>
+      {this.deps = dep;
+        this.toggleModal();
+      });
+
+  }
+
 }

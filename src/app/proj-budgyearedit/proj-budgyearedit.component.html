@@ -55,7 +55,7 @@
                 
                 <section class="col col-10" *ngIf="projets!=null">
                     <label class="select">
-                        <select [disabled]="canEdit == true"  required name="budget"  [(ngModel)]="budget.projet">
+                        <select [disabled]="canEdit == false"  required name="budget"  [(ngModel)]="budget.projet">
                             <option value="0"  disabled>المشروع</option>
                             <option *ngFor="let x of projets" [ngValue]="x" >{{x.libProjAr}}</option>
                         </select>
@@ -65,30 +65,29 @@
                 </div>  
                 <section class="col col-1">
                         <label>
-                                <input [disabled]="canEdit == true" type="radio" name="radio1" value="-" [(ngModel)]="signe"> <span class="label-text">-</span>
+                                <input [disabled]="canEdit == false" type="radio" name="radio11" id="1" value="-" [(ngModel)]="signe"> <span class="label-text">-</span>
                         </label>  
                         <label>
-                                <input  [disabled]="canEdit == true"  type="radio" name="radio1" value="+" [(ngModel)]="signe"> <span class="label-text">+</span>
+                                <input  [disabled]="canEdit == false"  type="radio" name="radio1" id="1" value="+" [(ngModel)]="signe"> <span class="label-text">+</span>
                         </label>                          
             </section>
                 <section class="col col-5">
                     <label class="input">
                         <i class="icon-prepend fa fa-info"></i>
-                        <input [disabled]="canEdit == true" minlength="4" maxlength="5" required type="text" name="codez" placeholder="مرجع الميزانة " [(ngModel)]="budget.refBudgProg">
+                        <input [disabled]="canEdit == false" minlength="4" maxlength="5" required type="text" name="codez" placeholder="مرجع الميزانة " [(ngModel)]="budget.refBudgProg">
                     </label>
                 </section>
           <section class="col col-6">
               <label class="input">
                   <i class="icon-prepend fa fa-dollar"></i>
-                  <input [disabled]="canEdit == true" minlength="4" maxlength="5" required type="text" name="nomfctar" placeholder="المبلغ" [(ngModel)]="budget.montantBudg">
+                  <input [disabled]="canEdit == false" minlength="4" maxlength="5" required type="text" name="nomfctar" placeholder="المبلغ" [(ngModel)]="budget.montantBudg">
               </label>
           </section>
-          
-         <section class="col col-2">
-            <button [disabled]="canEdit == true" type="submit" class="btn-u">تأكيد</button>
-         </section>
       </div>
   </fieldset>
+  <footer>
+        <button [disabled]="canEdit == false" [ngClass]="{'btn-u disabled':canEdit == false,'btn-u':canEdit == true}" type="submit">تسجيل التحيين</button>
+  </footer>
 </div>            
  </form>
 </div> 
@@ -122,8 +121,8 @@
                             <td>{{u.valeurMajBudgProg}}</td>
                          <td [innerHTML]='convertText(u.etat)'></td>
                             <td>{{u.dateMajBudgProg}}</td>
-                            <td class="text-center"><button [ngClass]="{'btn-u btn-u-gray': u.etat=='O','btn-u btn-u-blue' : u.etat=='N'}" [disabled]="verifEtatN(u)" (click)="saveEdition(u)"><i class="fa fa-save"></i></button></td>
-                            <td class="text-center"><button [ngClass]="{'btn-u btn-u-gray': u.etat=='O','btn-u btn-u-red' : u.etat=='N'}"  [disabled]="verifEtatN(u)" (click)="delEdition(u)"><i class="fa fa-ban"></i></button></td>
+                            <td class="text-center"><button *ngIf="u.etat!='S'" [ngClass]="{'btn-u btn-u-default disabled': u.etat=='O','btn-u btn-u-blue' : u.etat=='N'}" [disabled]="verifEtatN(u)" (click)="saveEdition(u)"><i class="fa fa-save"></i></button></td>
+                            <td class="text-center"><button *ngIf="u.etat!='S'" [ngClass]="{'btn-u btn-u-default disabled': u.etat=='O','btn-u btn-u-red' : u.etat=='N'}"  [disabled]="verifEtatN(u)" (click)="delEdition(u)"><i class="fa fa-ban"></i></button></td>
                         </tr>
                     </tbody>
             </table>

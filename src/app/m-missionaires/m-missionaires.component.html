@@ -239,7 +239,146 @@
                 </div>   
                 </div>
         </div>           
-</div>     
+</div> 
+
+
+<!-- modal edit -->
+
+
+<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; background-color: hsla(0, 0%, 3%, 0.3);">
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button aria-hidden="true" (click)="exitModal()" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">تغيير مستعمل </span></h4>
+            </div>
+            <div class="modal-body arabparagraph">
+                    <form   id="sky-form1" class="sky-form " style="height: 570px;">
+                               <div class="row ">
+                                <section class="col col-6">رقم بطاقة التعريف الوطنية
+                                        <label class="input"> 
+                                            <i class="icon-prepend fa fa-info"></i>
+                                            <input  minlength="8" maxlength="8" required type="number" name="cin"[(ngModel)]="missionaire1.missionaire.cin">
+                                        </label>
+                                </section>
+                                <section class="col col-6">تاريخ إصدار بطاقة التعريف الوطنية
+                                  <label class="input">
+                                      <i class="icon-prepend fa fa-calendar"></i>
+                                      <input  minlength="8" maxlength="8" required type="date" name="cindate"  [(ngModel)]="missionaire1.missionaire.dateCin">
+                                  </label>
+                                 </section>
+                                <section class="col col-6 ">المعرف الوحيد
+                                  <label class="input">
+                                      <i class="icon-prepend fa fa-barcode"></i>
+                                      <input required minlength="2"  type="number" name="nomcatFr" name="matricule"  [(ngModel)]="missionaire1.missionaire.matricule">
+                                  </label>
+                              </section>
+                              <section class="col col-6">اسم المنتفع
+                                  <label class="input"> 
+                                      <i class="icon-prepend fa fa-user"></i>
+                                      <input  minlength="2" maxlength="20" required type="text" name="prenomar"   [(ngModel)]="missionaire1.missionaire.prenomAr">
+                                  </label>
+                              </section>
+                              <section class="col col-6 "> prenom du missionaire
+                                  <label class="input">
+                                      <i class="icon-prepend fa fa-user"></i>
+                                      <input required minlength="2"  type="text" name="prenomfr" [(ngModel)]="missionaire1.missionaire.prenomFr">
+                                  </label>
+                              </section>
+                              <section class="col col-6 ">لقب المتنفع
+                                  <label class="input">
+                                      <i class="icon-prepend fa fa-user"></i>
+                                      <input required minlength="2"  type="text" name="nomar"  [(ngModel)]="missionaire1.missionaire.nomAr">
+                                  </label>
+                              </section>
+                              <section class="col col-6 ">nom du missionaire
+                                <label class="input">
+                                    <i class="icon-prepend fa fa-user"></i>
+                                    <input required minlength="2"  type="text" name="nomfr"  [(ngModel)]="missionaire1.missionaire.nomFr">
+                                </label>
+                            </section>
+                            <section class="col col-6 ">الجنسية
+                              <label class="input">
+                                  <i class="icon-prepend fa fa-globe"></i>
+                                  <input required minlength="2"  type="text" name="natioAr" [(ngModel)]="missionaire1.missionaire.nationaliteAr">
+                              </label>
+                          </section>
+                          <section class="col col-6 ">nationalité
+                            <label class="input">
+                                <i class="icon-prepend fa fa-globe"></i>
+                                <input required minlength="2"  type="text" name="natioFr"  [(ngModel)]="missionaire1.missionaire.nationaliteFr">
+                            </label>
+                        </section>
+                        <section class="col col-6 ">تاريخ الولادة
+                          <label class="input">
+                              <i class="icon-prepend fa fa-calendar"></i>
+                              <input type="date"  required minlength="2"  name="dateAr" [(ngModel)]="missionaire1.missionaire.dateNaissance">
+                          </label>
+                        </section>
+                        <section class="col col-6 ">مكان الولادة
+                          <label class="input">
+                              <i class="icon-prepend fa fa-location-arrow"></i>
+                              <input type="text" required minlength="2"  type="text" name="lieuAr"  [(ngModel)]="missionaire1.missionaire.lieuNaissanceAr">
+                          </label>
+                        </section>
+                        <section class="col col-6 ">lieu de naissance
+                          <label class="input">
+                              <i class="icon-prepend fa fa-location-arrow"></i>
+                              <input type="text" required minlength="2"  type="text" name="lieuFr" [(ngModel)]="missionaire1.missionaire.lieuNaissanceFr">
+                          </label>
+                        </section>
+                        <section class="col col-1">
+                            
+                        </section>
+                        <section class="col col-2 ">
+                            <label class="select">
+                                <select  required name="grade"  [(ngModel)]="missionaire1.missionaire.grade">
+                                    <option *ngFor="let x of grades" [ngValue]="x" >{{x.libGradeAr}}</option>
+                                </select>
+                                <i></i>
+                            </label>
+                        </section>
+                    
+                        <section class="col col-2 ">
+                            <label class="select">
+                                <select  required name="classe"  [(ngModel)]="missionaire1.missionaire.classe">
+                                    <option *ngFor="let x of classes" [ngValue]="x" >{{x.libClasseAr}}</option>
+                                </select>
+                                <i></i>
+                            </label>
+                        </section>
+                        <section class="col col-2 ">
+                            <label class="select">
+                                <select  required name="cats"  [(ngModel)]="missionaire1.missionaire.categorie">
+                                    <option *ngFor="let x of cats" [ngValue]="x" >{{x.libCatAr}}</option>
+                                </select>
+                                <i></i>
+                            </label>
+                        </section>
+                        <section class="col col-2 ">
+                            <label class="select">
+                                <select  required name="cats"  [(ngModel)]="missionaire1.missionaire.fonction">
+                                    <option *ngFor="let x of fonctions" [ngValue]="x" [selected]="x.idfct == missionaire1.missionaire.fonction.idfct">{{x.libFctAr}}</option>
+                                </select>
+                                <i></i>
+                            </label>
+                        </section>
+                        <section class="col col-2 ">
+                            <label class="select">
+                                <select  required name="classe"  [(ngModel)]="missionaire1.missionaire.groupe">
+                                    <option *ngFor="let x of groupes" [ngValue]="x" >{{x.libGroupeAr}}</option>
+                                </select>
+                                <i></i>
+                            </label>
+                        </section>
+                        </div>
+                                        <button type="button" (click)="exitModal()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                                        <button  type="button" (click)="updateUser()" class="btn-u btn-u-primary"><span class="arabparagraph">تأكيد</span></button>                                  
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			
 <script src="../../assets/plugins/jquery/jquery.min.js"></script>

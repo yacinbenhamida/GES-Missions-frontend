@@ -57,11 +57,12 @@
                   <input required minlength="5"  type="text" name="nomfctfr" placeholder=" nom du théme " [(ngModel)]="theme.libThemeFr">
               </label>
           </section>
-         <section class="col col-1">
-            <button type="submit" class="btn-u">تأكيد</button>
-         </section>
+      
       </div>
   </fieldset>
+  <footer>
+                <button type="submit" class="btn-u">تأكيد</button>
+  </footer>
 </div>            
  </form>
 </div> 
@@ -104,117 +105,249 @@
                 <i></i>
             </label>
         </section>
-         <section class="col col-1">
-            <button type="submit" class="btn-u">تأكيد</button>
-         </section>
+
       </div>
   </fieldset>
+  <footer>
+        <button type="submit" class="btn-u">تأكيد</button>
+  </footer>
 </div>            
  </form>
 </div> 
 </div>    
+
 <div class="container content">
+        <div class="col-md-6">
         <div class="row "> 
-                <form>
-                        <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                                    <input type="text" class="form-control" name="searchString" placeholder="اسم الموضوع...." [(ngModel)]="searchString">
-                                </div>
-                            </div>
-                    </form>  
+                
                 <div   id="sky-form1" class="sky-form ">
                 <header class="arabparagraph">قائمة المواضيع
                         <button *ngIf="listvisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
                         <button *ngIf="listvisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                 
-                </header>  
-                <div *ngIf="isEmpty(themes)==true" class="arabparagraph">لا توجد   مواضيع</div>                
-                <table *ngIf="isEmpty(themes)==false && listvisible == true" class=" table table-bordered table-striped" >
-                        <thead>
-                                <tr>
-                                    <th>
-                                        رمز الموضوع
-                                    </th>
-                                    <th>
-                                        اسم الموضوع
-                                    </th>
-                                    <th>
-                                        nom du théme 
-                                    </th> 
-                                    <th style="width:110px;">قيام بتغيرات</th>                         
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let u of themes | filterfct: 'libThemeAr': searchString; let i = index ">
-                                <td>{{u.codetheme}}</td>
-                                <td>{{u.libThemeAr}}</td>
-                                <td>{{u.libThemeFr}}</td>
-                                <td><button class="btn-u btn-u-red" (click)="deleteTheme(u)"><i class="fa fa-ban"></i></button>
-                                    <button class="btn-u btn-u-blue" (click)="showInfosTheme(u)"><i class="fa fa-cogs"></i></button></td>
-                            </tr>
-                        </tbody>
-                </table>
+                </header>
+                <fieldset>
+                    <div class="row" *ngIf="isEmpty(themes)==false && listvisible == true">
+                            <form>
+                                    <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                                <input type="text" class="form-control" name="searchString" placeholder="اسم الموضوع...." [(ngModel)]="searchString">
+                                            </div>
+                                        </div>
+                                </form>  
+                    </div>
+                    <div class="row">
+                            <div *ngIf="isEmpty(themes)==true" class="arabparagraph">لا توجد   مواضيع</div>                
+                            <table *ngIf="isEmpty(themes)==false && listvisible == true" class=" table table-bordered table-striped" >
+                                    <thead>
+                                            <tr>
+                                                <th>
+                                                    رمز الموضوع
+                                                </th>
+                                                <th>
+                                                    اسم الموضوع
+                                                </th>
+                                                <th>
+                                                    nom du théme 
+                                                </th> 
+                                                <th style="width:110px;">قيام بتغيرات</th>                         
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let u of themes | filterfct: 'libThemeAr': searchString; let i = index ">
+                                            <td>{{u.codetheme}}</td>
+                                            <td>{{u.libThemeAr}}</td>
+                                            <td>{{u.libThemeFr}}</td>
+                                            <td><button class="btn-u btn-u-red" (click)="deleteTheme(u)"><i class="fa fa-ban"></i></button>
+                                                <button class="btn-u btn-u-blue" (click)="showInfosTheme(u)"><i class="fa fa-cogs"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot><tr>
+                                            <td colspan="4" class="text-center">
+                                                <span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls>
+                                            </span></td>
+                                            </tr>
+                                    </tfoot>
+                            </table>
+                              
+                    </div>
+                
+                </fieldset>  
                 </div>
-        </div>           
+        </div>
+    </div>
+    <div class="col-md-6">
+            <div class="row ">                     
+                      <div   id="sky-form1" class="sky-form ">
+                      <header class="arabparagraph">قائمة كلمات المفاتيح
+                            <button *ngIf="listkwvisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleListKw()"><i class="fa fa-sort-desc"></i></button>
+                            <button *ngIf="listkwvisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleListKw()"><i class="fa fa-sort-asc"></i></button>                                
+                      </header>  
+                      <div *ngIf="isEmpty(motcles)==true" class="arabparagraph">لا توجد كلمات مفاتيح</div>   
+                      <fieldset>
+                          <div class="row" *ngIf="isEmpty(motcles)==false && listkwvisible == true">
+                                <form>
+                                        <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                                    <input type="text" class="form-control" name="searchString2" placeholder="اسم كلمة المفتاح" [(ngModel)]="searchString2">
+                                                </div>
+                                            </div>
+                                    </form>
+                          </div> 
+                          <div class="row">             
+                      <table *ngIf="isEmpty(motcles)==false && listkwvisible == true" class=" table table-bordered table-striped">
+                              <thead>
+                                      <tr>
+                                          <th>
+                                              رمز كلمة المفتاح
+                                          </th>
+                                          <th>
+                                              اسم كلمة المفتاح
+                                          </th>
+                                          <th>
+                                              nom du mot-clé 
+                                          </th>    
+                                          <th>الموضوع</th>
+                                          <th style="width:110px;">قيام بتغيرات</th>                            
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr *ngFor="let u of motcles| paginate : { itemsPerPage:5, currentPage:p} | filterfct: 'libMcAr': searchString2; let i = index ">    
+                                      <td>{{u.codeMotCle}}</td>
+                                      <td>{{u.libMcAr}}</td>
+                                      <td>{{u.libMcFr}}</td>
+                                      <td>{{u.theme.libThemeAr}}</td>
+                                      <td><button class="btn-u  btn-u-red " (click)="deleteMc(u)"><i class="fa fa-ban"></i></button>
+                                        <button class="btn-u btn-u-blue" (click)="showInfosMC(u)"><i class="fa fa-cogs"></i></button></td>
+                                  </tr>
+                              </tbody>
+                              <tfoot><tr>
+                                <td colspan="5" class="text-center">
+                                    <span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls>
+                                </span></td>
+                                </tr>
+                              </tfoot>
+                      </table>
+                    </div>
+                    </fieldset> 
+                      </div>
+                      
+              </div>
+    </div>           
 </div>
 <div class="container content">
-    <div class="row">            
-                    <router-outlet></router-outlet>
-    </div> 
-</div>
-<div class="container content">
-  <div class="row ">   
-        <form>
-                <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                            <input type="text" class="form-control" name="searchString2" placeholder="اسم كلمة المفتاح" [(ngModel)]="searchString2">
+          
+</div>  
+
+<!-- modal sujets -->
+
+<br/> <br/>
+<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px; background-color: hsla(0, 0%, 3%, 0.3);">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" (click)="exitEditT()" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">تغيير موضوع </span></h4>
+            </div>
+            <div class="modal-body arabparagraph">
+                    <div class="container content">
+                            <form   id="sky-form1" class="sky-form " style="width: 800px;">
+                                    <fieldset>                  
+                                            <div class="row ">
+                                                <section class="col col-6 ">رمز الموضوع
+                                                    <label class="input">
+                                                        <i class="icon-prepend fa fa-user"></i>
+                                                        <input required minlength="5"  type="text" name="name"  [(ngModel)]="theme2.codetheme">
+                                                    </label>
+                                                </section>
+                                                
+                                                <section class="col col-6">اسم الموضوع
+                                                    <label class="input">
+                                                        <i class="icon-prepend fa fa-user"></i>
+                                                        <input  minlength="5" required type="text" name="surname"  [(ngModel)]="theme2.libThemeAr">
+                                                    </label>
+                                                </section>
+                                                
+                                              
+                                            </div>
+                                            <div class="row">
+                                                  <section class="col col-6">nom du sujet
+                                                          <label class="input">
+                                                              <i class="icon-prepend fa fa-user"></i>
+                                                              <input  minlength="5" type="text" required name="prenomfr"  [(ngModel)]="theme2.libThemeFr">
+                                                          </label>
+                                                      </section>
+                                                    
+                                            </div>
+                                        </fieldset>
+                                        <footer>
+                                                <button type="button" (click)="exitEditT()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                                                <button  type="button" (click)="editSujet()" class="btn-u btn-u-primary"><span class="arabparagraph">تأكيد</span></button>                                  
+                                        </footer>
+                            </form>
                         </div>
                     </div>
-            </form>
-          <div   id="sky-form1" class="sky-form ">
-          <header class="arabparagraph">قائمة كلمات المفاتيح
-                <button *ngIf="listkwvisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleListKw()"><i class="fa fa-sort-desc"></i></button>
-                <button *ngIf="listkwvisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleListKw()"><i class="fa fa-sort-asc"></i></button>                                
-          </header>  
-          <div *ngIf="isEmpty(motcles)==true" class="arabparagraph">لا توجد كلمات مفاتيح</div>                  
-          <table *ngIf="isEmpty(motcles)==false && listkwvisible == true" class=" table table-bordered table-striped">
-                  <thead>
-                          <tr>
-                              <th>
-                                  رمز كلمة المفتاح
-                              </th>
-                              <th>
-                                  اسم كلمة المفتاح
-                              </th>
-                              <th>
-                                  nom du mot-clé 
-                              </th>    
-                              <th>الموضوع</th>
-                              <th style="width:110px;">قيام بتغيرات</th>                            
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr *ngFor="let u of motcles| paginate : { itemsPerPage:5, currentPage:p} | filterfct: 'libMcAr': searchString2; let i = index ">    
-                          <td>{{u.codeMotCle}}</td>
-                          <td>{{u.libMcAr}}</td>
-                          <td>{{u.libMcFr}}</td>
-                          <td>{{u.theme.libThemeAr}}</td>
-                          <td><button class="btn-u  btn-u-red " (click)="deleteMc(u)"><i class="fa fa-ban"></i></button>
-                            <button class="btn-u btn-u-blue" (click)="showInfosMC(u)"><i class="fa fa-cogs"></i></button></td>
-                      </tr>
-                  </tbody>
-                  <tfoot><tr>
-                    <td colspan="5" class="text-center">
-                        <span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls>
-                    </span></td>
-                    </tr>
-                  </tfoot>
-          </table>
-          </div>
-          
-  </div>        
-</div>     
+        </div>
+    </div>
+</div>
+
+
+<!-- modal KW -->
+
+<br/> <br/>
+<div *ngIf="modal2 == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px; background-color: hsla(0, 0%, 3%, 0.3);">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" (click)="exitEditK()" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">تغيير كلمة مفتاح </span></h4>
+            </div>
+            iv class="modal-body arabparagraph">
+                    <div class="container content">
+                            <form   id="sky-form1" class="sky-form " style="width: 800px;">
+                                    <fieldset>                  
+                                            <div class="row ">
+                                                <section class="col col-6 ">رمز كلمة المفتاح
+                                                    <label class="input">
+                                                        <i class="icon-prepend fa fa-user"></i>
+                                                        <input required minlength="5"  type="text" name="name"  [(ngModel)]="motcle2.codeMotCle">
+                                                    </label>
+                                                </section>
+                                                
+                                                <section class="col col-6">اسم كلمة المفتاح
+                                                    <label class="input">
+                                                        <i class="icon-prepend fa fa-user"></i>
+                                                        <input  minlength="5" required type="text" name="surname"  [(ngModel)]="motcle2.libMcAr">
+                                                    </label>
+                                                </section>                                                      
+                                            </div>
+                                            <div class="row">
+                                                  <section class="col col-6">nom du mot-clé
+                                                          <label class="input">
+                                                              <i class="icon-prepend fa fa-user"></i>
+                                                              <input  minlength="5" type="text" required name="prenomfr"  [(ngModel)]="motcle2.libMcFr">
+                                                          </label>
+                                                    </section>
+                                                    <section class="col col-6">الموضوع
+                                                            <label class="select">
+                                                                    <select  required name="thememc"  [(ngModel)]="motcle2.theme">
+                                                                        <option *ngFor="let x of themelist" [ngValue]="x" >{{x.libThemeAr}}</option>
+                                                                    </select>
+                                                                    <i></i>
+                                                                </label>
+                                                    </section>
+                                            </div>
+                                        </fieldset>
+                                        <footer>
+                                                <button type="button" (click)="exitEditK()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                                                <button  type="button" (click)="editKW()" class="btn-u btn-u-primary"><span class="arabparagraph">تأكيد</span></button>                                  
+                                        </footer>
+                            </form>
+                        </div>
+                    </div>
+        </div>
+    </div>
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			
 <script src="../../assets/plugins/jquery/jquery.min.js"></script>

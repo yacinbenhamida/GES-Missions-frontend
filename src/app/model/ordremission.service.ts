@@ -25,8 +25,8 @@ export class OrdreMissionService{
         return this.http.get(url).map((res:Response)=>{
             return res.text() as string;}).catch(this.handleError);
     }
-    getAllOrdMissionsOfMiss(id:number):Observable<OrdreMission[]>{
-        const url = `${this.missUrl}/allOrdresMissionsOfMiss/${id}`;
+    getAllOrdMissionsOfMiss(id:number,codeDep:string):Observable<OrdreMission[]>{
+        const url = `${this.missUrl}/allOrdresMissionsOfMiss/${id}/${codeDep}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
     getAllOrdMissionsOfDep(id:string):Observable<OrdreMission[]>{

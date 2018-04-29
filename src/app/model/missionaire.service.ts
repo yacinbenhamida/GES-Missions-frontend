@@ -37,7 +37,7 @@ export class MissionaireServices{
         const url = `${this.missUrl}/allMissionairesOfDEP/${codeDep}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
-    insertMissionaire(affect:AffectMissDep) : Observable<Missionaire>{
+    insertMissionaire(affect:AffectMissDep) : Observable<AffectMissDep>{
         return this.http.post(this.missUrl+"/insertMissionaire",JSON.stringify(affect),{headers : this.headers})
         .map(res=>res.json() as AffectMissDep).catch(this.handleError);  
     }

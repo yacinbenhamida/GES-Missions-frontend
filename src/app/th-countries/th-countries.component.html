@@ -60,7 +60,7 @@
           <section class="col col-6 ">
             <label class="select">
                 <select  required name="budget"  [(ngModel)]="pays.zonepays">
-                    <option value="0"  disabled>المنطقة</option>
+                    <option value="null" disabled>المنطقة</option>
                     <option *ngFor="let x of zones" [ngValue]="x" >{{x.libZoneAr}}</option>
                 </select>
                 <i></i>
@@ -72,7 +72,7 @@
       <section class="col col-6 ">
         <label class="select">
             <select  required name="langue"  [(ngModel)]="pays.langue">
-                <option value="0" selected disabled>اللغة</option>
+                <option value="null"  disabled>اللغة</option>
                 <option value="العربية">العربية</option>
                 <option value="الفرنسية">الفرنسية</option>
                 <option value="الانجليزية">الانجليزية</option>
@@ -81,35 +81,34 @@
             <i></i>
         </label>
       </section>
-     <section class="col col-2">
-        <button type="submit" class="btn-u">تأكيد</button>
-     </section></div>
+    </div>
   </fieldset>
+  <footer>
+        <button type="submit" class="btn-u">تأكيد</button>
+       <button type="reset" class="btn-u btn-u-red"><i class="fa fa-times"></i></button>
+    </footer>
 </div>            
  </form>
 </div> 
 </div>  
 <div class="container content">
-        <div class="row">            
-                        <router-outlet></router-outlet>
-        </div> 
-</div> 
-<div class="container content">
         <div class="row "> 
-                <form>
-                        <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                                    <input type="text" class="form-control" name="searchString" placeholder="اسم البلد..." [(ngModel)]="searchString">
-                                </div>
-                            </div>
-                    </form>  
+                
                 <div   id="sky-form1" class="sky-form ">
                 <header class="arabparagraph">قائمة البلدان
                         <button *ngIf="listC == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleListC()"><i class="fa fa-sort-desc"></i></button>
                         <button *ngIf="listC == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleListC()"><i class="fa fa-sort-asc"></i></button>                                  
-                </header>    
-                <table class=" table table-bordered table-striped"  *ngIf="listC == true">
+                </header>   
+                <fieldset *ngIf="listC == true">
+                        <form>
+                                <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                            <input type="text" class="form-control" name="searchString" placeholder="اسم البلد..." [(ngModel)]="searchString">
+                                        </div>
+                                    </div>
+                            </form>  
+                <table class=" table table-bordered table-striped"  >
                         <thead>
                                 <tr>
                                     <th>
@@ -143,9 +142,81 @@
                             </span></td></tr>
                         </tfoot>
                 </table>
+            </fieldset> 
+           
                 </div>
         </div>           
-</div>     
+</div> 
+
+<!--  modal box -->
+<br/> <br/>
+<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px; background-color: hsla(0, 0%, 3%, 0.3);">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" (click)="exitEdit()" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">تغيير بلد </span></h4>
+            </div>
+            <div class="modal-body arabparagraph">
+                    <div class="container content">
+                            <form   id="sky-form1" class="sky-form " style="width: 800px;">
+                                    <fieldset>                  
+                                            <div class="row ">
+                                                <section class="col col-6 ">رمز البلد
+                                                    <label class="input">
+                                                        <i class="icon-prepend fa fa-user"></i>
+                                                        <input required minlength="5"  type="text" name="name"  [(ngModel)]="pays2.codepays">
+                                                    </label>
+                                                </section>
+                                                
+                                                <section class="col col-6">اسم البلد
+                                                    <label class="input">
+                                                        <i class="icon-prepend fa fa-user"></i>
+                                                        <input  minlength="5" required type="text" name="surname"  [(ngModel)]="pays2.libPaysAr">
+                                                    </label>
+                                                </section>
+                                                
+                                              
+                                            </div>
+                                            <div class="row">
+                                                  <section class="col col-6">nom du pays
+                                                          <label class="input">
+                                                              <i class="icon-prepend fa fa-user"></i>
+                                                              <input  minlength="5" type="text" required name="prenomfr"  [(ngModel)]="pays2.libPaysFr">
+                                                          </label>
+                                                      </section>
+                                                      <section class="col col-6">المنطقة
+                                                            <label class="select"> 
+                                                            <select  required name="budget"  [(ngModel)]="pays2.zonepays">
+                                                                        <option *ngFor="let x of zones" [selected]="x.idZone == pays2.zonepays.idZone" [ngValue]="x" >{{x.libZoneAr}}</option>
+                                                                </select>
+                                                                <i></i>
+                                                            </label>
+                                                        </section>
+                                                        <section class="col col-6">اللغة
+                                                                <label class="select"> 
+                                                                        <select  required name="langue"  [(ngModel)]="pays2.langue">
+                                                                                <option value="0" selected disabled>اللغة</option>
+                                                                                <option value="العربية">العربية</option>
+                                                                                <option value="الفرنسية">الفرنسية</option>
+                                                                                <option value="الانجليزية">الانجليزية</option>
+                                                                                <option value="اليابانية">اليابانية</option>
+                                                                            </select><i></i>
+                                                                            </label>
+                                                            </section>
+                                                  
+                                            </div>
+                                        </fieldset>
+                                        <footer>
+                                                <button type="button" (click)="exitEdit()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                                                <button  type="button" (click)="editPays()" class="btn-u btn-u-primary"><span class="arabparagraph">تأكيد</span></button>                                  
+                                        </footer>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			
 <script src="../../assets/plugins/jquery/jquery.min.js"></script>

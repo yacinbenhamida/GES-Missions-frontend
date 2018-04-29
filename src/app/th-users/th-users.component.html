@@ -55,7 +55,7 @@
           <section class="col col-4">
             <label class="input">
                 <i class="icon-prepend fa fa-info"></i>
-                <input  minlength="8" maxlength="8" required type="number" name="CIN" placeholder="رقم بطاقة التعريف الوطنية " [(ngModel)]="user.login">
+                <input  minlength="8" maxlength="8" required type="number" name="CIN" placeholder="رقم بطاقة التعريف الوطنية  (login)" [(ngModel)]="user.login">
             </label>
         </section>
         
@@ -76,7 +76,7 @@
             <section class="col col-4">
                 <label class="select">
                     <select required name="job"  [(ngModel)]="user.codeProfile" >
-                        <option value="none" selected disabled>وضيفة المستعمل</option>
+                        <option value="none" disabled>وضيفة المستعمل</option>
                         <option value="ordonnateur">آمر بالصرف</option>
                         <option value="ordonateurministere">آمر بالصرف بوزارة الاشراف</option>
                         <option value="controlleur">مراقب المصاريف</option>
@@ -90,19 +90,21 @@
           <section class="col col-4">
               <label class="input">
                   <i class="icon-prepend fa fa-lock"></i>
-                  <input  minlength="5" type="password" required name="pass1" placeholder="كلمة السر" [(ngModel)]="user.motDePasse">
-              </label>
+                  <input   minlength="5" type="password" required #b name="pass1" placeholder="كلمة السر" [(ngModel)]="user.motDePasse">
+                  <i class="icon-append fa " [ngClass]="{'fa-eye' : b.type=='password','fa-eye-slash' : b.type=='text'}" (click)="b.type == 'password' ? b.type='text' : b.type='password'"></i>
+                </label>
           </section>
           <section class="col col-4">
               <label class="input">
                   <i class="icon-prepend fa fa-lock"></i>
-                  <input  minlength="5"  type="password" required name="pass2" placeholder="تأكيد كلمة السر">
-              </label>
+                  <input  minlength="5"  type="password" #c required name="pass2" placeholder="تأكيد كلمة السر">
+                  <i class="icon-append fa " [ngClass]="{'fa-eye' : c.type=='password','fa-eye-slash' : c.type=='text'}" (click)="c.type == 'password' ? c.type='text' : c.type='password'"></i>  
+             </label>
           </section>
           <section class="col col-4" *ngIf="departements!=null">
             <label class="select">
                 <select  required name="budget"  [(ngModel)]="departement">
-                    <option value="0"  disabled>المؤسسة / الهيكل المعني</option>
+                    <option value="null"  disabled>المؤسسة / الهيكل المعني</option>
                     <option *ngFor="let x of departements" [ngValue]="x" >{{x.libDepAr}}</option>
                 </select>
                 <i></i>
@@ -113,47 +115,39 @@
   </div>
   <footer *ngIf="adduserv == true">
       <button type="submit" class="btn-u">تأكيد</button>
-      <div class="progress"></div>
+      <button type="reset" class="btn-u btn-u-red"><i class="fa fa-times"></i></button>
   </footer>               
 </form></div> 
 </div>  
-<div class="container content">
-        <div class="row">            
-                        <router-outlet></router-outlet>
-        </div> 
-</div>
+
 <div class="container content">
         <div class="row ">
-                <form>
-                        <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                                    <input type="text" class="form-control" name="searchString" placeholder="اسم المستعمل..." [(ngModel)]="searchString">
-                                </div>
-                            </div>
-                    </form>
+                
                 <div   id="sky-form1" class="sky-form ">
                 <header class="arabparagraph">قائمة المستعملون
                         <button *ngIf="listusers == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
                         <button *ngIf="listusers == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                  
-                </header> 
-                <table class=" table table-bordered table-striped"  *ngIf="listusers == true">
+                </header>
+                <fieldset *ngIf="listusers == true">
+                        <form>
+                                <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                            <input type="text" class="form-control" name="searchString" placeholder="اسم المستعمل..." [(ngModel)]="searchString">
+                                        </div>
+                                    </div>
+                            </form> 
+                <table class=" table table-bordered table-striped"  >
                         <thead>
                                 <tr>
                                     <th>
-                                        اسم المستعمل
+                                        login (ر.ب.ت.و)
                                     </th>
                                     <th>
-                                        nom
+                                        nom et prenom 
                                     </th>
                                     <th>
-                                        prenom
-                                    </th>
-                                    <th>
-                                        الأسم
-                                    </th>
-                                    <th>
-                                        اللقب
+                                        الأسم واللقب
                                     </th>
                                     <th>
                                         كلمة السر
@@ -165,21 +159,24 @@
                                     <th style="text-align: center;">التعينات</th>  
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr *ngFor="let u of allusers| filterfct: 'prenomAr': searchString; let i = index ">
+                        <tbody class="text-center">
+                            <tr *ngFor="let u of allusers| filterfct: 'prenomAr': searchString; let i = index; ">
                                 <td>{{u.login}}</td>
-                                <td>{{u.nomFr}}</td>
-                                <td>{{u.prenomFr}}</td>
-                                <td>{{u.prenomAr}}</td>
-                                <td>{{u.nomAr}}</td>
-                                <td>{{u.motDePasse}}</td>
-                                <td>{{u.codeProfile}}</td>
+                                <td>{{u.nomFr}}  {{u.prenomFr}}</td>
+                                <td>{{u.prenomAr}}  {{u.nomAr}} </td>
+                                <td>    <label class="input">
+                                        <i (click)="a.value == '******'?a.value = u.motDePasse:a.value='******'" class="icon-prepend fa" [ngClass]="{' fa-toggle-off':a.value == '******','fa-toggle-on':a.value!='******'}"></i>
+                                            <input style="width: 170px;" disabled type="text" #a name="mdpshowhide" value="******">
+                                        </label>
+                                </td>
+                                <td [innerHTML]="convCodeUser(u.codeProfile)"></td>
                                 <td><button  class="btn-u btn-u-red" (click)="deleteU(u)"><i class="fa fa-ban"></i></button>
                                     <button class="btn-u btn-u-blue" (click)="showInfosU(u)"><i class="fa fa-cogs"></i></button></td>
                                 <td style="text-align: center;"><button *ngIf="u.codeProfile == 'C' || u.codeProfile == 'P'" class="btn-u" (click)="affectations(u)"><i class="fa fa-th-list"></i></button></td>    
                             </tr>
                         </tbody>
                 </table>
+            </fieldset> 
                 </div>
         </div>           
 </div>
@@ -233,6 +230,97 @@
             </popup>
         </div>
 
+</div>
+
+<!-- modal sujets -->
+<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; background-color: hsla(0, 0%, 3%, 0.3);">
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button aria-hidden="true" (click)="exitEdit()" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">تغيير مستعمل </span></h4>
+            </div>
+            <div class="modal-body arabparagraph" >
+              <div class="container content">
+                    <form   id="sky-form1" class="sky-form " style="width: 800px;">
+                            <fieldset>                  
+                                    <div class="row ">
+                                        <section class="col col-6 ">الأسم
+                                            <label class="input">
+                                                <i class="icon-prepend fa fa-user"></i>
+                                                <input required minlength="5"  type="text" name="name"  [(ngModel)]="user1.nomAr">
+                                            </label>
+                                        </section>
+                                        
+                                        <section class="col col-6">القب
+                                            <label class="input">
+                                                <i class="icon-prepend fa fa-user"></i>
+                                                <input  minlength="5" required type="text" name="surname"  [(ngModel)]="user1.prenomAr">
+                                            </label>
+                                        </section>
+                                        
+                                      
+                                    </div>
+                                    <div class="row">
+                                          <section class="col col-6">prenom
+                                                  <label class="input">
+                                                      <i class="icon-prepend fa fa-user"></i>
+                                                      <input  minlength="5" type="text" required name="prenomfr"  [(ngModel)]="user1.prenomFr">
+                                                  </label>
+                                              </section>
+                                          <section class="col col-6"> nom
+                                                  <label class="input">
+                                                      <i class="icon-prepend fa fa-user"></i>
+                                                      <input   minlength="5" type="text" required name="nomfr"  [(ngModel)]="user1.nomFr">
+                                                  </label>
+                                          </section>
+                                          
+                                    </div>
+                                    <div class="row">
+                                        <section class="col col-6">كلمة السر
+                                            <label class="input">
+                                                <i class="icon-prepend fa fa-lock"></i>
+                                                <input   minlength="5" type="password" required name="pass1"  [(ngModel)]="user1.motDePasse">
+                                            </label>
+                                        </section>
+                                        <section class="col col-6">تأكيد كلمة السر
+                                            <label class="input"> 
+                                                <i class="icon-prepend fa fa-lock"></i>
+                                                <input   minlength="5" [value]="user1.motDePasse"  type="password" required name="pass2" >
+                                            </label>
+                                        </section>
+                                        
+                                    </div>
+                                    <div class="row">
+                                            <section class="col col-6">رقم بطاقة التعريف الوطنية (login)
+                                                    <label class="input">
+                                                        <i class="icon-prepend fa fa-info"></i>
+                                                        <input  minlength="8" maxlength="8" required type="number" name="CIN"  [(ngModel)]="user1.login">
+                                                    </label>
+                                                </section>
+                                            <section class="col col-6">وضيفة المستعمل
+                                                    <label class="select"> 
+                                                        <select required name="job"  [(ngModel)]="user1.codeProfile" >
+                                                            <option value="ordonnateur">آمر بالصرف</option>
+                                                            <option value="ordonateurministere">آمر بالصرف بوزارة الاشراف</option>
+                                                            <option value="controlleur">مراقب المصاريف</option>
+                                                            <option value="payeur">محاسب</option>
+                                                        </select>
+                                                        <i></i>
+                                                    </label>
+                                                </section>
+                                                
+                                    </div>
+                                </fieldset>
+                                <footer>
+                                        <button type="button" (click)="exitEdit()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                                        <button  type="button" (click)="updateUser()" class="btn-u btn-u-primary"><span class="arabparagraph">تأكيد</span></button>                                  
+                                </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			

@@ -41,7 +41,7 @@
               <div class="row ">
                     <section class="col col-6">
                             <label class="input">
-                                <i class="icon-prepend fa fa-codebar"></i>
+                                <i class="icon-prepend fa fa-info"></i>
                                 <input  minlength="8" maxlength="8" required type="text"  [(ngModel)]="groupeadd.codeGroupe" name="nomcatAr" placeholder="رمز المجموعة" [(ngModel)]="groupe.codeGroupe">
                             </label>
                     </section>
@@ -106,114 +106,109 @@
         </div> 
 </div> 
 <div class="container content"> 
-        <div class="row ">  
-                <div   id="sky-form1" class="sky-form ">
-                <header class="arabparagraph">قائمة المجموعات
-                        <button *ngIf="list == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
-                        <button *ngIf="list == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                                                  
-                </header> 
-                <div class="arabparagraph"  *ngIf="list==true">
-                    <fieldset>
-                        <div class="row">
-                            <form>
-                                <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                                            <input type="text" class="form-control" name="searchString" placeholder="اسم المجموعة..." [(ngModel)]="searchString">
+    <div class="col-md-7">
+                    <div   id="sky-form1" class="sky-form ">
+                    <header class="arabparagraph">قائمة المجموعات
+                            <button *ngIf="list == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
+                            <button *ngIf="list == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                                                  
+                    </header> 
+                    <div class="arabparagraph"  *ngIf="list==true">
+                        <fieldset>
+                            <div class="row">
+                                <form>
+                                    <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                                <input type="text" class="form-control" name="searchString" placeholder="اسم المجموعة..." [(ngModel)]="searchString">
+                                            </div>
                                         </div>
+                                </form>  
+                                <table class=" table table-bordered table-striped" >
+                                    <thead>
+                                            <tr>
+                                                <th>
+                                                    رمز المجموعة
+                                                </th>
+                                                <th>
+                                                    اسم المجموعة
+                                                </th>
+                                                <th>
+                                                    nom du groupe 
+                                                </th>        
+                                                <th>المنحة</th>   
+                                                <th style="width:110px;visibility: hidden;"></th>                  
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let u of grps | paginate : { itemsPerPage:5, currentPage:p} | filterfct: 'libCatAr': searchString; let i = index ">
+                                            <td>{{u.codeGroupe}}</td>
+                                            <td>{{u.libGroupeAr}}</td>
+                                            <td>{{u.libGroupeFr}}</td>
+                                            <td>{{u.taux.valTaux}}</td>
+                                            <td class="text-center"><button class="btn-u btn-u-red" (click)="deleteGrp(u)"><i class="fa fa-ban"></i></button>
+                                                <button class="btn-u btn-u-blue" (click)="showInfosGrp(u)"><i class="fa fa-cogs"></i></button></td>
+            
+                                        </tr>
+                                    </tbody>
+                                    <tfoot><tr>
+                                     <td colspan="5" class="text-center"><span class="arabparagraph">
+                                         <pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls></span></td> 
+                                    </tr>
+                                    </tfoot>
+                            </table>
+                            </div>
+                         </fieldset>   
+                    </div>   
+                    
+                    </div>
+    </div>  
+        <div class="col-md-5">
+                        <div   id="sky-form3" class="sky-form ">
+                            <header class="arabparagraph">قائمة المنح
+                                    <button *ngIf="listt == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="listt = false"><i class="fa fa-sort-desc"></i></button>
+                                    <button *ngIf="listt == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="listt = true"><i class="fa fa-sort-asc"></i></button>                                                                  
+                            </header> 
+                            <div class="arabparagraph"  *ngIf="listt==true">
+                                <fieldset>
+                                    <div class="row">
+                                        <table class=" table table-bordered table-striped" >
+                                            <thead class="text-center">
+                                                    <tr>
+                                                        <th>
+                                                            رمز المنحة
+                                                        </th>
+                                                        <th>
+                                                            قيمة المنحة
+                                                        </th>         
+                                                        <th style="width:50px;visibility: hidden;" > </th>                  
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-center">
+                                                <tr *ngFor="let u of taux | paginate : { itemsPerPage:5, currentPage:p}  ">
+                                                    <td>{{u.codeTaux}}</td>
+                                                    <td>{{u.valTaux}}</td>
+                                                    <td class="text-center"><button class="btn-u btn-u-red" (click)="delTaux(u)"><i class="fa fa-times"></i></button>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot><tr>
+                                             <td colspan="3" class="text-center"><span class="arabparagraph">
+                                                 <pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls></span></td> 
+                                            </tr>
+                                            </tfoot>
+                                    </table>
                                     </div>
-                            </form>  
-                            <table class=" table table-bordered table-striped" >
-                                <thead>
-                                        <tr>
-                                            <th>
-                                                رمز المجموعة
-                                            </th>
-                                            <th>
-                                                اسم المجموعة
-                                            </th>
-                                            <th>
-                                                nom du groupe 
-                                            </th>        
-                                            <th>المنحة</th>   
-                                            <th style="width:110px;visibility: hidden;"></th>                  
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let u of grps | paginate : { itemsPerPage:5, currentPage:p} | filterfct: 'libCatAr': searchString; let i = index ">
-                                        <td>{{u.codeGroupe}}</td>
-                                        <td>{{u.libGroupeAr}}</td>
-                                        <td>{{u.libGroupeFr}}</td>
-                                        <td>{{u.taux.valTaux}}</td>
-                                        <td class="text-center"><button class="btn-u btn-u-red" (click)="deleteGrp(u)"><i class="fa fa-ban"></i></button>
-                                            <button class="btn-u btn-u-blue" (click)="showInfosGrp(u)"><i class="fa fa-cogs"></i></button></td>
-        
-                                    </tr>
-                                </tbody>
-                                <tfoot><tr>
-                                 <td colspan="5" class="text-center"><span class="arabparagraph">
-                                     <pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls></span></td> 
-                                </tr>
-                                </tfoot>
-                        </table>
-                        </div>
-                     </fieldset>   
-                </div>   
-                
-                </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div   id="sky-form3" class="sky-form ">
-                <header class="arabparagraph">قائمة المنح
-                        <button *ngIf="listt == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="listt = false"><i class="fa fa-sort-desc"></i></button>
-                        <button *ngIf="listt == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="listt = true"><i class="fa fa-sort-asc"></i></button>                                                                  
-                </header> 
-                <div class="arabparagraph"  *ngIf="listt==true">
-                    <fieldset>
-                        <div class="row">
-                            <table class=" table table-bordered table-striped" >
-                                <thead>
-                                        <tr>
-                                            <th>
-                                                رمز المنحة
-                                            </th>
-                                            <th>
-                                                قيمة المنحة
-                                            </th>         
-                                            <th style="width:50px;visibility: hidden;" > </th>                  
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let u of taux | paginate : { itemsPerPage:5, currentPage:p}  ">
-                                        <td>{{u.codeTaux}}</td>
-                                        <td>{{u.valTaux}}</td>
-                                        <td class="text-center"><button class="btn-u btn-u-red" (click)="delTaux(u)"><i class="fa fa-times"></i></button>
-                                    </tr>
-                                </tbody>
-                                <tfoot><tr>
-                                 <td colspan="3" class="text-center"><span class="arabparagraph">
-                                     <pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls></span></td> 
-                                </tr>
-                                </tfoot>
-                        </table>
-                        </div>
-                     </fieldset>   
-                </div>   
-                
-                </div>
-        </div>
-
-        
+                                 </fieldset>   
+                            </div>   
+                            
+                            </div>
+            </div>
         </div> 
-
-
         <!-- modal edit -->
         <div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 100px; background-color: hsla(0, 0%, 3%, 0.3);">
             <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button aria-hidden="true" data-dismiss="modal" (click)="modal = false" class="close" type="button">×</button>
+                            <button aria-hidden="true" data-dismiss="modal" (click)="exitEdit()" class="close" type="button">×</button>
                             <h4  id="myLargeModalLabel3" class="modal-title"><span class="arabtext">تغيير مجموعة</span></h4>
                         </div>
                         <form   id="sky-form1" class="sky-form ">
@@ -249,7 +244,7 @@
                                 </fieldset>
                              <div class="row">
                                     <div class="modal-footer">
-                                            <button type="button" (click)="modal = false" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
+                                            <button type="button" (click)="exitEdit()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
                                             <button  type="button" (click)="saveEdition()" class="btn-u btn-u-green"><span class="arabparagraph">تسجيل</span></button>
                                         </div>
                              </div>
