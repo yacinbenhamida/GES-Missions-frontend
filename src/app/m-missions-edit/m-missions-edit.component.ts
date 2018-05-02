@@ -54,6 +54,7 @@ export class MMissionsEditComponent implements OnInit {
   valbudgobttransport:number = 0;
   valbudgpromMiss:number = 0;
   valbudgpromTrans:number = 0;
+  user:string = JSON.parse(localStorage.getItem('Array'));
   constructor(public missionsservice:MissionService, public missionaireService:MissionaireServices,
     public ordMService:OrdreMissionService,public thServ:ThemeService,public mocserv:MotCleService,
   public consServ:ConcerneServices,public fraisServ:AvoirFraisService,public budgserv:BudgetService) {
@@ -89,6 +90,7 @@ export class MMissionsEditComponent implements OnInit {
       case "V":return "مصادق عليه من قبل الآمر بالصرف";
       case "E": return "في إنتضار المصادقة";
       case "S": return "مصادق عليه من قبل سلطة الإشراف";
+      case "R" : return "وقع رفضه من قبل سلطة الإشراف";
     }
   }
   disp(){
@@ -274,6 +276,7 @@ calcduree(d1:Date,d2:Date){
     this.missionconcernee = u.mission;
     
   }
+  //fiche de blocage de crédit
   print(u:OrdreMission){
     let printContents, popupWin;
     let destination:string = "";
@@ -286,7 +289,7 @@ calcduree(d1:Date,d2:Date){
     .subscribe(val=>this.valbudgpromMiss=val,error=>this.valbudgpromMiss=0);
     this.fraisServ.getFraisTransportPromis(u.mission.departement.codeDep,this.year)
     .subscribe(val=>this.valbudgpromTrans=val,error=>this.valbudgpromTrans=0);
-    this.consServ.getAllConcerneOfORDRE(u.idOrdre).subscribe(a=>{
+    this.consServ.getAllConcerneOfORDRE(u.idOrdre,u.mission.departement.codeDep).subscribe(a=>{
       u.concerne = a;
       for (let index = 0; index < a.length; index++) {
         if(a.length==1){
@@ -308,41 +311,39 @@ calcduree(d1:Date,d2:Date){
       let fraislogementtot:number = 0.000;
       let fraislogement:number = 0.000;
       let fraisdivers:number = 0.000;
-      this.fraisServ.getAllFraisOfOrdre(u.idOrdre).subscribe(f=>{
+      let codeDep : string = "";
+      if(this.user == "O"){
+        codeDep = this.dep.codeDep;
+      }else codeDep = u.mission.departement.codeDep;
+      this.fraisServ.getAllFraisOfOrdre(u.idOrdre,codeDep).subscribe(f=>{
         for (let i = 0; i < f.length; i++) {
-          if (f[i].typeFrai.codeTypefr == "0808"){ // frais missions
+          if (f[i].typeFrai.codeTypefr == "0808" && f[i].support!=null){ // frais missions
             if(f[i].support.codeSupport=="J"){ // org hote et org parrain
               supfraismiss =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + u.mission.departement.libDepAr ;
             }
             else if(f[i].support.codeSupport=="M"){ // ORG Hote et projet
               supfraismiss =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + f[i].projet.libProjAr ;
-
             }
             else if(f[i].support.codeSupport=="P"){ // compte perso
               supfraismiss ="الحساب الخاص " ;
-
             }
             else if(f[i].support.codeSupport=="E"){  //org hote (etranger)
               supfraismiss = f[i].nomOrgAr ;
-
             }
             else if(f[i].support.codeSupport=="A"){ // projet
               supfraismiss = f[i].projet.libProjAr ;
-
             }
-            else if (f[i].support.codeSupport=="I"){
+            else if (f[i].support.codeSupport=="I"){ // org du missionaire
               supfraismiss = u.mission.departement.libDepAr ;
             }
-            supfraislogement = supfraismiss;
             fraismiss = f[i].valeurPrevue;
           }
-          else if(f[i].typeFrai.codeTypefr == "0606"){ //frais transport 
+          else if(f[i].typeFrai.codeTypefr == "0606"  && f[i].support!=null){ //frais transport 
               if(f[i].support.codeSupport=="J"){ // org hote et org parrain
                 supfraistransport =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + u.mission.departement.libDepAr ;
               }
               else if(f[i].support.codeSupport=="M"){ // ORG Hote et projet
                 supfraistransport =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + f[i].projet.libProjAr ;
-  
               }
               else if(f[i].support.codeSupport=="P"){ // compte perso
                 supfraistransport ="الحساب الخاص " ;
@@ -358,7 +359,7 @@ calcduree(d1:Date,d2:Date){
               }
               fraistransp = f[i].valeurPrevue;
           }
-          else if(f[i].typeFrai.codeTypefr == "0303" || f[i].typeFrai.codeTypefr == "0707" ||f[i].typeFrai.codeTypefr == "0404" ||f[i].typeFrai.codeTypefr == "0202" || f[i].typeFrai.codeTypefr == "0101"){ //frais participation 
+          else if((f[i].typeFrai.codeTypefr == "0303" || f[i].typeFrai.codeTypefr == "0707" ||f[i].typeFrai.codeTypefr == "0404" ||f[i].typeFrai.codeTypefr == "0202" || f[i].typeFrai.codeTypefr == "0101") && f[i].support!=null){ //frais participation 
             if (f[i].typeFrai.codeTypefr == "0101"){
               timbre = f[i].valeurPrevue;
             }
@@ -381,7 +382,28 @@ calcduree(d1:Date,d2:Date){
               supfraispartic = u.mission.departement.libDepAr ;
             }
             else supfraispartic = " " ;
-          }           
+          }
+          else if(f[i].typeFrai.codeTypefr == "0909"){ // frais de logement
+            if(f[i].support.codeSupport=="J"){ // org hote et org parrain
+              supfraislogement =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + u.mission.departement.libDepAr ;
+            }
+            else if(f[i].support.codeSupport=="M"){ // ORG Hote et projet
+              supfraislogement =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + f[i].projet.libProjAr ;
+            }
+            else if(f[i].support.codeSupport=="P"){ // compte perso
+              supfraislogement ="الحساب الخاص " ;
+            }
+            else if(f[i].support.codeSupport=="E"){  //org hote (etranger)
+              supfraislogement = f[i].nomOrgAr ;
+            }
+            else if(f[i].support.codeSupport=="A"){ // projet
+              supfraislogement = f[i].projet.libProjAr ;
+            }
+            else if (f[i].support.codeSupport=="I"){
+              supfraislogement = u.mission.departement.libDepAr ;
+            }
+            fraislogement = f[i].valeurPrevue;
+          }             
         }
 
         popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
@@ -417,7 +439,7 @@ calcduree(d1:Date,d2:Date){
         </p>
         <p>
         الرتبة : ${u.missionaire.grade.libGradeAr} &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp; 
-        الصنف أو السلك :  ${u.missionaire.classe.libClasseAr} &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;
+        الصنف أو السلك :  ${u.missionaire.classe.libClasseAr} &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;
         مستوى التأجير : ${u.missionaire.groupe.taux.valTaux} 
         </p>
         <p>
@@ -523,8 +545,182 @@ calcduree(d1:Date,d2:Date){
       })
       
     }); 
-  }
+  }// impression ordre mission
   printOrdre(u:OrdreMission){
-    
+    let printContents, popupWin;
+    let destination:string = "";
+    let moytransport: string ="";
+    this.consServ.getAllConcerneOfORDRE(u.idOrdre,u.mission.departement.codeDep).subscribe(a=>{
+      u.concerne = a;
+      for (let index = 0; index < a.length; index++) {
+        if(a.length==1){
+          destination += a[index].pays.libPaysAr 
+          moytransport += a[index].moyTransport;
+        }
+        else {
+          destination += a[index].pays.libPaysAr + " - "
+          moytransport += a[index].moyTransport +" - "
+        }
+      }
+      let supfraismiss:string = "";
+      let supfraislogement:string ="";
+      let supfraispartic:string ="";
+      let supfraistransport:string ="";
+      let fraistransp:number = 0.000;
+      let fraismiss:number = 0.000;
+      let timbre:number = 0.000;
+      let fraislogementtot:number = 0.000;
+      let fraislogement:number = 0.000;
+      let fraisdivers:number = 0.000;
+      this.fraisServ.getAllFraisOfOrdre(u.idOrdre,this.dep.codeDep).subscribe(f=>{
+        for (let i = 0; i < f.length; i++) {
+          if (f[i].typeFrai.codeTypefr == "0808"){ // frais missions
+            if(f[i].support.codeSupport=="J"){ // org hote et org parrain
+              supfraismiss =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + u.mission.departement.libDepAr ;
+            }
+            else if(f[i].support.codeSupport=="M"){ // ORG Hote et projet
+              supfraismiss =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + f[i].projet.libProjAr ;
+
+            }
+            else if(f[i].support.codeSupport=="P"){ // compte perso
+              supfraismiss ="الحساب الخاص " ;
+
+            }
+            else if(f[i].support.codeSupport=="E"){  //org hote (etranger)
+              supfraismiss = f[i].nomOrgAr ;
+
+            }
+            else if(f[i].support.codeSupport=="A"){ // projet
+              supfraismiss = f[i].projet.libProjAr ;
+
+            }
+            else if (f[i].support.codeSupport=="I"){
+              supfraismiss = u.mission.departement.libDepAr ;
+            }
+          }
+          else if(f[i].typeFrai.codeTypefr == "0606"){ //frais transport 
+              if(f[i].support.codeSupport=="J"){ // org hote et org parrain
+                supfraistransport =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + u.mission.departement.libDepAr ;
+              }
+              else if(f[i].support.codeSupport=="M"){ // ORG Hote et projet
+                supfraistransport =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + f[i].projet.libProjAr ;
+              }
+              else if(f[i].support.codeSupport=="P"){ // compte perso
+                supfraistransport ="الحساب الخاص " ;
+              }
+              else if(f[i].support.codeSupport=="E"){  //org hote (etranger)
+                supfraistransport = f[i].nomOrgAr ;
+              }
+              else if(f[i].support.codeSupport=="A"){ // projet
+                supfraistransport = f[i].projet.libProjAr ;
+              }
+              else if (f[i].support.codeSupport=="I"){
+                supfraistransport = u.mission.departement.libDepAr ;
+              }
+          }
+          else if(f[i].typeFrai.codeTypefr == "0303" || f[i].typeFrai.codeTypefr == "0707" ||f[i].typeFrai.codeTypefr == "0404" ||f[i].typeFrai.codeTypefr == "0202" || f[i].typeFrai.codeTypefr == "0101"){ //frais participation 
+            if (f[i].typeFrai.codeTypefr == "0101"){
+              timbre = f[i].valeurPrevue;
+            }
+            if(f[i].support.codeSupport=="J"){ // org hote et org parrain
+              supfraispartic =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + u.mission.departement.libDepAr ;
+            }
+            else if(f[i].support.codeSupport=="M"){ // ORG Hote et projet
+              supfraispartic =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + f[i].projet.libProjAr ;
+            }
+            else if(f[i].support.codeSupport=="P"){ // compte perso
+              supfraispartic ="الحساب الخاص " ;
+            }
+            else if(f[i].support.codeSupport=="E"){  //org hote (etranger)
+              supfraispartic = f[i].nomOrgAr ;
+            }
+            else if(f[i].support.codeSupport=="A"){ // projet
+              supfraispartic = f[i].projet.libProjAr ;
+            }
+            else if (f[i].support.codeSupport=="I"){
+              supfraispartic = u.mission.departement.libDepAr ;
+            }
+            else supfraispartic = " " ;
+          }
+          else if(f[i].typeFrai.codeTypefr == "0909"){ // frais de logement
+            if(f[i].support.codeSupport=="J"){ // org hote et org parrain
+              supfraislogement =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + u.mission.departement.libDepAr ;
+            }
+            else if(f[i].support.codeSupport=="M"){ // ORG Hote et projet
+              supfraislogement =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + f[i].projet.libProjAr ;
+            }
+            else if(f[i].support.codeSupport=="P"){ // compte perso
+              supfraislogement ="الحساب الخاص " ;
+            }
+            else if(f[i].support.codeSupport=="E"){  //org hote (etranger)
+              supfraislogement = f[i].nomOrgAr ;
+            }
+            else if(f[i].support.codeSupport=="A"){ // projet
+              supfraislogement = f[i].projet.libProjAr ;
+            }
+            else if (f[i].support.codeSupport=="I"){
+              supfraislogement = u.mission.departement.libDepAr ;
+            }
+          }           
+        }
+        popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+        //printContents = document.getElementById('print-section').innerHTML;
+        popupWin.document.open();
+        popupWin.document.write(`
+          <html dir="rtl" lang="ar" >
+            <head>
+              <title>طباعة الأمر </title>
+              <meta charset="utf-8">
+              <link rel="stylesheet" href="../../styles.css">
+              <style>
+              table, th, td {
+                margin-right:50px;
+                border: 1px solid black;
+                border-collapse: collapse;
+                text-align:center;
+            }
+              </style>
+            </head>
+        <body onload="window.print();window.close()">
+        <h1>
+        <img src="../../assets/img/reptun.jpg" style=" display: block;
+        margin-left: auto;
+        margin-right: auto;"/>
+        </h1>
+        <h1 style="text-align:center;">
+        إذن بمأمورية بالخارج
+        </h1>
+        <h2 style="text-align:center;">
+        عدد <span style=" letter-spacing: 4px;">${this.dep.codeDep}${u.mission.numMission}${u.numOrdre}   </span>
+        </h2>
+        <br/>
+        <p> السيد (ة)  :  ${u.missionaire.nomAr}  &emsp;  ${u.missionaire.prenomAr} &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; المعرف الوحيد : ${u.missionaire.matricule}</p>
+        <p> الرتبة : ${u.missionaire.grade.libGradeAr}  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; الصنف : ${u.missionaire.classe.libClasseAr}</p>
+        <p> الخطة الوطيفية : ${u.missionaire.fonction.libFctAr}</p>
+        <p> تاريخ الولادة ومكانها :  ${u.missionaire.dateNaissance} &emsp; ${u.missionaire.lieuNaissanceAr} &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; الجنسية : ${u.missionaire.nationaliteAr} </p> 
+        <p>بطاقة التعريف الوطنية :  ${u.missionaire.cin} &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  بتاريخ: ${u.missionaire.dateCin}</p>
+        <p>في القيام بالمأمورية : ${destination}</p>
+        <p>موضوع المأمورية :  ${u.mission.objectifMissionAr}</p>
+        <p> تاريخ الذهاب :  ${u.dateDepP} </p>
+        <P> تاريخ الإياب :  ${u.dateArrP} </p>
+        <p> وسيلة النقل : ${moytransport} </p>
+        <p> تحمل مصاريف النقل على : ${supfraistransport}</p>
+        <p> تحمل مصاريف المأمورية على : ${supfraismiss} </p>
+        <p>تحمل مصاريف السكن على : ${supfraislogement} </p>
+        <p> تحمل مصاريف المشاركة على : ${supfraispartic} </p>
+        <p> المرغوب من السلط المدنية والعسكرية مساعدة السيد(ة) : ${u.missionaire.nomAr}&emsp;&emsp;${u.missionaire.prenomAr} على القيام بمأموريته (ها).</p>
+        <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; تونس فى : </p>
+        <p> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; الإمضاء والختم  </p>
+        
+        
+        &emsp;
+        </body>
+          </html>`
+        );
+        popupWin.document.close();
+
+      })
+      
+    }); 
   }
 }

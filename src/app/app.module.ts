@@ -39,7 +39,10 @@ import { TauxGroupeServices } from './model/tauxgroupe.service';
 import { ReportService } from './model/reporting.service';
 import { SDistribpaysComponent } from './s-distribpays/s-distribpays.component';
 import {SelectModule} from 'ng2-select';
-
+import { AuthService } from './authguards/auth.service';
+import { AuthGuardService } from './authguards/auth-guard.service';
+import { Http } from '@angular/http';
+import { RoleGuardService } from './authguards/roleguard.service';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -59,13 +62,15 @@ import {SelectModule} from 'ng2-select';
     PopupModule.forRoot(),
     NgxPaginationModule,
     SelectModule,
+    HttpModule,
     LoadingAnimateModule.forRoot()
   ],
   providers: [NavbarService,AppService,UtilisateurService,
     DepartementService,CategorieService,ClasseService,FonctionService,GradeService
   ,ZonePaysService,ThemeService,ProjetService,MotCleService,PaysService,BudgetService,
   MissionaireServices,OrdreMissionService,MissionService,ConcerneServices,AvoirFraisService,
-  PaysService,TypeFraisServices,TauxGroupeServices,LoadingAnimateService,ReportService],
+  PaysService,TypeFraisServices,TauxGroupeServices,LoadingAnimateService,ReportService,AuthService,
+  AuthGuardService,RoleGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

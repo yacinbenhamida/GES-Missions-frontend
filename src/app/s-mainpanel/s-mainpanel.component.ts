@@ -8,6 +8,7 @@ import { DatePipe, NgFor } from '@angular/common';
 import { OrdreMission } from '../model/ordremission';
 import { AvoirFraisService } from '../model/avoirfrais.service';
 import { ConcerneServices } from '../model/concerne.service';
+import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'app-s-mainpanel',
   templateUrl: './s-mainpanel.component.html',
@@ -19,8 +20,8 @@ export class SMainpanelComponent implements OnInit {
   bilan:boolean = false;
   deb:Date;
   fin:Date;
-  deball:Date = new Date();
-  finall:Date = new Date();
+  deball:Date;
+  finall:Date;
   currentDep:Departement = JSON.parse(localStorage.getItem('org'));
   // distribution missions par pays
   listPays:Pays[] = [];
@@ -30,7 +31,9 @@ export class SMainpanelComponent implements OnInit {
   totaljours:number = 0;
   totalmiss:number = 0;
   totaltransport:number = 0;
+  totaldivers : number = 0;
   destinations:string = ' ';
+
   constructor(public paysserv:PaysService,public reportService:ReportService,public fraisServ:AvoirFraisService
     ,public cserv:ConcerneServices) {
     paysserv.getAllPays().subscribe(p=>this.listPays=p);
@@ -49,7 +52,7 @@ export class SMainpanelComponent implements OnInit {
     switch(x){
       case "E": return "لم تتم المصادقة بعد";
       case "V" : return "مصادق عليه من قبل الآمر بالصرف";
-      case "S" : return "مصادق عليه من قبل مراقب المصاريف أو سلطة الإشراف";
+      case "S" : return "مصادق عليه من قبل سلطة الإشراف";
       default : return "في الإنتضار";
     }
   }
@@ -85,6 +88,7 @@ export class SMainpanelComponent implements OnInit {
     this.totaljours = 0;
     this.totalmiss  = 0;
     this.totaltransport = 0;
+    this.totaldivers = 0;
     this.missionsres.forEach(element => {
       element.concerne = [];
       element.concerne.length = 0;
@@ -114,7 +118,7 @@ export class SMainpanelComponent implements OnInit {
              this.missionsres=data;
              for (let index = 0; index < this.missionsres.length; index++) {
                this.totaljours = this.totaljours + this.convDur(this.missionsres[index].dateDepP,this.missionsres[index].dateArrP);
-               this.fraisServ.getAllFraisOfOrdre(this.missionsres[index].idOrdre)
+               this.fraisServ.getAllFraisOfOrdre(this.missionsres[index].idOrdre,this.dep.codeDep)
                .subscribe(x=>{
                  this.missionsres[index].avoirfrais = x;
                  for (let j = 0; j < x.length; j++) {
@@ -123,6 +127,9 @@ export class SMainpanelComponent implements OnInit {
                   }
                   else if (x[j].typeFrai.codeTypefr=="0606"){
                     this.totaltransport+=x[j].valeurPrevue;
+                  }
+                  else{
+                    this.totaldivers += x[j].valeurPrevue;
                   }
                }              
               });             
@@ -134,10 +141,9 @@ export class SMainpanelComponent implements OnInit {
     }else return;
   }
   print1(){
-
     if(this.deball!=null && this.finall !=null && this.deball!=undefined && this.finall !=undefined){
-      
       if(!this.isEmpty(this.mismissionres2) && this.mismissionres2[0].avoirfrais.length>0 &&  this.mismissionres2[0].concerne.length>0){
+
         let printContents, popupWin;
       printContents = document.getElementById('dates-only').innerHTML;
       popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
@@ -165,6 +171,7 @@ export class SMainpanelComponent implements OnInit {
     this.totaljours = 0;
     this.totalmiss  = 0;
     this.totaltransport = 0;
+    this.totaldivers = 0;
     this.mismissionres2.forEach(element => {
       element.concerne = [];
       element.concerne.length = 0;
@@ -178,30 +185,34 @@ export class SMainpanelComponent implements OnInit {
       }
     }else alert('الرجاء التثبت من المعطيات');
   }
-
+  dep:Departement = JSON.parse(localStorage.getItem('org'));
   chDate(){
-    if(this.deball+""!='jj/mm/aaaa' && this.finall+""!='jj/mm/aaaa'
-     && this.deball != undefined && this.finall !=undefined){
+    if(this.deball && this.finall){
       this.reportService.getMissionsBTDA(this.deball,this.finall,this.currentDep.codeDep).subscribe(
         data=>{        
           if(this.isEmpty(data)) alert("لا توجد مأموريات في هذا التاريخ ");
           else{
              this.mismissionres2=data;
-             for (let index = 0; index < this.mismissionres2.length; index++) {
-               this.totaljours = this.totaljours + this.convDur(this.mismissionres2[index].dateDepP,this.mismissionres2[index].dateArrP);
-               this.fraisServ.getAllFraisOfOrdre(this.mismissionres2[index].idOrdre)
-               .subscribe(x=>{
-                 this.mismissionres2[index].avoirfrais = x;
+             for (let index = 0; index < data.length; index++) {
+               this.totaljours = this.totaljours + this.convDur(data[index].dateDepP,data[index].dateArrP);
+               this.fraisServ.getAllFraisOfOrdre(data[index].idOrdre,this.dep.codeDep)
+               .subscribe(x=>{ 
+
+                data[index].avoirfrais = x;
                  for (let j = 0; j < x.length; j++) {
                   if(x[j].typeFrai.codeTypefr=="0808"){
                     this.totalmiss+=x[j].valeurPrevue;
                   }
                   else if (x[j].typeFrai.codeTypefr=="0606"){
                     this.totaltransport+=x[j].valeurPrevue;
+                  }else if(x[j].typeFrai.codeTypefr!="0606" && x[j].typeFrai.codeTypefr!="0808"){
+                    this.totaldivers += x[j].valeurPrevue;
                   }
                }
+
+               
               });
-              this.cserv.getAllConcerneOfORDRE(this.mismissionres2[index].idOrdre).subscribe(
+              this.cserv.getAllConcerneOfORDRE(data[index].idOrdre,data[index].mission.departement.codeDep).subscribe(
                 a=>{
                   this.mismissionres2[index].concerne = a;
                   a.forEach(dest => {
@@ -211,13 +222,11 @@ export class SMainpanelComponent implements OnInit {
                   });
                 }
               )
-              
              } 
             }
           ;}
         ,error=>alert("لا توجد مأموريات في هذا التاريخ ")
       );
-     } 
-    else return;
+    }
   }
 }

@@ -115,7 +115,8 @@
                 <header class="arabparagraph">قائمة المصاريف
                         <button *ngIf="listvisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
                         <button *ngIf="listvisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                 
-                </header>  
+                </header> 
+                <fieldset *ngIf="listvisible == true"> 
                 <div *ngIf="isEmpty(budgets)==true" class="arabparagraph">لا توجد   مصاريف</div>                
                 <table *ngIf="isEmpty(budgets)==false && listvisible == true" class=" table table-bordered table-striped" >
                         <thead>
@@ -144,8 +145,8 @@
                                 <td>{{u.valeurBudgTransport}}</td>
                                 <td [innerHTML]="convertEtat(u.etat)"></td>
                                 <td>{{u.dateMaj}}</td>
-                                <td class="text-center"><button *ngIf="u.etat!='S'" [ngClass]="{'btn-u btn-u-gray': u.etat=='O','btn-u btn-u-blue' : u.etat=='N'}" [disabled]="verifEtatN(u)" (click)="saveEdition(u)"><i class="fa fa-save"></i></button></td>
-                                <td  class="text-center"><button *ngIf="u.etat!='S'"  [ngClass]="{'btn-u btn-u-gray': u.etat=='O','btn-u btn-u-red' : u.etat=='N'}" [disabled]="verifEtatN(u)" (click)="delEdition(u)"><i class="fa fa-ban"></i></button></td>
+                                <td class="text-center"><button class="btn-u" *ngIf="u.etat!='S'" [ngClass]="{'btn-u-dark disabled': u.etat=='O',' btn-u-blue' : u.etat=='N'}" [disabled]="verifEtatN(u)" (click)="saveEdition(u)"><i class="fa fa-save"></i></button></td>
+                                <td  class="text-center"><button  class="btn-u" *ngIf="u.etat!='S'"  [ngClass]="{'btn-u-dark disabled': u.etat=='O','btn-u-red' : u.etat=='N'}" [disabled]="verifEtatN(u)" (click)="delEdition(u)"><i class="fa fa-times"></i></button></td>
                             </tr>
                         </tbody>
                         <tfoot>
@@ -157,6 +158,7 @@
                             
                         </tfoot>
                 </table>
+            </fieldset>
                 </div>
         </div>           
 </div>

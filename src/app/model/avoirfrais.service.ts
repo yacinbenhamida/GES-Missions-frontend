@@ -28,16 +28,16 @@ export class AvoirFraisService{
     getAllFrais():Observable<AvoirFrais[]>{
         return this.http.get(this.frUrl+"/allFrais").map(this.extractData).catch(this.handleError);
     }
-    getAllFraisOfOrdre(id:number):Observable<AvoirFrais[]>{
-        const url = `${this.frUrl}/allFraisoford/${id}`;
+    getAllFraisOfOrdre(id:number,codeDep:string):Observable<AvoirFrais[]>{
+        const url = `${this.frUrl}/allFraisoford/${id}/${codeDep}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
     getAllFraisDiversOfOrdre(id:number):Observable<AvoirFrais[]>{
         const url = `${this.frUrl}/allFraisDiversoford/${id}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
-    getFraisMissionOfConcerne(idconcerne:number):Observable<AvoirFrais>{
-        const url = `${this.frUrl}/allFraisMissionofConcerne/${idconcerne}`;
+    getFraisMissionOfConcerne(idconcerne:number,codeDep:string,idordre:number):Observable<AvoirFrais>{
+        const url = `${this.frUrl}/allFraisMissionofConcerne/${idconcerne}/${codeDep}/${idordre}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
     getFrais(id:number):Observable<AvoirFrais>{

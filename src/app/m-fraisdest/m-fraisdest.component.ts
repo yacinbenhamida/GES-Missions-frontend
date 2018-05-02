@@ -101,7 +101,7 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
   
 
   ngOnInit() {
-    this.concerneserv.getAllConcerneOfORDRE(this.ordremission.idOrdre).subscribe(d=>{
+    this.concerneserv.getAllConcerneOfORDRE(this.ordremission.idOrdre,this.ordremission.mission.departement.codeDep).subscribe(d=>{
       if(d!=null || d!=undefined) this.tabconcerne=d;
       else this.tabconcerne = [];
       },error=>this.tabconcerne = []);
@@ -141,7 +141,7 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
       }
       else concerne.ordre_dest = this.tabconcerne.indexOf(concerne) + 1;
       this.concerneserv.insertConcerne(concerne).then(x=>{
-        this.concerneserv.getAllConcerneOfORDRE(this.ordremission.idOrdre).subscribe(a=>
+        this.concerneserv.getAllConcerneOfORDRE(this.ordremission.idOrdre,this.ordremission.mission.departement.codeDep).subscribe(a=>
           {
             this.tabconcerne = a;   
           });
@@ -238,7 +238,7 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
     if(x.nbJoursP > 0){
       this.depensesd =  true;
       this.depenses = true;
-      this.avoirFraisServ.getFraisMissionOfConcerne(x.idconcerne).subscribe(a=>{
+      this.avoirFraisServ.getFraisMissionOfConcerne(x.idconcerne,this.departement.codeDep,x.ordre.idOrdre).subscribe(a=>{
         if(a==undefined || a == null || this.isEmpty(a)){
            this.depensesd =  true;
             this.depenses = true;

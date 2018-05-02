@@ -58,7 +58,7 @@ export class MConfirmMissionsComponent implements OnInit,AfterViewInit {
     this.user = JSON.parse(localStorage.getItem('Array'));
     missionsService.getAllMissionsOfDep(this.dep.codeDep).subscribe(d=>this.tabmissions=d);
     if(this.user == "O"){
-    ordserv.getAllOrdMissionsOfDep(this.dep.codeDep).subscribe(t=>this.tabOrdresMiss=t);
+    ordserv.getAllOrdMissionsOfDepElligibles(this.dep.codeDep).subscribe(t=>this.tabOrdresMiss=t);
     }else if(this.user=="OM"){
       ordserv.getOrdresValides(this.dep.codeDep).subscribe(t=>this.tabOrdresMiss=t);
       }
@@ -104,7 +104,10 @@ export class MConfirmMissionsComponent implements OnInit,AfterViewInit {
   }
   loadDetails(){
     this.destinations=' ';
-    this.concerneService.getAllConcerneOfORDRE(this.choosenord.idOrdre).subscribe(t=>
+    this.supfraisT = '';
+    this.supfraisM = '';
+    this.supfraisP = '';
+    this.concerneService.getAllConcerneOfORDRE(this.choosenord.idOrdre,this.choosenord.mission.departement.codeDep).subscribe(t=>
       {
         this.choosenconcerne = t;
         this.choosenconcerne.forEach(element => {
@@ -112,7 +115,8 @@ export class MConfirmMissionsComponent implements OnInit,AfterViewInit {
             this.destinations += element.pays.libPaysAr+" - ";
           } else  this.destinations = element.pays.libPaysAr;
         });
-      });
+      });   
+           if(this.user=="OM"){
       this.budgserv.getSommeBudgMissionObtenus(this.choosenord.mission.departement.codeDep,this.d)
      .subscribe(val=>this.valfraismissobt=val,error=>this.valfraismissobt =0);
      this.budgserv.getSommeBudgTransportObtenus(this.choosenord.mission.departement.codeDep,this.d)
@@ -121,9 +125,31 @@ export class MConfirmMissionsComponent implements OnInit,AfterViewInit {
      .subscribe(res=>this.valfraismisspromis = res,error=>this.valfraismisspromis =0);
      this.avserv.getFraisTransportPromis(this.choosenord.mission.departement.codeDep,this.d)
      .subscribe(res=>this.valfraistransppromis = res,error=>this.valfraistransppromis =0);
-      this.avserv.getAllFraisOfOrdre(this.choosenord.idOrdre).subscribe(t=>{
+
+     this.avserv.getAllFraisOfOrdre(this.choosenord.idOrdre,this.choosenord.mission.departement.codeDep).subscribe(t=>{
+      this.fraisaff = t;
+        for (let index = 0; index < this.fraisaff.length; index++) {
+          if(this.fraisaff[index].typeFrai.codeTypefr=="0808"){ //frais mission
+              this.valfraisM =this.fraisaff[index].valeurPrevue; 
+              this.supfraisM = this.convSupport(this.fraisaff[index].support.codeSupport);
+          }else if (this.fraisaff[index].typeFrai.codeTypefr=="0303"){ // frais participation
+            this.valfraisP =this.fraisaff[index].valeurPrevue; 
+            this.supfraisP = this.convSupport(this.fraisaff[index].support.codeSupport);
+          }else if (this.fraisaff[index].typeFrai.codeTypefr=="0606"){ // frais transport
+            this.valfraisT =this.fraisaff[index].valeurPrevue; 
+            this.supfraisT = this.convSupport(this.fraisaff[index].support.codeSupport);
+          }
+          else if (this.fraisaff[index].typeFrai.codeTypefr=="0101"){ // frais timbre
+            this.valffraisTimbre =this.fraisaff[index].valeurPrevue; 
+          }else {
+              this.valfraisDivers = this.fraisaff[index].valeurPrevue;
+          }
+        
+      }
+    });
+    }else if (this.user=="O"){
+      this.avserv.getAllFraisOfOrdre(this.choosenord.idOrdre,this.dep.codeDep).subscribe(t=>{
         this.fraisaff = t;
-        if(this.user=="OM"){
           for (let index = 0; index < this.fraisaff.length; index++) {
             if(this.fraisaff[index].typeFrai.codeTypefr=="0808"){ //frais mission
                 this.valfraisM =this.fraisaff[index].valeurPrevue; 
@@ -140,9 +166,12 @@ export class MConfirmMissionsComponent implements OnInit,AfterViewInit {
             }else {
                 this.valfraisDivers = this.fraisaff[index].valeurPrevue;
             }
-          }
+          
         }
       });
+
+    }
+      
       this.avance = this.choosenord.avance;
     this.details = true;
     if(this.ordremisschb == false){
@@ -160,6 +189,32 @@ export class MConfirmMissionsComponent implements OnInit,AfterViewInit {
       this.tabOrdresMiss.splice(this.tabOrdresMiss.indexOf(this.choosenord),1);
     },error=>alert("فشلة المصادقة"));
     this.choosenord = new OrdreMission();
+    }
+  }
+  cancelOrdre(){
+    //anulation de l'op par l'O de l'org
+    if(this.user == "O"){
+      if(confirm("هل انت متأكد من التخلي عن هذا الأمر؟ ")){
+      this.ordserv.deleteOrdMission(this.choosenord).then(a=>{
+        this.details = false;
+        this.tabOrdresMiss = this.tabOrdresMiss.filter(h=>h!==this.choosenord);
+        this.tabOrdresMiss.splice(this.tabOrdresMiss.indexOf(this.choosenord),1);
+        alert("تم");
+        this.choosenord = new OrdreMission();
+      })
+      }
+    }// refut par l'OM
+    else {
+        if(confirm("هل انت متأكد من رفض هذا الأمر؟ ")){
+          this.choosenord.etat = "R";
+          this.ordserv.updateOrdMission(this.choosenord).subscribe( res=>{
+            this.details = false;
+            this.tabOrdresMiss = this.tabOrdresMiss.filter(h=>h!==this.choosenord);
+            this.tabOrdresMiss.splice(this.tabOrdresMiss.indexOf(this.choosenord),1);
+            alert("تم");
+            this.choosenord = new OrdreMission();
+          })
+        }
     }
   }
 }

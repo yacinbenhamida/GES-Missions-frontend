@@ -169,7 +169,8 @@
 
                                   <div class="row text-center">
                                   <button class="btn-u btn-u-lg" type="button" (click)="confirmMission()"> المصادقة</button>
-                                 </div>
+                                  <button class="btn-u btn-u-red btn-u-lg"  type="button" (click)="cancelOrdre()">  الرفض </button>
+                                </div>
                                  <br/>
                               </fieldset>
                             </div>
@@ -362,10 +363,10 @@
                                                 </div>
                                         </div>
                                 </fieldset>
-                                <footer>
+                                <footer> 
                                         <div class="row text-center">
-                                        <button class="btn-u btn-u-lg" *ngIf="user=='O'" type="button" (click)="confirmMission()"> المصادقة</button>
                                         <button class="btn-u btn-u-sea btn-u-lg" *ngIf="user=='OM'" type="button" (click)="confirmMission()"> التأشيرة</button>
+                                        <button class="btn-u btn-u-red btn-u-lg"  type="button" (click)="cancelOrdre()">  الرفض </button>
                                         </div>
                                 </footer>
                             </div>

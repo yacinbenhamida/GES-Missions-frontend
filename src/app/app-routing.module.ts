@@ -1,5 +1,5 @@
 import { NgModule, Component } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes,CanActivate  } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ThUsersComponent } from './th-users/th-users.component';
 import { HomepageComponent } from './homepage/homepage.component';
@@ -31,42 +31,43 @@ import { MConfirmMissionsComponent } from './m-confirm-missions/m-confirm-missio
 import { ThGroupesComponent } from './th-groupes/th-groupes.component';
 import { SMainpanelComponent } from './s-mainpanel/s-mainpanel.component';
 import { MAutoriMissionsComponent } from './m-autori-missions/m-autori-missions.component';
-
+import { AuthGuardService as AuthGuard } from './authguards/auth-guard.service';
+import {  RoleGuardService as RoleGuard } from './authguards/roleguard.service';
 const appRoutes: Routes = [
     // suivit
-    {path : 'suivi' , component : SMainpanelComponent},
+    {path : 'suivi' , component : SMainpanelComponent,canActivate : [RoleGuard],data: {roles :["O","OM"]}},
     //end suivit
    // missions
-  { path : 'm-missionaires' , component : MMissionairesComponent},
-    { path : 'm-fraisdest' , component : MFraisdestComponent},
-    { path : 'm-missions' , component : MMissionsComponent },
-    { path: 'm-editmissions' , component : MMissionsEditComponent},
-    { path : 'm-confirmmiss' , component : MConfirmMissionsComponent},
+  { path : 'm-missionaires' , component : MMissionairesComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]}},
+    { path : 'm-fraisdest' , component : MFraisdestComponent,canActivate: [AuthGuard]},
+    { path : 'm-missions' , component : MMissionsComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]} },
+    { path : 'm-editmissions' , component : MMissionsEditComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]}},
+    { path : 'm-confirmmiss' , component : MConfirmMissionsComponent,canActivate:[RoleGuard],data: {roles :["O","OM"]}},
   // end missions
-  { path : 'th-users',component : ThUsersComponent},
-  { path : 'home', component : HomepageComponent },
-  { path: '', redirectTo: '/login',pathMatch: 'full'},
+  { path : 'th-users',component : ThUsersComponent,canActivate: [RoleGuard],data: {roles :["A"]}},
+  { path : 'home', component : HomepageComponent,canActivate: [AuthGuard] },
+  { path : '', redirectTo: '/login',pathMatch: 'full'},
   { path : 'login' , component : LoginComponent},
-  { path : 'th-countries' , component : ThCountriesComponent, },
-  { path : 'th-departements' , component : ThDepartementsComponent},
-  { path : 'th-categories' , component : ThCategoriesComponent},
-  { path : 'th-keywords' , component : ThKeywordsComponent},
-  { path : 'th-grade' , component : ThGradeComponent},
-  { path : 'th-projects' , component : ThProjectsComponent },
-  { path : 'th-typefrais' , component : ThTypefraisComponent},
-  { path : 'th-changeAppointment' , component : ThChangappointmentComponent},
-  { path : 'th-zone' , component : ThZonesComponent},
-  { path : 'th-classes' , component : ThClassesComponent},
-  { path : 'th-fonct' , component : ThFonctionsComponent},
-  { path : 'th-org', component : ThOrganisationsComponent },
-  { path : 'th-groupes' , component : ThGroupesComponent}, 
-  { path : 'confirmbudg-year' , component : ConfirmbudgYearComponent},
-  { path : 'insbud-org',component: EntBudgyearinsertComponent },
-  { path :  'insbudg-proj', component : ProjBudgyearinsertComponent },
-  { path :  'updbudg-proj', component :  ProjBudgyeareditComponent },
-  { path : 'updbudg-org', component : EntBudgyeareditComponent },
-  { path : 'confirmmissions', component : MAutoriMissionsComponent},
-  { path: 'error',component : NotfoundcomponentComponent},
+  { path : 'th-countries' , component : ThCountriesComponent,canActivate: [RoleGuard],data: {roles :"A"} },
+  { path : 'th-departements' , component : ThDepartementsComponent,canActivate: [RoleGuard],data: {roles :"A"}},
+  { path : 'th-categories' , component : ThCategoriesComponent,canActivate: [RoleGuard],data: {roles :["A"]}},
+  { path : 'th-keywords' , component : ThKeywordsComponent,canActivate: [RoleGuard],data: {roles :["A"]}},
+  { path : 'th-grade' , component : ThGradeComponent,canActivate: [RoleGuard],data: {roles :["A"]}},
+  { path : 'th-projects' , component : ThProjectsComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]} },
+  { path : 'th-typefrais' , component : ThTypefraisComponent,canActivate: [AuthGuard]},
+  { path : 'th-changeAppointment' , component : ThChangappointmentComponent,canActivate: [AuthGuard]},
+  { path : 'th-zone' , component : ThZonesComponent,canActivate: [RoleGuard],data: {roles :["A"]}},
+  { path : 'th-classes' , component : ThClassesComponent,canActivate: [RoleGuard],data: {roles :["A"]}},
+  { path : 'th-fonct' , component : ThFonctionsComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]}},
+  { path : 'th-org', component : ThOrganisationsComponent,canActivate: [RoleGuard],data: {roles :["OM"]} },
+  { path : 'th-groupes' , component : ThGroupesComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]}}, 
+  { path : 'confirmbudg-year' , component : ConfirmbudgYearComponent,canActivate:[RoleGuard],data: {roles :["OM"]}},
+  { path : 'insbud-org',component: EntBudgyearinsertComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]} },
+  { path :  'insbudg-proj', component : ProjBudgyearinsertComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]} },
+  { path :  'updbudg-proj', component :  ProjBudgyeareditComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]} },
+  { path : 'updbudg-org', component : EntBudgyeareditComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]}},
+  { path : 'confirmmissions', component : MAutoriMissionsComponent,canActivate: [RoleGuard],data: {roles :["OM"]}},
+  { path : 'error',component : NotfoundcomponentComponent},
   { path : '**', redirectTo: 'error' },
   { path : '404', redirectTo: 'error' },
   { path :'#' , redirectTo : ''}

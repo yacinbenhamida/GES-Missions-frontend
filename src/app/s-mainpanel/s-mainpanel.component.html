@@ -48,7 +48,7 @@
             </section>
             <section class="col col-3">
                 <label class="input"><i class="icon-prepend fa fa-calendar"></i>
-                    <input type="date" (change)="chDate()" [(ngModel)]="deball" name="de">
+                    <input type="date" #a (change)="chDate()" [(ngModel)]="deball" name="de">
                 </label>
             </section>
             <section class="col col-1.5">
@@ -58,7 +58,7 @@
                 </section>
                 <section class="col col-3">
                         <label class="input"><i class="icon-prepend fa fa-calendar"></i>
-                            <input type="date" [(ngModel)]="finall" (change)="chDate()" name="a">
+                            <input type="date" #c [(ngModel)]="finall" (change)="chDate()" name="a">
                         </label>
                 </section>   
             <section class="col col-3">
@@ -90,7 +90,7 @@
               </section>
               <section class="col col-3">
                   <label class="input"><i class="icon-prepend fa fa-calendar"></i>
-                      <input type="date" name="de" [(ngModel)]="deb" (change)="chCountry()">
+                      <input type="date" #dd name="de" [(ngModel)]="deb" (change)="cc.value&&dd.value && ff.value?chCountry():return">
                   </label>
               </section>
               <section class="col col-1.5">
@@ -100,7 +100,7 @@
                   </section>
                   <section class="col col-3">
                           <label class="input"><i class="icon-prepend fa fa-calendar"></i>
-                              <input type="date" name="a"  [(ngModel)]="fin" (change)="chCountry()">
+                              <input type="date" #ff name="a"  [(ngModel)]="fin" (change)="cc.value&&dd.value && ff.value?chCountry():return">
                           </label>
                   </section>
                   <section class="col col-1.5">
@@ -110,7 +110,7 @@
                     </section>
                     <section class="col col-2">
                             <label class="select">
-                                <select name="pays" [(ngModel)]="selectedPays" (change)="chCountry()">
+                                <select name="pays" #cc [(ngModel)]="selectedPays" #p (change)="cc.value&&dd.value && ff.value && p.value?chCountry():return">
                                     <option *ngFor="let p of listPays" [ngValue]="p">{{p.libPaysAr}}</option>
                                 </select>
                                 <i></i>
@@ -183,6 +183,7 @@
                   <th>موضوع المأمورية</th>
                   <th>مصاريف المأمورية</th>
                   <th>مصاريف النقل</th>
+                  <th>مصاريف أخرى</th>
                   <th>الوضعية</th>
                 </tr>
                <tr *ngFor="let a of missionsres ">
@@ -195,20 +196,24 @@
                     <td>{{a.mission.objectifMissionAr}}</td>
                     <td ><span *ngFor="let f of a.avoirfrais">{{f.typeFrai.codeTypefr=='0808' && f!=undefined ?f.valeurPrevue :return}}</span></td>
                     <td><span *ngFor="let d of a.avoirfrais">{{d.typeFrai.codeTypefr=='0606' && d!=undefined ?d.valeurPrevue :return}}</span></td>
+                    <td *ngIf="missionsres.length > 1"><span *ngFor="let x of a.avoirfrais">{{(x.typeFrai.codeTypefr!='0606' && x.typeFrai.codeTypefr!='0808') && x!=undefined ?x.valeurPrevue :return}}</span></td>
+                    <td *ngIf="missionsres.length == 1 || a.length == 0">{{totaldivers}}</td>
                     <td>{{affichageEtat(a.etat)}}</td>
 
                </tr>
                <tfoot>
                    <tr>
-                       <td colspan="11">
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            مجموع المهمات &nbsp;&nbsp;&nbsp; :&nbsp;  {{missionsres.length}} 
-                            &nbsp;&nbsp;&nbsp;&nbsp;
+                       <td colspan="12">
+                            &nbsp;&nbsp;&nbsp;
+                            مجموع المهمات &nbsp;&nbsp; :&nbsp;  {{missionsres.length}} 
+                            &nbsp;&nbsp;
                             مجموع عدد الأيام &nbsp;&nbsp; :&nbsp; {{totaljours}}
-                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;
                             مجموع مصاريف المأموريات &nbsp;:&nbsp; {{totalmiss}} د
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                            مجموع مصاريف النقل &nbsp;&nbsp;:&nbsp;&nbsp; {{totaltransport}} د
+                            مجموع المصاريف الأخرى &nbsp;:&nbsp; {{totaldivers}} د
+                            &nbsp;&nbsp;
+                            مجموع مصاريف النقل &nbsp;&nbsp;:&nbsp; {{totaltransport}} د
                        </td>
                    </tr>
                </tfoot>
@@ -224,7 +229,7 @@
         المأموريات المنجزة من قبل الهيكل :  
         </h1>
         <h3 style="text-align:center;">
-         من {{this.deb}} إلى {{this.fin}}
+         من {{deball}} إلى {{finall}}
         </h3>    
    <table>
         <tr>
@@ -238,12 +243,13 @@
           <th>المدة</th>
           <th>مصاريف المأمورية</th>
           <th>مصاريف النقل</th>
+          <th>مصاريف أخرى</th>
           <th>الوضعية</th>
         </tr>
        <tr *ngFor="let a of mismissionres2 ">
             <td>{{a.mission.numMission}}</td>
             <td>{{a.missionaire.cin}}</td>
-            <td>{{a.missionaire.nomAr + "  "+ a.missionaire.prenomAr}}</td>
+            <td>{{a.missionaire.prenomAr + "  "+ a.missionaire.nomAr}}</td>
             <td>{{a.mission.objectifMissionAr}}</td>
             <td>{{a.mission.dateDepartP}}</td>
             <td>{{a.mission.dateArriveP}}</td>
@@ -251,11 +257,13 @@
             <td>{{convDur(a.mission.dateDepartP,a.mission.dateArriveP)}}</td>
             <td ><span *ngFor="let f of a.avoirfrais">{{f.typeFrai.codeTypefr=='0808' && f!=undefined ?f.valeurPrevue :return}}</span></td>
             <td><span *ngFor="let d of a.avoirfrais">{{d.typeFrai.codeTypefr=='0606' && d!=undefined ?d.valeurPrevue :return}}</span></td>
+            <td *ngIf="mismissionres2.length > 1"><span *ngFor="let x of a.avoirfrais">{{(x.typeFrai.codeTypefr!='0606' && x.typeFrai.codeTypefr!='0808') && x!=undefined ?x.valeurPrevue :return}}</span></td>
+            <td *ngIf="mismissionres2.length == 1 || a.length == 0">{{totaldivers}}</td>
             <td>{{affichageEtat(a.etat)}}</td>
        </tr>
        <tfoot>
            <tr>
-               <td colspan="11">
+               <td colspan="12">
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     مجموع المهمات &nbsp;&nbsp;&nbsp; :&nbsp;  {{mismissionres2.length}} 
                     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -263,6 +271,8 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     مجموع مصاريف المأموريات &nbsp;:&nbsp; {{totalmiss}} د
                     &nbsp;&nbsp;&nbsp;&nbsp;
+                    مجموع المصاريف الأخرى &nbsp;:&nbsp; {{totaldivers}} د
+                    &nbsp;&nbsp;
                     مجموع مصاريف النقل &nbsp;&nbsp;:&nbsp;&nbsp; {{totaltransport}} د
                </td>
            </tr>

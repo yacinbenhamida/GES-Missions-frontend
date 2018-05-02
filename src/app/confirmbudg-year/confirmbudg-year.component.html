@@ -21,10 +21,10 @@
 <div class="wrapper" style="background-image: url('../assets/img/breadcrumbs.png');">   
     <div class="breadcrumbs">
         <div class="container arabparagraph">
-            <h1 class="pull-left"><span class="arabtext">المصادقة على اعتمادات الهياكل</span></h1>
+            <h1 class="pull-left"><span class="arabtext"> المصادقة على اعتمادات الهياكل ومشاريعها</span></h1>
             <ul class="pull-right breadcrumb arabparagraph">
                 <li>الأعتمادات</li>
-                <li> المصادقة على اعتمادات الهياكل/ المشاريع </li>
+                <li> المصادقة على اعتمادات الهياكل ومشاريعها </li>
             </ul>
         </div>
     </div>
@@ -63,12 +63,12 @@
 <br/> <br/>
 <div class="row">
         <div class="sky-form">
-
                             <div   id="sky-form1" class="sky-form ">
                             <header class="arabparagraph">اعتمادات الهياكل
                                     <button *ngIf="listvisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
                                     <button *ngIf="listvisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                 
-                            </header>  
+                            </header>
+                            <fieldset *ngIf="listvisible == true"> 
                             <div *ngIf="isEmpty(majbudgdep)==true" class="arabparagraph">لا توجد   تحيينات</div>                
                             <table *ngIf="isEmpty(majbudgdep)==false && listvisible == true" class=" table table-bordered table-striped" >
                                     <thead>
@@ -109,6 +109,7 @@
                                     </tr>
                                         </tfoot>
                             </table>
+                        </fieldset> 
                             </div>
         </div>
     </div> 
@@ -121,7 +122,8 @@
                         <header class="arabparagraph">إعتمادات المشاريع
                                 <button *ngIf="listproj == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleListproj()"><i class="fa fa-sort-desc"></i></button>
                                 <button *ngIf="listproj == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleListproj()"><i class="fa fa-sort-asc"></i></button>                                 
-                        </header>  
+                        </header>
+                        <fieldset *ngIf="listproj == true"> 
                         <div *ngIf="isEmpty(majbudgprog)==true" class="arabparagraph">لا توجد   تحيينات</div>                
                         <table *ngIf="isEmpty(majbudgprog)==false && listproj == true" class=" table table-bordered table-striped" >
                                 <thead>
@@ -154,6 +156,7 @@
                                       </tr>
                                 </tbody>
                         </table>
+                    </fieldset> 
                         </div>
     </div>
 </div>   

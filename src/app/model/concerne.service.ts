@@ -19,8 +19,8 @@ export class ConcerneServices{
     getAllConcerne():Observable<Concerne[]>{
         return this.http.get(this.Url+"/allConcernes").map(this.extractData).catch(this.handleError);
     }
-    getAllConcerneOfORDRE(idordre:number):Observable<Concerne[]>{
-        const url = `${this.Url}/allConcernesOfOrdre/${idordre}`;
+    getAllConcerneOfORDRE(idordre:number,codeDep:string):Observable<Concerne[]>{
+        const url = `${this.Url}/allConcernesOfOrdre/${idordre}/${codeDep}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
     getConcerne(id:number):Observable<Concerne>{

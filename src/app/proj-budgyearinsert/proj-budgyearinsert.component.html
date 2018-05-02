@@ -42,7 +42,7 @@
     
         <br/><br/>         
   <div class="row ">
-  <form   id="sky-form1" class="sky-form " (click)="msg()">
+  <form   id="sky-form1" class="sky-form " >
   <header class="arabparagraph"> ادخال مصاريف المشروع
         <button *ngIf="addbudgmiss == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAddBudgMiss()"><i class="fa fa-sort-desc"></i></button>
         <button *ngIf="addbudgmiss == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAddBudgMiss()"><i class="fa fa-sort-asc"></i></button>                  
@@ -62,19 +62,20 @@
                         <i></i>
                     </label>
                 </section>
+                <div (click)="msg()">
                 <section class="col col-6">
                     <label class="input">
                         <i class="icon-prepend fa fa-info"></i>
-                        <input [disabled]="canEdit == false"  required type="text" name="codez" placeholder="مرجع الميزانة " [(ngModel)]="budget.refBudgProg">
+                        <input  [disabled]="canEdit == false"  required type="text" name="codez" placeholder="مرجع الميزانة " [(ngModel)]="budget.refBudgProg">
                     </label>
                 </section>
           <section class="col col-6">
               <label class="input">
                   <i class="icon-prepend fa fa-dollar"></i>
-                  <input [disabled]="canEdit == false"  required type="text" name="nomfctar" placeholder="المبلغ" [(ngModel)]="budget.montantBudg">
+                  <input  [disabled]="canEdit == false"  required type="text" name="nomfctar" placeholder="المبلغ" [(ngModel)]="budget.montantBudg">
               </label>
           </section>
-          
+        </div>
          <section class="col col-1">
             <button *ngIf="btnAdd == true" [disabled]="canEdit == false" (click)="onSubmit()" class="btn-u">تأكيد</button>
             <button *ngIf="btnModif == true" class="btn-u" (click)="modifDdeBUDGET()">تثبيت </button>

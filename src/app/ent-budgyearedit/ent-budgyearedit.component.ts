@@ -26,7 +26,7 @@ export class EntBudgyeareditComponent implements OnInit {
    listvisible:boolean;
    budgets:MajBudgDep[];
     u:Utilisateur;
-    canEnterBudg:boolean = true;
+    canEnterBudg:boolean = false;
   constructor(public budgserv:BudgetService,public projserv:ProjetService) {
     this.budgets = [];
     this.projets = [];
@@ -43,10 +43,15 @@ export class EntBudgyeareditComponent implements OnInit {
     this.projserv.getProjectsOfDepartment(this.departement.codeDep).subscribe(data=>this.projets = data);
     this.budgserv.getAllBudgDepMajOfUser(this.u.codeUtilisateur,this.departement.codeDep).subscribe(budg=>{
       this.budgets = budg;
-      if(this.budgets.length > 1 || this.budgets[0].etat == "S"){
+      this.budgets.forEach(element => {
+        if(this.budgets.length > 1 && element.etat == "S"){
+          this.canEnterBudg = true;
+        }
+      });
+      /*if(this.budgets.length > 1 || this.budgets[0].etat == "S"){
         this.canEnterBudg = true;
       }
-      else this.canEnterBudg = false;
+      else this.canEnterBudg = false;*/
     });
     
   }
@@ -89,7 +94,7 @@ export class EntBudgyeareditComponent implements OnInit {
 
   convertEtat(e:string){
     switch(e){
-      case "O": return "في انتضار موافقة مراقب المصاريف او سلطة الإشراف";
+      case "O": return "في انتضار موافقة  سلطة الإشراف";
       case "N" :  return "غير مثبت";
       case "S" : return "مصادق عليه";
     }

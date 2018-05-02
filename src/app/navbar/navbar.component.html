@@ -34,8 +34,8 @@
                 <!-- Topbar -->
                 <div class="topbar header-dark">
                     <ul class="loginbar pull-right">
-                        <li class="arabparagraph" style="color:  rgb(33, 30, 192);">  المؤسسة : {{dep.libDepAr}} </li>
-                        <li class="topbar-devider"></li> <li class="topbar-devider"></li>   
+                         <li *ngIf="username != 'admin'" class="arabparagraph" style="color:  rgb(33, 30, 192);">  المؤسسة : {{ dep!=undefined ? dep.libDepAr : ''}} </li>
+                        <li  *ngIf="username != 'admin'"class="topbar-devider"></li> <li class="topbar-devider"></li>   
                         <li class="arabparagraph">مرحبا</li>
                         <li class="topbar-devider"></li>   
                         <li>{{username}}</li>

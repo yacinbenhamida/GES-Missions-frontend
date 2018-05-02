@@ -6,6 +6,8 @@ import { DatePipe } from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { MajBudgDep } from '../model/MajBudgDepts';
 import { Router } from '@angular/router';
+import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
+import { AvoirFraisService } from '../model/avoirfrais.service';
 @Component({
   selector: 'app-ent-budgyearinsert',
   templateUrl: './ent-budgyearinsert.component.html',
@@ -28,7 +30,11 @@ export class EntBudgyearinsertComponent implements OnInit {
   initialRessources : AvoirBudgDep;
   isFirstelem:boolean = false;
   isApproved:boolean = false;
-  constructor(public budgserv:BudgetService,public router:Router) {
+  valbudgobtmissions:number = 0;
+  valbudgobtTransport : number =0;
+  valbudgpromisTransport:number = 0;
+  valbudgpromisMission:number = 0;
+  constructor(public budgserv:BudgetService,public fraisServ:AvoirFraisService) {
     this.budgets = new AvoirBudgDep();  
     this.listvisible2 = true;
     this.verifMaj = [];
@@ -107,8 +113,19 @@ export class EntBudgyearinsertComponent implements OnInit {
         this.isFirstelem = false;
       }
     });
+    this.budgserv.getSommeBudgMissionObtenus(this.dp.codeDep,this.year)
+    .subscribe(val=>this.valbudgobtmissions=val,error=>this.valbudgobtmissions=0);
 
-    
+    this.budgserv.getSommeBudgTransportObtenus(this.dp.codeDep,this.year)
+    .subscribe(x=>{this.valbudgobtTransport=x});
+
+    this.fraisServ.getFraisMissionPromis(this.dp.codeDep,this.year)
+    .subscribe(val=>this.valbudgpromisMission=val,error=>this.valbudgpromisMission=0);
+
+    this.fraisServ.getFraisTransportPromis(this.dp.codeDep,this.year).subscribe(
+      a=>{this.valbudgpromisMission = a}
+    )  
+  
   }
   isEmpty(obj){
     return (obj && (Object.keys(obj).length === 0));
@@ -144,7 +161,5 @@ export class EntBudgyearinsertComponent implements OnInit {
     this.budgserv.updateInitialDdeNBudgDep(this.budget).then((a)=>
     {this.budgserv.getBudgDep(this.dp.codeDep,this.year).subscribe(d=>this.initialRessources=d);});    
   }
-  refreshtable(){
-    this.router.navigate(['/insbud-org']);
-  }
+ 
 }

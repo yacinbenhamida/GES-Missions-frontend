@@ -33,10 +33,10 @@ export class MAutoriMissionsComponent implements OnInit {
     this.choosenord = null;
   }
   loadDetails(){
-    this.concerneService.getAllConcerneOfORDRE(this.choosenord.idOrdre).subscribe(t=>
+    this.concerneService.getAllConcerneOfORDRE(this.choosenord.idOrdre,this.choosenord.mission.departement.codeDep).subscribe(t=>
       {
         this.choosenconcerne = t;
-      this.avserv.getAllFraisOfOrdre(this.choosenord.idOrdre).subscribe(t=>{
+      this.avserv.getAllFraisOfOrdre(this.choosenord.idOrdre,this.dep.codeDep).subscribe(t=>{
         this.fraisaff = t;
       });
       this.avance = this.choosenord.avance;

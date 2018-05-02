@@ -33,6 +33,11 @@ export class OrdreMissionService{
         const url = `${this.missUrl}/allOrdresMissionsOfDep/${id}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
+    // les ordres elligibles a une validation (ayant un frais et une destination au moins )
+    getAllOrdMissionsOfDepElligibles(id:string):Observable<OrdreMission[]>{
+        const url = `${this.missUrl}/allOrdresMissionsOfDepAyantFrais/${id}`;
+        return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }
     getOrdMission(idord:number,nummis:number):Observable<OrdreMission>{
         const url = `${this.missUrl}/findOrdreMiss/${idord}/${nummis}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);

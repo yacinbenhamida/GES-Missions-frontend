@@ -64,7 +64,7 @@ export class ConfirmbudgYearComponent implements OnInit {
 
   convertEtat(e:string){
     switch(e){
-      case "O": return "في انتضار موافقة مراقب المصاريف او سلطة الإشراف";
+      case "O": return "في انتضار موافقة  سلطة الإشراف";
       case "N" :  return "غير مثبت";
       case "S" : return "مصادق عليه";
     }

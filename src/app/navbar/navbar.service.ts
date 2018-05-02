@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class NavbarService {
-  payeur: boolean;
-  ordonnateur: boolean;
-  ordonnateurministere : boolean;
-  admin:boolean;
+  payeur: boolean = false;
+  ordonnateur: boolean = false;
+  ordonnateurministere : boolean = false;
+  admin:boolean= false;
   constructor() {
     this.payeur = false;
     this.ordonnateur = false;

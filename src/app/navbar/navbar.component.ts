@@ -13,12 +13,11 @@ import { Departement } from '../model/departement';
 export class NavbarComponent implements OnInit,AfterViewInit{
   user:string;
   username:string;
-  dep:Departement = JSON.parse(localStorage.getItem('org'));
-  constructor(public nav: NavbarService, public route:Router) {
-    this.ngOnInit();
-  }
+  dep:Departement = new Departement();
+  constructor(public nav: NavbarService, public route:Router) {  }
   ngOnInit(){
     this.user = JSON.parse(localStorage.getItem('Array'));
+    this.dep = JSON.parse(localStorage.getItem('org'));
     switch(this.user){
       case "O":this.username = "ordonnateur";break;
       case "P" : this.username = "payeur";break;
