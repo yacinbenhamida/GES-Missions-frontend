@@ -382,8 +382,9 @@ calcduree(d1:Date,d2:Date){
               supfraispartic = u.mission.departement.libDepAr ;
             }
             else supfraispartic = " " ;
+            fraisdivers = f[i].valeurPrevue;
           }
-          else if(f[i].typeFrai.codeTypefr == "0909"){ // frais de logement
+          else if(f[i].typeFrai.codeTypefr == "0909"  && f[i].support!=null){ // frais de logement
             if(f[i].support.codeSupport=="J"){ // org hote et org parrain
               supfraislogement =" تحمل مشترك بين "+ f[i].nomOrgAr + " و " + u.mission.departement.libDepAr ;
             }
@@ -403,6 +404,7 @@ calcduree(d1:Date,d2:Date){
               supfraislogement = u.mission.departement.libDepAr ;
             }
             fraislogement = f[i].valeurPrevue;
+            fraislogementtot = fraislogement;
           }             
         }
 

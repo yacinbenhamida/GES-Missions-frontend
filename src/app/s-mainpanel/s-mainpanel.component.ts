@@ -9,6 +9,9 @@ import { OrdreMission } from '../model/ordremission';
 import { AvoirFraisService } from '../model/avoirfrais.service';
 import { ConcerneServices } from '../model/concerne.service';
 import { BehaviorSubject } from 'rxjs';
+import { BudgetService } from '../model/Budget.service';
+import { OrdreMissionService } from '../model/ordremission.service';
+import { AvoirFrais } from '../model/avoirfrais';
 @Component({
   selector: 'app-s-mainpanel',
   templateUrl: './s-mainpanel.component.html',
@@ -33,10 +36,13 @@ export class SMainpanelComponent implements OnInit {
   totaltransport:number = 0;
   totaldivers : number = 0;
   destinations:string = ' ';
-
+  anneesAdministratives:number[] = [];
+  choosenyear:number = 0;
   constructor(public paysserv:PaysService,public reportService:ReportService,public fraisServ:AvoirFraisService
-    ,public cserv:ConcerneServices) {
+    ,public cserv:ConcerneServices,public budgserv:BudgetService,public ordmserv:OrdreMissionService
+    ,public concerneServ:ConcerneServices) {
     paysserv.getAllPays().subscribe(p=>this.listPays=p);
+    reportService.getYears(this.currentDep.codeDep).subscribe(a=>this.anneesAdministratives =a);
    }
 
   ngOnInit() {
@@ -228,5 +234,144 @@ export class SMainpanelComponent implements OnInit {
         ,error=>alert("لا توجد مأموريات في هذا التاريخ ")
       );
     }
+  }
+  fraisMObt:number = 0;
+  fraisMConsom:number = 0;
+  fraisTObt:number = 0;
+  fraisTConsom:number = 0;
+  lstOrdres:OrdreMission[] =[];
+  totalMission:number = 0;
+  totalAutres:number = 0;
+  totalTransport:number = 0;
+  bilanDepenses(){
+    this.fraisMObt = 0;
+  this.fraisMConsom = 0;
+  this.fraisTObt = 0;
+  this.fraisTConsom = 0;
+
+    this.budgserv.getSommeBudgMissionObtenus(this.dep.codeDep,this.choosenyear).subscribe(
+      a=>{
+        this.fraisMObt=a;
+        this.budgserv.getSommeBudgTransportObtenus(this.dep.codeDep,this.choosenyear).subscribe(
+          k=>{
+            this.fraisTObt=k;
+            this.fraisServ.getFraisMissionPromis(this.dep.codeDep,this.choosenyear).subscribe(
+              fa=>{
+                this.fraisMConsom=fa;
+                this.fraisServ.getFraisTransportPromis(this.dep.codeDep,this.choosenyear).subscribe(
+                  ab=>{
+                    this.fraisTConsom=ab;
+                    let printContents, popupWin;
+                                      printContents = document.getElementById('bilan').innerHTML;
+                                      popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+                                      popupWin.document.open()
+                                      popupWin.document.write(`
+                                      <html dir="rtl" lang="ar" >
+                                        <head>
+                                          <meta charset="utf-8">
+                                          <link rel="stylesheet" href="../../styles.css">
+                                          <style>
+                                          table,td,th,tr {
+                                            margin-right:50px;
+                                            border: 1px solid black;
+                                            border-collapse: collapse;
+                                            text-align:center;
+                                        }
+                                          </style>
+                                        </head>
+                                    <body onload="window.print();window.close()">
+                                    `+printContents+`   
+                                    </body>
+                                      </html>
+                                        `
+                                    );
+                              popupWin.document.close(); 
+                  }
+                );
+              }
+            );
+          
+          }
+        );
+        
+        
+
+       
+      }
+    );
+    
+    
+  }
+
+  chYear(){
+    this.totalAutres = 0;
+    this.totalMission = 0;
+    this.totalTransport = 0;
+    if(this.choosenyear){
+      this.lstOrdres = [];
+      this.ordmserv.getOrdresValides(this.dep.codeDep).subscribe(
+        data=>{
+          this.lstOrdres = data;
+          let x:number = 0;
+          this.lstOrdres.forEach(element => {
+            this.concerneServ.getAllConcerneOfORDRE(element.idOrdre,this.dep.codeDep).subscribe(
+              e=>{
+                element.concerne = e;         
+                this.fraisServ.getAllFraisOfOrdre(element.idOrdre,this.dep.codeDep).subscribe(
+                  pp=>{
+                    element.avoirfrais = pp;
+                       pp.forEach(element => {
+                         if(element.typeFrai.codeTypefr=="0808") this.totalMission +=element.valeurPrevue;
+                         else if(element.typeFrai.codeTypefr!="0808" && element.typeFrai.codeTypefr!="0606") this.totalAutres +=element.valeurPrevue;
+                         else if(element.typeFrai.codeTypefr=="0606") this.totalTransport +=element.valeurPrevue;
+                        });                 
+                  }
+                )                      
+              }
+            )
+          });
+        }
+    )
+    }
+    
+  }
+  
+
+
+  getFraisMission(val:AvoirFrais[]):number{
+    let sum = 0;
+    if(val!=undefined){
+      val.forEach(element => {
+        if(element.typeFrai.codeTypefr=="0808") sum+=element.valeurPrevue; 
+      });   
+    }
+    return sum;
+  }
+  getFraisDivers(val:AvoirFrais[]):number{
+    let sum = 0;
+    if(val!=undefined){
+      val.forEach(element => {
+        if(element.typeFrai.codeTypefr!="0606" && element.typeFrai.codeTypefr!="0808") sum+=element.valeurPrevue; 
+      });   
+    }
+    return sum;
+  }
+  getTotal(val:AvoirFrais[]):number{
+    let sum = 0;
+    if(val!=undefined){
+      val.forEach(element => {
+        if(element.typeFrai.codeTypefr!="0606") sum+=element.valeurPrevue; 
+      });   
+    }
+    return sum;
+  }
+  getFraisTransp(val:AvoirFrais[]):number{
+    let sum = 0;
+    if(val!=undefined){
+      val.forEach(element => {
+        if(element.typeFrai.codeTypefr=="0606") sum+=element.valeurPrevue; 
+      });   
+    }
+    return sum;
   }
 }

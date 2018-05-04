@@ -6,6 +6,7 @@ export class AuthService {
     public isAuthenticated(): boolean {
         const dep = localStorage.getItem('org');
         const type = localStorage.getItem('Array');
-        return  type!=undefined;
+        const user = localStorage.getItem('user');
+        return  type!=undefined && user!=undefined;
       }
 }

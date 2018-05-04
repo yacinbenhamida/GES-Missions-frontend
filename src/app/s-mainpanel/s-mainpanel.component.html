@@ -145,13 +145,13 @@
                   </section>
                   <section class="col col-3">
                       <label class="select">
-                          <select>
-                              <option>2018</option>
+                          <select name="yearconcernee" (change)="chYear()" [(ngModel)]="choosenyear">
+                              <option *ngFor="let a of anneesAdministratives" [ngValue]="a">{{a}}</option>
                           </select><i></i>
                       </label>
                   </section>            
                   <section class="col col-3">
-                      <button type="button" class="btn-u btn-u-sea"><i class="fa fa-print"></i> </button>
+                      <button type="button" (click)="bilanDepenses()" class="btn-u btn-u-sea"><i class="fa fa-print"></i> </button>
                   </section>
               </div>
           </form>
@@ -280,7 +280,84 @@
     </table>
 </div>
 <!-- end template deb + fin -->
+<!-- bilan depenses -->
+<div id="bilan" style="display: none;text-align: center;">
+    <h1 style="text-align:center;">بيان حول استهلاك الإعتمادات</h1>
+    <h2 style="text-align:center;">لسنة : {{choosenyear}}</h2>
+    <table style="margin-right: 285px;">
+        <tr style="text-align:center;">
+            <td style="visibility: hidden;"></td>
+            <td>الإعتمادات المخصصة</td>
+            <td>الإعتمادات المستهلكة</td>
+            <td>الإعتمادات المتبقية</td>
+        </tr>
+        <tr style="text-align:center;">
+            <td>مصاريف المامورية</td>
+            <td>{{fraisMObt}}</td>
+            <td>{{fraisMConsom}}</td>
+            <td>{{fraisMObt - fraisMConsom}}</td>
+        </tr>
+        <tr style="text-align:center;">
+            <td>مصاريف النقل</td>
+            <td>{{fraisTObt}}</td>
+            <td>{{fraisTConsom}}</td>
+            <td>{{fraisTObt - fraisTConsom}}</td>
+        </tr>
+    </table>
+    <br/>
+    <table>
+        <tr>
+            <td colspan="5" style="visibility: hidden;"></td>
+            <td colspan="3">مصاريف المأمورية</td>
+            <td colspan="2" style="visibility: hidden;"></td>
 
+        </tr>
+        <tr style="text-align:center;">
+            <td>الاسم واللقب</td>
+            <td>رقم المهمة</td>
+            <td>الموضوع</td>
+            <td>المدة </td>
+            <td>المكان</td>
+            <td>مصاريف المأمورية</td>
+            <td>مصاريف أخرى </td>
+            <td>المجموع</td>
+            <td>مصاريف النقل</td>
+            <td>الوضعية</td>
+        </tr>
+        <tr style="text-align:center;" *ngFor="let l of lstOrdres">
+            <td>{{l.missionaire.prenomAr + " " + l.missionaire.nomAr}}</td>
+            <td>  {{l.numOrdre}} {{l.mission.numMission}} / {{dep.codeDep}}  </td>
+            <td>{{l.mission.objectifMissionAr}}</td>
+            <td>{{l.mission.dateDepartP}}<br/>{{l.mission.dateArriveP}} </td>
+            <td><span *ngFor="let r of l.concerne">{{r!=undefined?r.pays.libPaysAr:return}} - </span></td>
+            <td>
+                {{getFraisMission(l.avoirfrais)}}
+            </td>
+            <td>
+               {{getFraisDivers(l.avoirfrais)}}
+            </td>
+            <td>
+                    {{getTotal(l.avoirfrais)}}
+            </td>
+            <td>
+                    {{getFraisTransp(l.avoirfrais)>0?getFraisTransp(l.avoirfrais):0 }}
+            </td>
+            <td>{{affichageEtat(l.etat)}}</td>
+        </tr>
+        <tfoot>
+            <tr>
+                <td style="visibility: hidden;" colspan="4"></td>
+                <td>المجموع</td>
+                <td>{{totalMission}}</td>
+                <td>{{totalAutres}}</td>
+                <td>{{totalAutres + totalMission}}</td>
+                <td>{{totalTransport}}</td>
+                <td style="visibility: hidden;"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<!--end bilan-->
 
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			
@@ -304,3 +381,4 @@
     
 </script>
 </body>
+

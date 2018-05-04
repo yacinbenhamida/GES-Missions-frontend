@@ -29,6 +29,13 @@
                     <div class="reg-header">            
                         <h2 style="text-align:right;"><span class="arabtext">تسجيل الدخول <br/>إلى الحساب</span></h2>
                     </div>
+                    <div class="input-group margin-bottom-20" *ngIf="error == true">
+                            <div class="alert alert-danger fade in">
+                                    <button  type="button" class="close" data-dismiss="alert" (click)="error = false" aria-hidden="true">×</button>
+                                    <p class="arabtext">معطيات غير مطابقة </p>
+                                    <p class="arabparagraph">الرجاء التثبت من رقم بطاقة التعريف او كلمة السر التي قمت بإدخالها </p>
+                                </div>
+                    </div>
                     <div class="input-group margin-bottom-20">
                         <span class="input-group-addon"><i class="fa fa-user"></i></span>
                         <input type="text" [ngModelOptions]="{standalone: true}" required [(ngModel)]="username" placeholder="رقم بطاقة التعريف الوطنية" class="form-control">

@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit,AfterViewInit{
   pw:string = null;
   user:Utilisateur;
   dep:Departement;
+  error:boolean = false;
   constructor(public userServ : UtilisateurService,route : ActivatedRoute,
     private activatedRoute: ActivatedRoute,private router: Router,
     private nav: NavbarService,public appserv:AppService,public appc:AppComponent) {
@@ -29,11 +30,14 @@ export class LoginComponent implements OnInit,AfterViewInit{
         window.location.reload();
       } 
     });
-    localStorage.removeItem('Array'); 
+   /* localStorage.removeItem('Array'); 
     localStorage.removeItem('org');
-    localStorage.clear();   
+    localStorage.clear();   */
   }
   ngOnInit() {
+    if(localStorage.getItem('Array')!=undefined &&     localStorage.getItem('user')!=undefined  ){
+      this.router.navigate(['home']);
+    }else {
     this.dep = new Departement();
     this.user = new Utilisateur();
     localStorage.clear();
@@ -41,14 +45,16 @@ export class LoginComponent implements OnInit,AfterViewInit{
     localStorage.removeItem('org');
     this.appserv.hideNavbar();
     this.appserv.hideFooter();
+    }
   }
   public isEmpty(obj) {
     return (obj && (Object.keys(obj).length === 0));
   }
   ngAfterViewInit(): void {
-    localStorage.clear();
+    //localStorage.clear();
   }
 onSubmit() {
+  if(this.username && this.pw){
   this.appc.start();
   this.userServ.getLoginCredentials(this.username,this.pw).subscribe(user=>
     {this.user=user;
@@ -93,8 +99,8 @@ onSubmit() {
           
         }
         else if (this.user.codeProfile == "ADMIN"){
-          localStorage.clear();
           localStorage.removeItem('Array');
+          localStorage.setItem('user',JSON.stringify(this.user));
           localStorage.setItem('Array', JSON.stringify("A"));
           this.router.navigate(['home']);
           this.appserv.showNavbar();
@@ -103,13 +109,13 @@ onSubmit() {
           alert("مستعمل غير مسجل");
         }   
       }
-      else alert("الرجاء التثبة من كلمة السر او رقم البطاقة");
+      else this.error = true;
     }
   ,error=>{
-    alert("الرجاء التثبة من كلمة السر او رقم البطاقة");
+    this.error = true;
   });
       setTimeout(()=>{
-        this.appc.stop(); }, 1200);
-}
-
+          this.appc.stop(); }, 1200);
+  }else this.error = true;
+} 
 }
