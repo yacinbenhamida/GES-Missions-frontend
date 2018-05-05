@@ -4,3 +4,11 @@ table,td,th,tr {
     border-collapse: collapse;
     text-align:center;
 }
+
+agm-map {
+    height: 400px;
+    width: 1000px;
+    display: block;
+    margin-right: 80px;
+  }
+  .gm-style div{color: #fff !important; font-weight: bold;}

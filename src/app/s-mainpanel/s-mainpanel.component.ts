@@ -12,6 +12,8 @@ import { BehaviorSubject } from 'rxjs';
 import { BudgetService } from '../model/Budget.service';
 import { OrdreMissionService } from '../model/ordremission.service';
 import { AvoirFrais } from '../model/avoirfrais';
+import { Results } from '../model/Results';
+import { google, Marker } from '@agm/core/services/google-maps-types';
 @Component({
   selector: 'app-s-mainpanel',
   templateUrl: './s-mainpanel.component.html',
@@ -38,15 +40,72 @@ export class SMainpanelComponent implements OnInit {
   destinations:string = ' ';
   anneesAdministratives:number[] = [];
   choosenyear:number = 0;
+  public barChartLabels:string[] =  []; 
+  public barChartType:string = 'bar';
+  public barChartLegend:boolean = true;
+  public barChartData:any[] = [];
+  public barChartData2:any[] = [];
+  // doghnut shcema impl 
+  distributionPays:Results[] =[];
+  d:Date = new Date();
+  public doughnutChartLabels:string[] = [];
+  public doughnutChartData:number[] = [];
+  public doughnutChartType:string = 'doughnut';
+
+  // google maps 
+
+  title: string = 'توزيع المأموريات بالبلدان';
+  markers:marker[] =  [ ];
   constructor(public paysserv:PaysService,public reportService:ReportService,public fraisServ:AvoirFraisService
     ,public cserv:ConcerneServices,public budgserv:BudgetService,public ordmserv:OrdreMissionService
     ,public concerneServ:ConcerneServices) {
-    paysserv.getAllPays().subscribe(p=>this.listPays=p);
-    reportService.getYears(this.currentDep.codeDep).subscribe(a=>this.anneesAdministratives =a);
+    paysserv.getAllPays().subscribe(p=>{this.listPays=p
+    
+      
+    });
+    reportService.getCountPaysMissions(this.dep.codeDep,this.d.getFullYear()).subscribe(dist=>{
+      this.distributionPays = dist;
+      dist.forEach(element => {
+        this.doughnutChartLabels.push(element.nomPays + " ( عدد المأموريات ) ");
+        this.doughnutChartData.push(element.valueP);
+        reportService.getGeocoding(element.nomPays).then(v=>{
+          this.markers.push({
+            lat:v.results[0].geometry.location.lat,
+            lng:v.results[0].geometry.location.lng,
+            label:v.results[0].address_components.long_name,
+            draggable:false
+          })
+        })
+      });
+    })
+    reportService.getYears(this.currentDep.codeDep).subscribe(a=>
+      { 
+        this.barChartLabels.push(a+"");
+        this.anneesAdministratives =a
+        a.forEach(element => {
+          budgserv.getSommeBudgMissionObtenus(this.dep.codeDep,element).subscribe(d=>{
+            fraisServ.getFraisMissionPromis(this.dep.codeDep,element).subscribe(e=>{
+              this.barChartData = [
+                {data : [d],label : 'اعتمادات المخصصة للمأمورية الاولية (د.ت )'},
+                {data : [e] , label : 'اعتمادات المخصصة للمأمورية المستهلكة (د.ت)'}
+              ]
+            })
+              budgserv.getSommeBudgTransportObtenus(this.dep.codeDep,element).subscribe(c=>{
+                fraisServ.getFraisTransportPromis(this.dep.codeDep,element).subscribe(k=>{
+                  this.barChartData2 = [
+                    {data : [c] ,label : 'اعتمادات المخصصة للنقل الاولية (د.ت )'},
+                    {data : [k] , label : 'اعتمادات المخصصة للنقل المستهلكة (د.ت)'}
+                  ]
+                })
+              });
+          });
+  
+        });
+      });
+      
    }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
   convDur(d1:Date,d2:Date){
     let diff =  Math.abs(new Date(d2).getTime() - new Date(d1).getTime());
     return Math.ceil(diff / (1000 * 3600 * 24));
@@ -61,7 +120,7 @@ export class SMainpanelComponent implements OnInit {
       case "S" : return "مصادق عليه من قبل سلطة الإشراف";
       default : return "في الإنتضار";
     }
-  }
+  } 
   showCountries(){
     
     if(this.deb!=null && this.fin !=null && this.selectedPays !=null
@@ -374,4 +433,10 @@ export class SMainpanelComponent implements OnInit {
     }
     return sum;
   }
+}
+interface marker {
+  lat: number;
+  lng: number;
+  label?: string;
+  draggable: boolean;
 }

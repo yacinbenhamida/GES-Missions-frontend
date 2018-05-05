@@ -43,6 +43,9 @@ import { AuthService } from './authguards/auth.service';
 import { AuthGuardService } from './authguards/auth-guard.service';
 import { Http } from '@angular/http';
 import { RoleGuardService } from './authguards/roleguard.service';
+import { ChartsModule } from 'ng2-charts';
+import { AgmCoreModule } from '@agm/core';
+
 @NgModule({
   declarations: [
     LoginComponent,
@@ -63,7 +66,11 @@ import { RoleGuardService } from './authguards/roleguard.service';
     NgxPaginationModule,
     SelectModule,
     HttpModule,
-    LoadingAnimateModule.forRoot()
+    ChartsModule,
+    LoadingAnimateModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDPBMTBJoxcLGULqtT-9Y-Ev8H-Ilu0ShM'
+    })
   ],
   providers: [NavbarService,AppService,UtilisateurService,
     DepartementService,CategorieService,ClasseService,FonctionService,GradeService

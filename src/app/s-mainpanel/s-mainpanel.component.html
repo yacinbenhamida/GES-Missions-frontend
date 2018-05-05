@@ -120,6 +120,21 @@
                   <button type="button" (click)="showCountries()" class="btn-u btn-u-red"><i class="fa fa-print"></i>  </button>
               </section>
           </div>
+          <div class="row">
+                <div style="display: block;">
+                        <canvas baseChart 
+                                    [data]="doughnutChartData"
+                                    [labels]="doughnutChartLabels"
+                                    [chartType]="doughnutChartType"
+                                    ></canvas>
+                      </div>
+            </div>
+            <br/>
+            <div class="row">
+                <agm-map   [zoom]="2"  id="regions_div">
+                    <agm-marker  *ngFor="let m of markers; let i = index" [iconUrl]="'../../assets/img/marker.png'" [latitude]="m.lat" [label]="{color: 'red',fontFamily: 'monospace',fontSize: '13', fontWeight: '100',text: m.label}" [longitude]="m.lng"></agm-marker>
+                  </agm-map>
+            </div>
       </form>
     </div>
     </div>
@@ -154,6 +169,27 @@
                       <button type="button" (click)="bilanDepenses()" class="btn-u btn-u-sea"><i class="fa fa-print"></i> </button>
                   </section>
               </div>
+              <div class="row">
+                    <div class="col-md-6" >
+                            <span class="text-center"> إستهلاك الإعتمادات المخصصة للمأمورية </span>
+                      <canvas baseChart style="width: 600px;height: 600px;"
+                              [labels]="barChartLabels"
+                              [datasets]="barChartData"
+                              [options]="barChartOptions"
+                              [legend]="barChartLegend"
+                              [chartType]="barChartType">
+                          </canvas>
+                      </div>
+                      <section class="col-md-6"  >إستهلاك الإعتمادات المخصصة للنقل 
+                            <canvas baseChart  style="width: 600px;height: 600px;"
+                                    [labels]="barChartLabels"
+                                    [datasets]="barChartData2"
+                                    [options]="barChartOptions"
+                                    [legend]="barChartLegend"
+                                    [chartType]="barChartType">
+                                </canvas>
+                            </section>
+                </div>
           </form>
         </div>
         </div>
