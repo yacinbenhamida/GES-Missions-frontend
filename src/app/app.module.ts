@@ -45,7 +45,7 @@ import { Http } from '@angular/http';
 import { RoleGuardService } from './authguards/roleguard.service';
 import { ChartsModule } from 'ng2-charts';
 import { AgmCoreModule } from '@agm/core';
-
+import { DataTableModule } from 'angular-2-data-table';
 @NgModule({
   declarations: [
     LoginComponent,

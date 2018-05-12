@@ -31,6 +31,7 @@ import { MConfirmMissionsComponent } from './m-confirm-missions/m-confirm-missio
 import { ThGroupesComponent } from './th-groupes/th-groupes.component';
 import { SMainpanelComponent } from './s-mainpanel/s-mainpanel.component';
 import { MAutoriMissionsComponent } from './m-autori-missions/m-autori-missions.component';
+import { MConfirmavanceComponent } from './m-confirmavance/m-confirmavance.component';
 import { AuthGuardService as AuthGuard } from './authguards/auth-guard.service';
 import {  RoleGuardService as RoleGuard } from './authguards/roleguard.service';
 const appRoutes: Routes = [
@@ -43,7 +44,8 @@ const appRoutes: Routes = [
     { path : 'm-missions' , component : MMissionsComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]} },
     { path : 'm-editmissions' , component : MMissionsEditComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]}},
     { path : 'm-confirmmiss' , component : MConfirmMissionsComponent,canActivate:[RoleGuard],data: {roles :["O","OM"]}},
-  // end missions
+    { path : 'm-confirmavance' , component : MConfirmavanceComponent ,canActivate: [RoleGuard],data: {roles :["P"]}},
+    // end missions
   { path : 'th-users',component : ThUsersComponent,canActivate: [RoleGuard],data: {roles :["A"]}},
   { path : 'home', component : HomepageComponent,canActivate: [AuthGuard] },
   { path : '', redirectTo: '/login',pathMatch: 'full'},
@@ -88,5 +90,5 @@ export const routingComponents = [ThUsersComponent,HomepageComponent,LoginCompon
     ,NotfoundcomponentComponent,EntBudgyearinsertComponent
     ,ProjBudgyearinsertComponent, ProjBudgyeareditComponent,EntBudgyeareditComponent,ThOrganisationsComponent
     ,ConfirmbudgYearComponent,MMissionairesComponent,MMissionsComponent,MAutoriMissionsComponent
-    ,MMissionsEditComponent,MFraisdestComponent,MConfirmMissionsComponent,ThGroupesComponent,SMainpanelComponent
+    ,MMissionsEditComponent,MFraisdestComponent,MConfirmMissionsComponent,ThGroupesComponent,SMainpanelComponent,MConfirmavanceComponent
 ]

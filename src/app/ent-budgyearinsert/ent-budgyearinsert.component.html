@@ -19,7 +19,7 @@
   </head>	
 <body> 
 <div class="wrapper">   
-    <div class="breadcrumbs">
+    <div class="breadcrumbs" style="background-image: url('../assets/img/breadcrumbs.png');">
         <div class="container arabparagraph">
             <h1 class="pull-left"><span class="arabtext">ادخال الاعتمادات السنوية للهيكل</span></h1>
             <ul class="pull-right breadcrumb arabparagraph">
@@ -83,7 +83,10 @@
   <footer>
     <button *ngIf="canEdit == true && isApproved == false" (click)="modify()" class="btn-u btn-u-dark">تثبيت</button>
     <button *ngIf="canEdit == false && isApproved == false" [disabled]="canEdit == false" (click)="onSubmit()" class="btn-u">تأكيد</button>
-  </footer>
+    <div class="alert alert-danger fade in" *ngIf="canEdit == false && isApproved == true">
+       وقعت المصادقة على الميزانية الأولية بتاريخ :  {{budget.dateBudg}}
+    </div>
+</footer>
 </div>            
  </form>
 </div> 

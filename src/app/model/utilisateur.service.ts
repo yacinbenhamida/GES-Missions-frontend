@@ -1,6 +1,6 @@
 import { Utilisateur } from './utilisateur';
 import { Departement}  from './departement';
-import { Http,Headers,Response } from '@angular/http';
+import { Http,Headers,Response, RequestOptions, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map'
@@ -10,9 +10,13 @@ import { UserStructs } from './userstructs';
 import { DepartementJS } from './departementjson';
 @Injectable()
 export class UtilisateurService{
+    private headers: Headers = new Headers();
+constructor(private http:Http){
+    this.headers.append("Authorization", "Basic " + btoa("stage" + ":" + "stage2")); 
+    this.headers.append("Content-Type", "application/json");
+}
+//private headers = new Headers({'Content-type':'application/json'});
 
-constructor(private http:Http){}
-private headers = new Headers({'Content-type':'application/json'});
 private usersUrl = '/api/users';
 
 private extractData(res:Response) {
@@ -28,19 +32,19 @@ getUsers():Observable<Utilisateur[]>{
 }
 getLoginCredentials(cin:number,password:string):Observable<Utilisateur>{
     const url = `${this.usersUrl}/verifLoginUser/${cin}/${password}`;
-    return this.http.get(url).map(this.extractData).catch(this.handleError);
+    return this.http.get(url).map(this.extractData, {headers: this.headers}).catch(this.handleError);
 }
 
 getUser(id:number):Promise<Utilisateur>{
     const url = `${this.usersUrl}/findUser/${id}`;
-    return this.http.get(url)
+    return this.http.get(url, {headers: this.headers})
       .toPromise()
       .then(response => response.json() as Utilisateur)
       .catch(this.handleError);
 }
 getDepOfUser(id:number):Observable<Departement>{
     const url = `${this.usersUrl}/findDepOfUser/${id}`;
-    return this.http.get(url).map(
+    return this.http.get(url, {headers: this.headers}).map(
         (res:Response)=>{
         return res.json() as Departement;}).catch(this.handleError);
 }   

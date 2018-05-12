@@ -47,13 +47,8 @@
   </header> 
   <div class="arabparagraph" *ngIf="addbudgmiss == true">
     <fieldset>                  
-      <div class="row ">
-            <div class="row">
-                <section class="col col-1"><span class="arabparagraph">
-                  المشروع</span>
-                </section>
-                
-                <section class="col col-10" *ngIf="projets!=null">
+      <div class="row ">  
+                <section class="col col-5" *ngIf="projets!=null">المشروع
                     <label class="select">
                         <select [disabled]="canEdit == false"  required name="budget"  [(ngModel)]="budget.projet">
                             <option value="0"  disabled>المشروع</option>
@@ -61,23 +56,18 @@
                         </select>
                         <i></i>
                     </label>
+                </section> 
+                <section class="col-md-1 text-center">
+                            <br/><input [disabled]="canEdit == false" type="radio" name="radio11" id="1" value="-" [(ngModel)]="signe"> <span class="label-text">-</span>
+                            <br/> <input  [disabled]="canEdit == false"  type="radio" name="radio1" id="1" value="+" [(ngModel)]="signe"> <span class="label-text">+</span>
                 </section>
-                </div>  
-                <section class="col col-1">
-                        <label>
-                                <input [disabled]="canEdit == false" type="radio" name="radio11" id="1" value="-" [(ngModel)]="signe"> <span class="label-text">-</span>
-                        </label>  
-                        <label>
-                                <input  [disabled]="canEdit == false"  type="radio" name="radio1" id="1" value="+" [(ngModel)]="signe"> <span class="label-text">+</span>
-                        </label>                          
-            </section>
-                <section class="col col-5">
+                <section class="col col-3">مرجع الميزانة
                     <label class="input">
                         <i class="icon-prepend fa fa-info"></i>
                         <input [disabled]="canEdit == false" minlength="4" maxlength="5" required type="text" name="codez" placeholder="مرجع الميزانة " [(ngModel)]="budget.refBudgProg">
                     </label>
                 </section>
-          <section class="col col-6">
+          <section class="col col-3">المبلغ
               <label class="input">
                   <i class="icon-prepend fa fa-dollar"></i>
                   <input [disabled]="canEdit == false" minlength="4" maxlength="5" required type="text" name="nomfctar" placeholder="المبلغ" [(ngModel)]="budget.montantBudg">
@@ -86,8 +76,11 @@
       </div>
   </fieldset>
   <footer>
-        <button [disabled]="canEdit == false" [ngClass]="{'btn-u disabled':canEdit == false,'btn-u':canEdit == true}" type="submit">تسجيل التحيين</button>
-  </footer>
+        <button *ngIf="canEdit == true  " [disabled]="canEdit == false" [ngClass]="{'btn-u disabled':canEdit == false,'btn-u':canEdit == true}" type="submit">تسجيل التحيين</button>
+        <div class="alert alert-danger fade in" *ngIf="canEdit == false">
+                يجب إدخال على الأقل مشروع كي تتمكن من تحيين اعتماداته
+        </div>
+    </footer>
 </div>            
  </form>
 </div> 
@@ -98,7 +91,8 @@
             <header class="arabparagraph"> قائمة المصاريف المشاريع
                     <button *ngIf="listvisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
                     <button *ngIf="listvisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                 
-            </header>  
+            </header> 
+            <fieldset *ngIf="listvisible == true">
             <div *ngIf="isEmpty(budgets)==true" class="arabparagraph">لا توجد   مصاريف</div>                
             <table *ngIf="isEmpty(budgets)==false && listvisible == true" class=" table table-bordered table-striped" >
                     <thead>
@@ -126,6 +120,7 @@
                         </tr>
                     </tbody>
             </table>
+        </fieldset> 
             </div>
     </div>           
 </div>  

@@ -114,6 +114,16 @@ export class MMissionsEditComponent implements OnInit {
     });
 
   }
+
+  deleteMiss(u:Mission){
+    if(confirm(" إلغاء المأمورية عدد "+u.numMission+" ? ")){
+        this.missionsservice.deleteMission(u).then(a=>{
+         this.tabmissions =  this.tabmissions.filter(h=>h!==u);
+          alert("تم")
+        },
+      error=>alert("لا يمكن التخلي عن هذه المأمورية "));
+    }
+  }
   editMiss(u:Mission){
     this.missionsservice.findMissionByNum(u.numMission,this.dep.codeDep).subscribe(m=>{
       this.missionmodif = m;

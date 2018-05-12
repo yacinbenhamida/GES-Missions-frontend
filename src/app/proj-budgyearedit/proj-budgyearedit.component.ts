@@ -17,26 +17,22 @@ export class ProjBudgyeareditComponent implements OnInit {
 
   budget:AvoirBudgProg;
   d:Date = new Date();
-  departement:Departement;
+  departement:Departement = JSON.parse(localStorage.getItem('org'));
    year:number;
    addbudgmiss:boolean;
    projets:Projet[] = [];
    budgets:MajBudgProg[];
    listvisible:boolean;
    signe:string;
-   controller:Departement;
     u:Utilisateur = JSON.parse(localStorage.getItem('user'));;
     canEdit:boolean = true;
-  constructor(public budgserv:BudgetService,public projserv:ProjetService) { 
-    this.departement = new Departement();
-  }
+  constructor(public budgserv:BudgetService,public projserv:ProjetService) {   }
 
   ngOnInit() {
     this.listvisible = true;
     this.budget = new AvoirBudgProg();
     this.year = this.d.getFullYear();
     this.addbudgmiss = true;
-    this.departement = JSON.parse(localStorage.getItem('org'));
     this.budgserv.getAllBudgProgMajOfUser(this.u.codeUtilisateur,this.departement.codeDep).subscribe(data=>this.budgets = data);
     this.projserv.getProjectsOfDepartment(this.departement.codeDep)
     .subscribe(data=>{
@@ -83,9 +79,10 @@ export class ProjBudgyeareditComponent implements OnInit {
   }
   convertText(u:string):string{
     switch(u){
-      case "O": return "في انتضار موافقة مراقب المصاريف او سلطة الإشراف";
+      case "O": return "في انتضار موافقة سلطة الإشراف";
       case "N" :  return "غير مثبت";
       case "S" : return "مصادق عليه";
+      case "R" : return "وقع رفضه";
     }
   }
 }

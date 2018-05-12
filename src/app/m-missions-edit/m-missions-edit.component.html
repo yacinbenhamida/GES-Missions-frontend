@@ -54,10 +54,11 @@
                               <tr>
                                   <th>رقم المأمورية</th>
                                   <th>الموضوع</th>
-                                  <th>تاريخ الذهاب </th>    
-                                  <th>تاريخ الإياب</th>
-                                  <th>المدة</th>
-                                  <th style="width: 10px;"></th>                         
+                                  <th >تاريخ الذهاب </th>    
+                                  <th >تاريخ الإياب</th>
+                                  <th >المدة</th>
+                                  <th style="width: 10px;visibility: hidden;"></th>  
+                                  <th style="width: 5px;visibility: hidden;"></th>                                                
                           </tr>
                       </thead>
                       <tbody>
@@ -68,7 +69,8 @@
                               <td>{{u.dateArriveP}}</td>
                               <td [innerHTML]="affdur(u.dateArriveP,u.dateDepartP)"></td>
                               <td class="text-center"><button type="button" class="btn-u btn-u-green" (click)="editMiss(u)"><i class="fa fa-edit"></i> تحيين</button></td>  
-                          </tr>
+                              <td class="text-center"><button type="button" class="btn-u btn-u-red" (click)="deleteMiss(u)"><i class="fa fa-times"></i></button></td>  
+                            </tr>
                       </tbody>
                       <tfoot>
                           <tr>
@@ -80,18 +82,17 @@
                 </table>
               </div>                
           </fieldset> 
-          <footer></footer>   
         </div> 
       </form>
   </div>
-<br/>  <br />
+<br/> 
 
 <div class="row " *ngIf="showmodif == true">
   <form   id="sky-form2" class="sky-form ">
   <header class="arabparagraph">تغيير معطيات مأمورية
         <button *ngIf="edmission == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleEdMissio()"><i class="fa fa-sort-desc"></i></button>
         <button *ngIf="edmission == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleEdMissio()"><i class="fa fa-sort-asc"></i></button>                                                                  
-        <button style="margin-right: 10px;"  class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="showmodif = false"><i class="fa fa-ban"></i></button>                                                                  
+        <button style="margin-right: 10px;"  class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="showmodif = false"><i class="fa fa-times"></i></button>                                                                  
   </header> 
   <div class="arabparagraph" *ngIf="edmission == true">
       <fieldset>

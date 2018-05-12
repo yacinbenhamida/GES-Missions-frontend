@@ -32,7 +32,7 @@ export class MissionService{
         .map(this.extractData).catch(this.handleError);  
     }
     deleteMission(d:Mission):Promise<void>{
-        const url = `${this.missUrl}/deleteFonct/${d.idMission}`;
+        const url = `${this.missUrl}/deleteMission/${d.idMission}`;
     return this.http.get(url, { headers: this.headers })
       .toPromise()
       .then(() => null)

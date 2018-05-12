@@ -117,13 +117,13 @@ export class EntBudgyearinsertComponent implements OnInit {
     .subscribe(val=>this.valbudgobtmissions=val,error=>this.valbudgobtmissions=0);
 
     this.budgserv.getSommeBudgTransportObtenus(this.dp.codeDep,this.year)
-    .subscribe(x=>{this.valbudgobtTransport=x});
+    .subscribe(x=>{this.valbudgobtTransport=x},error=>this.valbudgobtTransport=0);
 
     this.fraisServ.getFraisMissionPromis(this.dp.codeDep,this.year)
     .subscribe(val=>this.valbudgpromisMission=val,error=>this.valbudgpromisMission=0);
 
     this.fraisServ.getFraisTransportPromis(this.dp.codeDep,this.year).subscribe(
-      a=>{this.valbudgpromisMission = a}
+      a=>{this.valbudgpromisMission = a},error=>this.valbudgpromisMission=0
     )  
   
   }

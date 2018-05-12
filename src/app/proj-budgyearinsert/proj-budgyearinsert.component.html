@@ -40,7 +40,7 @@
             </div>
     </div>
     
-        <br/><br/>         
+        <br/><br/>      
   <div class="row ">
   <form   id="sky-form1" class="sky-form " >
   <header class="arabparagraph"> ادخال مصاريف المشروع
@@ -50,10 +50,7 @@
   <div class="arabparagraph" *ngIf="addbudgmiss == true">
     <fieldset>                  
       <div class="row ">
-                <section class="col col-1"><span class="arabparagraph">
-                  المشروع</span>
-                </section>
-                <section class="col col-10" *ngIf="projets!=null">
+                <section class="col col-4" *ngIf="projets!=null">المشروع
                     <label class="select">
                         <select (change)="verifBudgProg()"  required name="budget"  [(ngModel)]="choosenProject">
                             <option value="0"  disabled>المشروع</option>
@@ -63,29 +60,32 @@
                     </label>
                 </section>
                 <div (click)="msg()">
-                <section class="col col-6">
+                <section class="col col-3">مرجع الميزانة
                     <label class="input">
                         <i class="icon-prepend fa fa-info"></i>
                         <input  [disabled]="canEdit == false"  required type="text" name="codez" placeholder="مرجع الميزانة " [(ngModel)]="budget.refBudgProg">
                     </label>
                 </section>
-          <section class="col col-6">
+          <section class="col col-4">المبلغ
               <label class="input">
                   <i class="icon-prepend fa fa-dollar"></i>
                   <input  [disabled]="canEdit == false"  required type="text" name="nomfctar" placeholder="المبلغ" [(ngModel)]="budget.montantBudg">
               </label>
           </section>
         </div>
-         <section class="col col-1">
-            <button *ngIf="btnAdd == true" [disabled]="canEdit == false" (click)="onSubmit()" class="btn-u">تأكيد</button>
-            <button *ngIf="btnModif == true" class="btn-u" (click)="modifDdeBUDGET()">تثبيت </button>
-         </section>
       </div>
   </fieldset>
+  <footer>
+        <button *ngIf="btnAdd == true && canEdit == true" [disabled]="canEdit == false" (click)="onSubmit()" class="btn-u">تسجيل إعتمادات المشروع</button>
+        <button *ngIf="btnModif == true && canEdit == true" class="btn-u" (click)="modifDdeBUDGET()">تحيين  </button>
+    <div class="alert alert-danger fade in" *ngIf="canEdit == false">
+        وقعت المصادقة على الميزانية الأولية لهذا المشروع بتاريخ :  {{currentbudgprog.dateBudg}}
+     </div>
+  </footer>
 </div>            
  </form>
 </div> <br/><br/>
-<div class="row">
+<div class="row" *ngIf="currentbudgprog.totalBudget && valbudgpromis!=undefined">
     <div class="sky-form">
         <fieldset>
             <section class="col col-1">
@@ -103,7 +103,7 @@
             <section class="col col-3">
                     <label class="input">
                         <i class="icon-prepend fa fa-dollar"></i>
-                        <input style="background-color: whitesmoke;" disabled minlength="4" maxlength="5" required type="text" name="budgpromis" placeholder="الاعتمادات المتعهد بها" >
+                        <input style="background-color: whitesmoke;" disabled minlength="4" maxlength="5" required type="text" name="budgpromis" value="{{valbudgpromis}}" placeholder="الاعتمادات المتعهد بها" >
                     </label>
             </section>
             <section class="col col-1">
@@ -112,7 +112,7 @@
             <section class="col col-3">
                     <label class="input">
                         <i class="icon-prepend fa fa-dollar"></i>
-                        <input style="background-color: whitesmoke;" disabled minlength="4" maxlength="5" required type="text" name="budgrest" placeholder="الاعتمادات المتبقية " >
+                        <input style="background-color: whitesmoke;" disabled minlength="4" maxlength="5" required type="text" name="budgrest" placeholder="الاعتمادات المتبقية " value="{{currentbudgprog.totalBudget - valbudgpromis}}">
                     </label>
             </section>
         </fieldset>

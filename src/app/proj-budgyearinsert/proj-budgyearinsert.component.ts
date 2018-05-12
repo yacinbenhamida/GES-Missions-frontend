@@ -32,6 +32,9 @@ export class ProjBudgyearinsertComponent implements OnInit {
    currentbudgprog:AvoirBudgProg;
    isFirstElem:boolean = false;
    isApproved:boolean = false;
+   // budgets : obtenus , pris en charge par le projet choisit
+   valubudginitiale:number = 0;
+   valbudgpromis:number = 0;
   constructor(public budgserv:BudgetService,public projserv:ProjetService) { 
     this.choosenProject = new Projet();
     this.initalbudget = new MajBudgProg();
@@ -63,14 +66,25 @@ export class ProjBudgyearinsertComponent implements OnInit {
     return (obj && (Object.keys(obj).length === 0));
   }
   verifBudgProg(){
+    this.initalbudget = new MajBudgProg();
+    this.budget = new AvoirBudgProg();
+    this.currentbudgprog = new AvoirBudgProg();
+    this.isFirstElem = true;
+    this.canEdit = true;
+    this.isApproved = true;
+    this.valbudgpromis = 0;
     this.budgserv.verifyIfThereisnoBudgets(this.departement.codeDep,this.choosenProject.idprojet)
-    .subscribe(data=>{this.initialmodif = data;
+    .subscribe(data=>{
+      this.initialmodif = data;
       if(this.initialmodif.length>1 || this.initialmodif[0].etat=="R"){
         this.initalbudget = this.initialmodif[0];
         this.budget.montantBudg = this.initalbudget.valeurMajBudgProg;
         this.budget.refBudgProg = this.initalbudget.refBudget;
-        this.budget.totalBudget = this.initalbudget.valeurMajBudgProg;
+        this.valubudginitiale = this.initalbudget.valeurMajBudgProg;
         this.budget.idbudgProg = this.initalbudget.budgetprojet.idbudgProg;
+        this.budgserv.getSommeBudgetPECprojet(this.departement.codeDep,this.d.getFullYear(),this.choosenProject.idprojet)
+        .subscribe(v=>{this.valbudgpromis = v});
+        this.currentbudgprog.totalBudget = this.initalbudget.valeurMajBudgProg;
 
       }
       else if(this.initialmodif.length == 1 && this.initialmodif[0].etat=="N"){
@@ -81,7 +95,8 @@ export class ProjBudgyearinsertComponent implements OnInit {
         this.budget.refBudgProg = this.initalbudget.refBudget;
         this.budget.totalBudget = this.initalbudget.valeurMajBudgProg;
         this.budget.idbudgProg = this.initalbudget.budgetprojet.idbudgProg;
-        
+        this.currentbudgprog.totalBudget = this.initalbudget.valeurMajBudgProg;
+
         this.btnModif = true;
         this.btnAdd = false;
       } else if(this.initialmodif.length ==1 && this.initialmodif[0].etat=="O"){
@@ -93,6 +108,8 @@ export class ProjBudgyearinsertComponent implements OnInit {
         this.budget.refBudgProg = this.initalbudget.refBudget;
         this.budget.totalBudget = this.initalbudget.valeurMajBudgProg;
         this.budget.idbudgProg = this.initalbudget.budgetprojet.idbudgProg;
+        this.currentbudgprog.totalBudget = this.initalbudget.valeurMajBudgProg;
+
       }
       else if(this.initialmodif.length == 1 && this.initialmodif[0].etat=="S"){
         this.isFirstElem = false;
@@ -104,6 +121,8 @@ export class ProjBudgyearinsertComponent implements OnInit {
         this.budget.refBudgProg = this.initalbudget.refBudget;
         this.budget.totalBudget = this.initalbudget.valeurMajBudgProg;
         this.budget.idbudgProg = this.initalbudget.budgetprojet.idbudgProg;
+        this.currentbudgprog.totalBudget = this.initalbudget.valeurMajBudgProg;
+
       }
       else {
         this.canEdit = false;

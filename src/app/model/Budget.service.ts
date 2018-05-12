@@ -85,7 +85,11 @@ export class BudgetService{
         return this.http.post(this.projUrl + "/updateInitialBudgProg",JSON.stringify(a),{headers : this.headers})
         .toPromise().then(()=>null).catch(this.handleError);
     }
-
+    // les budgets promis
+    getSommeBudgetPECprojet(codedep:string,year:number,idproj:number):Observable<number>{
+        const url = `${this.projUrl}/getToalFraisPECProjetPromis/${codedep}/${year}/${idproj}`;
+        return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }
 
     // departements budgets 
 

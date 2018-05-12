@@ -38,6 +38,11 @@ export class OrdreMissionService{
         const url = `${this.missUrl}/allOrdresMissionsOfDepAyantFrais/${id}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
+    // les ordre elligibles a une validation auprés du payeur
+    getAllOrdMissionsOfDepElligiblesPourPayeur(id:string):Observable<OrdreMission[]>{
+        const url = `${this.missUrl}/ordrepourpayeur/${id}`;
+        return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }
     getOrdMission(idord:number,nummis:number):Observable<OrdreMission>{
         const url = `${this.missUrl}/findOrdreMiss/${idord}/${nummis}`;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
