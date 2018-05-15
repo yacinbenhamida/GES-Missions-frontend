@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch';
 @Injectable()
 export class MissionService{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private missUrl = '/api/missions';
 
@@ -17,15 +17,15 @@ export class MissionService{
     }
     getAllMissionsOfDep(id:string):Observable<Mission[]>{
         const url = `${this.missUrl}/allMissionsOfDep/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getMission(id:number):Observable<Mission>{
         const url = `${this.missUrl}/findMission/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     findMissionByNum(num:number,codeDep:string):Observable<Mission>{
         const url = `${this.missUrl}/findMissionByNum/${num}/${codeDep}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     insertMission(d:Mission):Observable<Mission>{
         return this.http.post(this.missUrl+"/insertMission",JSON.stringify(d),{headers : this.headers})
@@ -44,7 +44,7 @@ export class MissionService{
     }
     getLatestMissionCode(codeDep:string):Observable<string>{
         const url = `${this.missUrl}/LatestMissionOfdep/${codeDep}`;
-        return this.http.get(url).map((res:Response)=>{
+        return this.http.get(url,{headers : this.headers}).map((res:Response)=>{
             return res.text() as string;}).catch(this.handleError);
     }
     private handleError(error: any): Promise<any> {

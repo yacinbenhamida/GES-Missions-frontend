@@ -10,11 +10,8 @@ import { UserStructs } from './userstructs';
 import { DepartementJS } from './departementjson';
 @Injectable()
 export class UtilisateurService{
-    private headers: Headers = new Headers();
-constructor(private http:Http){
-    this.headers.append("Authorization", "Basic " + btoa("stage" + ":" + "stage2")); 
-    this.headers.append("Content-Type", "application/json");
-}
+    constructor(public http:Http){}
+    private headers = new Headers({'Content-type':'application/json'});
 //private headers = new Headers({'Content-type':'application/json'});
 
 private usersUrl = '/api/users';
@@ -28,7 +25,7 @@ updateUsers(u:Utilisateur):Promise<Utilisateur[]>{
     .toPromise().then(()=>null).catch(this.handleError); 
 }
 getUsers():Observable<Utilisateur[]>{
-    return this.http.get(this.usersUrl+"/allUsers").map(this.extractData).catch(this.handleError);
+    return this.http.get(this.usersUrl+"/allUsers", {headers: this.headers}).map(this.extractData).catch(this.handleError);
 }
 getLoginCredentials(cin:number,password:string):Observable<Utilisateur>{
     const url = `${this.usersUrl}/verifLoginUser/${cin}/${password}`;

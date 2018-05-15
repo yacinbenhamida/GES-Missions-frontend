@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch';
 @Injectable()
 export class FonctionService{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private fonctUrl = '/api/fonctions';
 
@@ -16,11 +16,11 @@ export class FonctionService{
         return body || [];
     }
     getAlloncts():Observable<Fonction[]>{
-        return this.http.get(this.fonctUrl+"/allFonctions").map(this.extractData).catch(this.handleError);
+        return this.http.get(this.fonctUrl+"/allFonctions",{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getFonct(id:number):Observable<Fonction>{
         const url = `${this.fonctUrl}/findFonction/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertFonct(d:Fonction):Promise<Fonction>{

@@ -8,7 +8,7 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 @Injectable()
 export class ZonePaysService{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private zonesUrl = '/api/zones';
 
@@ -21,7 +21,7 @@ export class ZonePaysService{
     }
     getZone(id:number):Observable<Zonepays>{
         const url = `${this.zonesUrl}/findzone/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertZone(d:Zonepays):Promise<Zonepays>{

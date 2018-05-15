@@ -9,7 +9,7 @@ import { Concerne } from "./concerne";
 import {  TypeFrai } from "./typefrais";
 @Injectable()
 export class TypeFraisServices{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private Url = '/api/typefrais';
 
@@ -22,7 +22,7 @@ export class TypeFraisServices{
     }
     getTypeFrais(id:string):Observable<TypeFrai>{
         const url = `${this.Url}/findType/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertTypeFrais(d:TypeFrai):Promise<TypeFrai>{

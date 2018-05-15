@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch';
 @Injectable()
 export class GradeService{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private gradeUrl = '/api/grades';
 
@@ -16,11 +16,11 @@ export class GradeService{
         return body || [];
     }
     getAllGrades():Observable<Grade[]>{
-        return this.http.get(this.gradeUrl+"/allGrades").map(this.extractData).catch(this.handleError);
+        return this.http.get(this.gradeUrl+"/allGrades",{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getGrade(id:number):Observable<Grade>{
         const url = `${this.gradeUrl}/findGrade/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertGrade(d:Grade):Promise<Grade>{

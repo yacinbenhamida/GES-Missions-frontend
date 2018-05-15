@@ -67,7 +67,7 @@
                       <td>{{x.moyTransport}}</td>
                       <td>{{x.nbJoursP}} </td>
                       <td>{{x.fraisMission}}</td>
-                      <td><button (click)="gotodepenses(x)" type="button" class="btn-u btn-u-brown"> مصاريف المأمورية <i class="fa fa-dollar"></i></button></td>
+                      <td><button (click)="gotodepenses(x)" type="button" class="btn-u btn-u-brown"> تحمل مصاريف المأمورية <i class="fa fa-dollar"></i></button></td>
                   </tr>
                   
               </tbody>
@@ -118,7 +118,7 @@
         </table>
 </div>
 </div>
-<!--  مصاريف المأمورية frais mission -->
+<!--  مصاريف المأمورية prise en charge des de frais mission -->
 <div class="row" *ngIf="depensesd == true">
     <form   id="sky-form" class="sky-form ">
         <div class="panel panel-dark-blue">
@@ -137,7 +137,6 @@
                     <thead> <tr>                
                         <td colspan="4" style="visibility:hidden;"></td>
                         <td class="text-center" style="width : 100px;">عدد ايام التكفل</td> 
-                        <!--  <td class="text-center" style="width : 100px;">المبلغ</td> -->
                     </tr>                  
                     </thead>  
                     <tbody>
@@ -152,26 +151,20 @@
                             <td > 
                                   <input style="width: 100px;font-family: Arial;" [(ngModel)]="nbjourspecdep"  max="{{selectedconcerne.nbJoursP}}" name="duree" required type="number"  [disabled]="departementsup == false || ((orgetrangersup == false && projetsup == false) &&  departementsup == true)"  >
                               </td> 
-                              <!--  <td> 
-                                <input  style="width: 100px;font-family: Arial;"  [(ngModel)]="departementvalue" [disabled]="departementsup == false " name="sommedep"  required type="number"  >
-                              </td>-->
                           </tr>
                           <tr>
                                 <!-- ORGANISME ETRANGER -->
                                 <td><input type="checkbox" [disabled]="departementsup == true && projetsup==true"  [(ngModel)]="orgetrangersup" name="supporget" /></td>
                                 <td>الهيكل المضيف</td>
                                 <td>
-                                    <input style="width: 350px;" [(ngModel)]="fraismission.nomOrgAr"  [disabled]="orgetrangersup == false" name="nomorgar"  type="text"  placeholder="اسم المؤسسة المتكفلة">
+                                    <input style="width: 350px;" [(ngModel)]="nomOrgAr"  [disabled]="orgetrangersup == false" name="nomorgar"  type="text"  placeholder="اسم المؤسسة المتكفلة">
                                 </td>
                                 <td>
-                                    <input style="width: 350px;font-family: Arial;" [(ngModel)]="fraismission.nomOrgFr"   [disabled]="orgetrangersup == false" name="nomorgfr"  type="text" placeholder="nom de l'organisme" >
+                                    <input style="width: 350px;font-family: Arial;" [(ngModel)]="nomOrgFr"   [disabled]="orgetrangersup == false" name="nomorgfr"  type="text" placeholder="nom de l'organisme" >
                                 </td>
                                  <td>
                                     <input style="width: 100px;font-family: Arial;"  [(ngModel)]="nbjourspecorget"   [disabled]="orgetrangersup == false  || ((departementsup == false && projetsup == false) && orgetrangersup == true) " name="dureeorget"   type="number"  >
                                 </td> 
-                               <!--   <td>
-                                    <input  style="width: 100px;font-family: Arial;"   [(ngModel)]="orgetvalue" [disabled]="orgetrangersup == false" name="orgetvalue"   type="number"  >
-                                </td> --> 
                             </tr>
                             <tr> <!-- PROJET -->
                                 <td><input type="checkbox" [(ngModel)]="projetsup" name="projetsup" [disabled]="orgetrangersup == true && departementsup == true"/></td>
@@ -187,9 +180,6 @@
                                  <td>
                                     <input [(ngModel)]="nbjourspecproj" [disabled]="projetsup == false  || ((departementsup == false &&  orgetrangersup == false) && projetsup == true)"  style="width: 100px;font-family: Arial;" name="durproj"  required type="number">    
                                </td>
-                             <!--   <td>
-                                    <input  style="width: 100px;font-family: Arial;" [(ngModel)]="projetsupSomme"  [disabled]="projetsup == false || (orgetrangersup == true && departementsup == true)" name="sommeproj"  required type="number"  >
-                                </td> -->
                             </tr>
                       </tbody>
               </table>

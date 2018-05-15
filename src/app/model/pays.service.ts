@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch';
 @Injectable()
 export class PaysService{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private paysUrl = '/api/pays';
 
@@ -16,11 +16,11 @@ export class PaysService{
         return body || [];
     }
     getAllPays():Observable<Pays[]>{
-        return this.http.get(this.paysUrl+"/allPays").map(this.extractData).catch(this.handleError);
+        return this.http.get(this.paysUrl+"/allPays",{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getPays(id:number):Observable<Pays>{
         const url = `${this.paysUrl}/findPays/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertPays(d:Pays):Promise<Pays>{

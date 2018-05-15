@@ -8,7 +8,7 @@ import { Http,Headers,Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class TauxGroupeServices{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private Url = '/api/tauxgroupe';
 
@@ -18,11 +18,11 @@ export class TauxGroupeServices{
     }
     // groupes
     getAllGroupes():Observable<Groupe[]>{
-        return this.http.get(this.Url+"/allGroupes").map(this.extractData).catch(this.handleError);
+        return this.http.get(this.Url+"/allGroupes",{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getGroupe(id:number):Observable<Groupe>{
         const url = `${this.Url}/findGroupe/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertGroupe(d:Groupe):Promise<Groupe>{
@@ -44,11 +44,11 @@ export class TauxGroupeServices{
     // taux
 
     getAllTaux():Observable<Taux[]>{
-        return this.http.get(this.Url+"/allTaux").map(this.extractData).catch(this.handleError);
+        return this.http.get(this.Url+"/allTaux",{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getTaux(id:number):Observable<Taux>{
         const url = `${this.Url}/findTaux/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertTaux(d:Taux):Promise<Taux>{

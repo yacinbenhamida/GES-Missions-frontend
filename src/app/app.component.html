@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../assets/css/css-rtl/style-rtl.css">
     <!-- CSS Header and Footer -->
     <link rel="stylesheet" href="../assets/css/css-rtl/headers/header-default-rtl.css">
-    <link rel="stylesheet" href="../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <link rel="stylesheet" href="../assets/css/css-rtl/footers/footer-v2-rtl.css">
     <!-- CSS Implementing Plugins -->
     <link rel="stylesheet" href="../assets/plugins/animate.css">
     <link rel="stylesheet" href="../assets/plugins/line-icons/line-icons.css">
@@ -29,18 +29,18 @@
     <sd-navbar *ngIf="appserv.navigation"></sd-navbar>
     <!--=== End Header ===-->    
  <router-outlet></router-outlet>
-    <div class="footer-v1" *ngIf="appserv.footer" >
-        <div class="footer">
+    <div id="footer-v2" class="footer-v2" *ngIf="appserv.footer" >
+        <div class="copyright">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3 md-margin-bottom-20" >
-                        <img id="logo-footer" class="footer-logo"  src="../assets/img/rached-menu-logo-light.png" >
+                    <div class="col-md-3" >
+                        <img id="logo-footer" class="footer-logo"  src="../assets/img/rached-menu-logo-dark.png" >
                     </div>
-                    <div class="col-md-3 md-margin-bottom-20">              
+                    <div class="col-md-3">              
                             <a href="http://www.cni.nat.tn/index.php/fr/"><img id="logo-footer" class="footer-logo" src="../assets/img/cni.png" alt="" ></a>
                         </div>
-                    <div class="col-md-3 map-img md-margin-bottom-20">
-                        <address class="md-margin-bottom-40 arabparagraph">
+                    <div class="col-md-3">
+                        <address class=" arabparagraph">
                              17 نهج بلحسن بن شعبان  <br/>
                             1005 العمران    <br/>
                              تونس <br/>
@@ -50,18 +50,6 @@
                             fax: + 216 71 781 862<br/>
                         </address>
                     </div>
-                </div>
-            </div> 
-        </div>
-        <div class="copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6">                     
-                        <p>
-                            2018 &copy; المركز الوطني للاعلامية  غير مسؤول عن محتوى المواقع الخارجية                          
-                        </p>
-                    </div>
-                    
                 </div>
             </div> 
         </div>

@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch';
 @Injectable()
 export class ClasseService{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private classUrl = '/api/classes';
 
@@ -16,11 +16,11 @@ export class ClasseService{
         return body || [];
     }
     getAllClasses():Observable<Classe[]>{
-        return this.http.get(this.classUrl+"/allClasses").map(this.extractData).catch(this.handleError);
+        return this.http.get(this.classUrl+"/allClasses",{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getClasse(id:number):Observable<Classe>{
         const url = `${this.classUrl}/findClasse/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertClasse(d:Classe):Promise<Classe>{

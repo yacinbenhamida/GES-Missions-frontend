@@ -11,7 +11,7 @@ import { PaysFrais } from "./paysfrais";
 export class PaysFraisServices{
     constructor(private http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
-    private Url = '/api/fraisordremission';
+    private Url = '/api/api/fraisordremission';
 
     private extractData(res:Response) {
         let body = res.json();

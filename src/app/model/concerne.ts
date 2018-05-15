@@ -13,6 +13,8 @@ export class Concerne{
     public nbJoursPecDep:number;
     public nbJoursPecOrget:number;
     public nbJoursPecProj:number;
+    nomOrgFr:string;
+    nomOrgAr:string;
     constructor(){
         this.ordre = new OrdreMission();
         this.pays = new Pays();

@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch';
 @Injectable()
 export class OrdreMissionService{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private missUrl = '/api/ordremissions';
 
@@ -18,34 +18,34 @@ export class OrdreMissionService{
 
     getOrdresValides(codeDep:string):Observable<OrdreMission[]>{
         const url = `${this.missUrl}/getOrdresvalides/${codeDep}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getLatestORDMISS(nummis:number):Observable<string>{
         const url = `${this.missUrl}/latestOrdMiss/${nummis}`;
-        return this.http.get(url).map((res:Response)=>{
+        return this.http.get(url,{headers : this.headers}).map((res:Response)=>{
             return res.text() as string;}).catch(this.handleError);
     }
     getAllOrdMissionsOfMiss(id:number,codeDep:string):Observable<OrdreMission[]>{
         const url = `${this.missUrl}/allOrdresMissionsOfMiss/${id}/${codeDep}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getAllOrdMissionsOfDep(id:string):Observable<OrdreMission[]>{
         const url = `${this.missUrl}/allOrdresMissionsOfDep/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     // les ordres elligibles a une validation (ayant un frais et une destination au moins )
     getAllOrdMissionsOfDepElligibles(id:string):Observable<OrdreMission[]>{
         const url = `${this.missUrl}/allOrdresMissionsOfDepAyantFrais/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     // les ordre elligibles a une validation auprés du payeur
     getAllOrdMissionsOfDepElligiblesPourPayeur(id:string):Observable<OrdreMission[]>{
         const url = `${this.missUrl}/ordrepourpayeur/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getOrdMission(idord:number,nummis:number):Observable<OrdreMission>{
         const url = `${this.missUrl}/findOrdreMiss/${idord}/${nummis}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertOrdMission(d:OrdreMission):Promise<OrdreMission>{

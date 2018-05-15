@@ -8,8 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { TypeDep } from './typeDep';
 @Injectable()
 export class DepartementService{
-
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private depUrl = '/api/departement';
 
@@ -18,11 +17,11 @@ export class DepartementService{
         return body || [];
     }
     getAllDeps():Observable<Departement[]>{
-        return this.http.get(this.depUrl+"/allDeparts").map(this.extractData).catch(this.handleError);
+        return this.http.get(this.depUrl+"/allDeparts",{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getDepartement(id:String):Observable<Departement>{
         const url = `${this.depUrl}/findDepart/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertDep(d:Departement):Promise<Departement>{
@@ -41,19 +40,19 @@ export class DepartementService{
         .toPromise().then(()=>null).catch(this.handleError);
     }
     getAllTypeDeps():Observable<TypeDep[]>{
-        return this.http.get(this.depUrl + '/allTypeDeps').map(this.extractData).catch(this.handleError);
+        return this.http.get(this.depUrl + '/allTypeDeps',{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getAllDepsOfCurrentType(idtype:number):Observable<Departement[]>{
         const url = `${this.depUrl}/allDepartsOftype/${idtype}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getAllOrgsFromOfcurrentm(idminist:string):Observable<Departement[]>{
         const url = `${this.depUrl}/allDepartsOfMinis/${idminist}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getLatestDepCode(idminist:string,typedep:string) : Observable<string>{
         const url = `${this.depUrl}/findLatestDepart/${idminist}/${typedep}`;
-       return this.http.get(url).map((res:Response)=>{
+       return this.http.get(url,{headers : this.headers}).map((res:Response)=>{
             return res.text() as string;}).catch(this.handleError);
           //  return this.http.get(url).map(this.extractData).catch(this.handleError);
     }

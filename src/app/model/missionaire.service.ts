@@ -8,7 +8,7 @@ import 'rxjs/add/operator/catch';
 import { AffectMissDep } from "./affectmission";
 @Injectable()
 export class MissionaireServices{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private missUrl = '/api/missionaires';
 
@@ -19,23 +19,23 @@ export class MissionaireServices{
 
     getAllMissionaireNHAM(deb:Date,end:Date,codeDep:string):Observable<Missionaire[]>{
         const url = `${this.missUrl}/getallMissionairesNHAM/${deb}/${end}/${codeDep}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getAllMissionaire(id:string):Observable<Missionaire[]>{
         const url = `${this.missUrl}/getallMissionairesOfDEP/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getMissionaireByCin(cin:number):Observable<Missionaire>{
         const url = `${this.missUrl}/findMissionaireByCIN/${cin}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getMissionaire(id:number):Observable<Missionaire>{
         const url = `${this.missUrl}/findMissionaire/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getAllMissOfDep(codeDep:string):Observable<AffectMissDep[]>{
         const url = `${this.missUrl}/allMissionairesOfDEP/${codeDep}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     insertMissionaire(affect:AffectMissDep) : Observable<AffectMissDep>{
         return this.http.post(this.missUrl+"/insertMissionaire",JSON.stringify(affect),{headers : this.headers})

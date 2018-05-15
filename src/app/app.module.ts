@@ -45,7 +45,7 @@ import { Http } from '@angular/http';
 import { RoleGuardService } from './authguards/roleguard.service';
 import { ChartsModule } from 'ng2-charts';
 import { AgmCoreModule } from '@agm/core';
-import { DataTableModule } from 'angular-2-data-table';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -77,7 +77,7 @@ import { DataTableModule } from 'angular-2-data-table';
   ,ZonePaysService,ThemeService,ProjetService,MotCleService,PaysService,BudgetService,
   MissionaireServices,OrdreMissionService,MissionService,ConcerneServices,AvoirFraisService,
   PaysService,TypeFraisServices,TauxGroupeServices,LoadingAnimateService,ReportService,AuthService,
-  AuthGuardService,RoleGuardService],
+  AuthGuardService,RoleGuardService,{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

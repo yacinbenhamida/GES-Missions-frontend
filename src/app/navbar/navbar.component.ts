@@ -32,4 +32,17 @@ export class NavbarComponent implements OnInit,AfterViewInit{
     localStorage.clear();
     this.route.navigate([""]);
   }
+  activeSection(location:any){
+    let arr= ['/th-projects','/th-fonct','/th-users','/th-countries','/th-zone','/th-grade','/th-departements','/th-classes'
+    ,'/th-categories','/th-typefrais','/th-keywords','/th-org','/th-groupes'];
+    return arr.indexOf(location.toString()) != -1;
+  }
+  activeSection2(location:any){
+    let arr= ["/insbud-org","/insbudg-proj","/updbudg-org","/updbudg-proj","confirmbudg-year"];
+    return arr.indexOf(location.toString()) != -1;
+  }
+  activeSection3(location:any){
+    let arr= ["/m-missionaires","/m-missions","/m-editmissions","/m-confirmmiss","/confirmmissions","/m-confirmavance"];
+    return arr.indexOf(location.toString()) != -1;
+  }
 }

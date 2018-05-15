@@ -86,7 +86,8 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
   nbjourspecproj:number;
   etr:boolean = false; // si le frais divers est pris en charge par un organisme externe (hote)
   proj:boolean = false; // is pec par un projet
-
+  nomOrgAr:string = ""; // nom de l'org etranger 
+  nomOrgFr:string = "" ;
   constructor(public route:ActivatedRoute,public ordserv:OrdreMissionService,
     public mserv:MissionaireServices,public ordm:OrdreMissionService,public missionService:MissionService,
   public payService:PaysService,public concerneserv:ConcerneServices,public projserv:ProjetService,
@@ -257,8 +258,8 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
               this.orgetrangersup=true;
               this.nbjourspecdep = x.nbJoursPecDep;
               this.nbjourspecorget = x.nbJoursPecOrget;
-              this.fraismission.nomOrgAr = a.nomOrgAr;
-              this.fraismission.nomOrgFr = a.nomOrgFr;
+              this.nomOrgAr = x.nomOrgAr;
+              this.nomOrgFr = x.nomOrgFr;
               break;
             }
             case 'M' : { // org hote + projet
@@ -268,8 +269,8 @@ export class MFraisdestComponent implements OnInit,AfterViewInit {
                     this.selectedprog.idprojet = a.projet.idprojet;
                     this.nbjourspecorget = x.nbJoursPecOrget;
                     this.nbjourspecproj = x.nbJoursPecProj;
-                    this.fraismission.nomOrgAr = a.nomOrgAr;
-                    this.fraismission.nomOrgFr = a.nomOrgFr;
+                    this.nomOrgAr = x.nomOrgAr;
+                    this.nomOrgFr = x.nomOrgFr;
                     
                     break;
           }
@@ -371,8 +372,10 @@ saveFraisDiv(){
               this.fraismission.projet =this.selectedprog;
               this.selectedconcerne.nbJoursPecOrget = this.nbjourspecorget;
               this.selectedconcerne.nbJoursPecProj = this.nbjourspecproj;
+              this.selectedconcerne.nomOrgAr = this.nomOrgAr;
+              this.selectedconcerne.nomOrgFr = this.nomOrgFr;
       }else alert("لا يمكن اجتياز مدة الامر");
-      }
+      }//prise en charge departement seulement
       else if (this.departementsup && !this.orgetrangersup && !this.projetsup){
        this.fraismission.support.codeSupport = "I";
        this.fraismission.codeSupport = this.departement.codeDep;
@@ -402,10 +405,12 @@ saveFraisDiv(){
           else this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux;       
         }
       }
-      else if (this.orgetrangersup && !this.projetsup && !this.departementsup){
+      else if (this.orgetrangersup && !this.projetsup && !this.departementsup){ // pec org etranger
        this.fraismission.support.codeSupport = "E";
        this.fraismission.codeSupport = this.departement.codeDep;
        this.selectedconcerne.nbJoursPecOrget = this.selectedconcerne.nbJoursP;
+       this.selectedconcerne.nomOrgAr = this.nomOrgAr;
+       this.selectedconcerne.nomOrgFr = this.nomOrgFr;
        if(this.selectedconcerne.nbJoursP > 20 ){
           if (this.couverture == "reduction"){
             this.fraismission.valeurPrevue = (this.selectedconcerne.nbJoursP * taux);
@@ -431,7 +436,7 @@ saveFraisDiv(){
             else this.fraismission.valeurPrevue = this.selectedconcerne.nbJoursP * taux  / 3;
           }
       }
-      else if (this.projetsup && !this.departementsup && !this.orgetrangersup){ 
+      else if (this.projetsup && !this.departementsup && !this.orgetrangersup){ //pec projet complete
        this.fraismission.support.codeSupport = "A";
        this.fraismission.projet = this.selectedprog;
        this.selectedconcerne.nbJoursPecProj = this.selectedconcerne.nbJoursP;
@@ -474,6 +479,7 @@ saveFraisDiv(){
      else if(x=="E") return "هيكل اجنبي";
      else if(x=="P") return "الحساب الخاص";
      else if(x=="A") return "مشروع";
+     else if(x=="A") return "تحمل مشترك"; 
    }
    verifPerso(){
      if(this.addedfraidiver.support.codeSupport == "P"){

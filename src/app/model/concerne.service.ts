@@ -8,7 +8,7 @@ import 'rxjs/add/operator/catch';
 import { Concerne } from "./concerne";
 @Injectable()
 export class ConcerneServices{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private Url = '/api/concerne';
 
@@ -17,15 +17,15 @@ export class ConcerneServices{
         return body || [];
     }
     getAllConcerne():Observable<Concerne[]>{
-        return this.http.get(this.Url+"/allConcernes").map(this.extractData).catch(this.handleError);
+        return this.http.get(this.Url+"/allConcernes",{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getAllConcerneOfORDRE(idordre:number,codeDep:string):Observable<Concerne[]>{
         const url = `${this.Url}/allConcernesOfOrdre/${idordre}/${codeDep}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
     getConcerne(id:number):Observable<Concerne>{
         const url = `${this.Url}/findConcerne/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertConcerne(d:Concerne):Promise<Concerne>{

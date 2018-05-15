@@ -50,13 +50,13 @@
                 <div class="container">
                     <ul class="nav navbar-nav">
                         <!-- homepage -->
-                        <li >
-                                <a routerLink="home" class="dropdown-toggle " data-toggle="dropdown">
+                        <li [ngClass]="{'active':route.url=='/home'}">
+                                <a routerLink="home"  class="dropdown-toggle " data-toggle="dropdown">
                                         <span class="arabtext">الصفحة الرئيسية</span>  
                                  </a>
                         </li>
                         <!-- الثوابت -->                 
-                        <li class="dropdown" *ngIf="nav.ordonnateur || nav.ordonnateurministere || nav.admin" >
+                        <li [ngClass]="{'active':activeSection(route.url)}" class="dropdown" *ngIf="nav.ordonnateur || nav.ordonnateurministere || nav.admin" >
                             <a href="javascript:void(0);" class="dropdown-toggle " data-toggle="dropdown">
                               <span class="arabtext">الثوابت</span>  
                             </a>
@@ -81,7 +81,7 @@
                         <!-- End الثوابت -->
     
                         <!-- الاعتمادات -->                        
-                        <li class="dropdown"  *ngIf="nav.ordonnateur || nav.ordonnateurministere">
+                        <li [ngClass]="{'active':activeSection2(route.url)}" class="dropdown"  *ngIf="nav.ordonnateur || nav.ordonnateurministere">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
                              <span class="arabtext">الاعتمادات</span>   
                             </a>
@@ -115,7 +115,7 @@
                         <!-- End -->
     
                         <!-- مآموريات -->
-                        <li class="dropdown arabtext"  *ngIf="nav.ordonnateur ||nav.payeur || nav.ordonnateurministere">
+                        <li [ngClass]="{'active':activeSection3(route.url)}" class="dropdown arabtext"  *ngIf="nav.ordonnateur ||nav.payeur || nav.ordonnateurministere">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
                               <span class="arabtext">المآموريات</span>  
                             </a>
@@ -145,7 +145,7 @@
                         <!-- المتابعة -->
 
                         
-                        <li *ngIf="nav.ordonnateur || nav.ordonnateurministere">
+                        <li [ngClass]="{'active':route.url=='/suivi'}" *ngIf="nav.ordonnateur || nav.ordonnateurministere">
                             <a routerLink="suivi" >
                               <span class="arabtext">المتابعة</span> 
                               <i class="fa fa-globe"></i> 

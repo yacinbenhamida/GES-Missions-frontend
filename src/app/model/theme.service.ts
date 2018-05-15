@@ -7,7 +7,7 @@ import { Http,Headers,Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ThemeService{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private themesUrl = '/api/themes';
 
@@ -16,11 +16,11 @@ export class ThemeService{
         return body || [];
     }
     getAllThemes():Observable<Theme[]>{
-        return this.http.get(this.themesUrl+"/allThemes").map(this.extractData).catch(this.handleError);
+        return this.http.get(this.themesUrl+"/allThemes",{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getTheme(id:number):Observable<Theme>{
         const url = `${this.themesUrl}/findtheme/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertTheme(d:Theme):Promise<Theme>{

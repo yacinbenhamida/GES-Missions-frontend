@@ -12,7 +12,7 @@ import { Location } from "./location";
 import { Geometry } from "./geocoding/geometry";
 @Injectable()
 export class ReportService{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private projetUrl = '/api/reports';
 
@@ -22,19 +22,19 @@ export class ReportService{
     }
     getMissionsBTDAC(p:Pays,deb:Date,fin:Date,dep:string):Observable<OrdreMission[]>{
         const url = `${this.projetUrl}/getMissionsBTDAC/${p.idpays}/${deb}/${fin}/${dep}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getMissionsBTDA(deb:Date,fin:Date,dep:string):Observable<OrdreMission[]>{
         const url = `${this.projetUrl}/getMissionsBTDA/${deb}/${fin}/${dep}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getYears(codeDep:string):Observable<number[]>{
         const url = `${this.projetUrl}/getAllyears/${codeDep}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getCountPaysMissions(codeDep:string,year:number):Observable<Results[]>{
         const url = `${this.projetUrl}/getPaysStats/${codeDep}/${year}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getGeocoding(countryName:string):Promise<any>{
         const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${countryName}&key=AIzaSyDPBMTBJoxcLGULqtT-9Y-Ev8H-Ilu0ShM`;

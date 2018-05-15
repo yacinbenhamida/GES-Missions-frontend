@@ -8,7 +8,7 @@ import 'rxjs/add/operator/catch';
 import { AvoirFrais } from "./avoirfrais";
 @Injectable()
 export class AvoirFraisService{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private frUrl = '/api/avoirfrais';
 
@@ -19,30 +19,30 @@ export class AvoirFraisService{
 
     getFraisMissionPromis(codeDep:string,year:number):Observable<number>{
         const url = `${this.frUrl}/getTotFraisMissionPromis/${codeDep}/${year}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getFraisTransportPromis(codeDep:string,year:number):Observable<number>{
         const url = `${this.frUrl}/getTotFraisTransportPromis/${codeDep}/${year}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getAllFrais():Observable<AvoirFrais[]>{
-        return this.http.get(this.frUrl+"/allFrais").map(this.extractData).catch(this.handleError);
+        return this.http.get(this.frUrl+"/allFrais",{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getAllFraisOfOrdre(id:number,codeDep:string):Observable<AvoirFrais[]>{
         const url = `${this.frUrl}/allFraisoford/${id}/${codeDep}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getAllFraisDiversOfOrdre(id:number):Observable<AvoirFrais[]>{
         const url = `${this.frUrl}/allFraisDiversoford/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getFraisMissionOfConcerne(idconcerne:number,codeDep:string,idordre:number):Observable<AvoirFrais>{
         const url = `${this.frUrl}/allFraisMissionofConcerne/${idconcerne}/${codeDep}/${idordre}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getFrais(id:number):Observable<AvoirFrais>{
         const url = `${this.frUrl}/findFrais/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertFrais(d:AvoirFrais):Promise<AvoirFrais>{

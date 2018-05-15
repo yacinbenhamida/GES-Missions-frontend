@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch';
 @Injectable()
 export class ProjetService{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private projetUrl = '/api/projets';
 
@@ -16,11 +16,11 @@ export class ProjetService{
         return body || [];
     }
     getAllProjets():Observable<Projet[]>{
-        return this.http.get(this.projetUrl+"/allProjets").map(this.extractData).catch(this.handleError);
+        return this.http.get(this.projetUrl+"/allProjets",{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getProjet(id:number):Observable<Projet>{
         const url = `${this.projetUrl}/findProjet/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertProjet(d:Projet):Promise<Projet>{

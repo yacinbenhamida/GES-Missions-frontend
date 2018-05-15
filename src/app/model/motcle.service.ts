@@ -7,7 +7,7 @@ import 'rxjs/add/operator/catch';
 import { Injectable } from "@angular/core";
 @Injectable ()
 export class MotCleService{
-    constructor(private http:Http){}
+    constructor(public http:Http){}
     private headers = new Headers({'Content-type':'application/json'});
     private motclesUrl = '/api/motcles';
 
@@ -16,15 +16,15 @@ export class MotCleService{
         return body || [];
     }
     getAllMC():Observable<MotCle[]>{
-        return this.http.get(this.motclesUrl+"/allMotcles").map(this.extractData).catch(this.handleError);
+        return this.http.get(this.motclesUrl+"/allMotcles",{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getAllMCOftheme(idth:number):Observable<MotCle[]>{
         const url = `${this.motclesUrl}/allMotclesOfTheme/${idth}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getMC(id:number):Observable<MotCle>{
         const url = `${this.motclesUrl}/findMotcle/${id}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertMC(d:MotCle):Promise<MotCle>{

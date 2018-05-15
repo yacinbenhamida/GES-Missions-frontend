@@ -20,16 +20,16 @@ export class BudgetService{
         return body || [];
     }
     getAllBudgetsProg():Observable<AvoirBudgProg[]>{
-        return this.http.get(this.projUrl+"/allProjBudgets").map(this.extractData).catch(this.handleError);
+        return this.http.get(this.projUrl+"/allProjBudgets",{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getBudgProg(ref:number):Observable<AvoirBudgProg>{
         const url = `${this.projUrl}/getBudgetProjet/${ref}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     getBudgOfProg(codeproj:number){
         const url = `${this.projUrl}/getBudgetOfprojet/${codeproj}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertBudgProg(d:AvoirBudgProg){
@@ -50,35 +50,35 @@ export class BudgetService{
     // toutes les maj du projet du ministere
     getAllBudgetProgUpdatesOfdep(iddep:string):Observable<MajBudgProg[]>{
         const url = `${this.projUrl}/allMajProgBudgetsOfMinistere/${iddep}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     getAllBudgProgMajOfUser(idUser:number,codedep:string) : Observable<MajBudgProg[]>{
         const url = `${this.projUrl}/allMajsBudgProgOfUser/${codedep}/${idUser}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);    
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);    
     }
     saveBudgProgMaj(idmaj:number){
         const url = `${this.projUrl}/saveMajBudgPROG/${idmaj}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     cancelBudgProgMaj(idmaj:number){
         const url = `${this.projUrl}/deleteMajBudgProgOfUser/${idmaj}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     // accept maj budget projet by OM 
     acceptBudgProgMaj(idmaj:number){
         const url = `${this.projUrl}/acceptMajBudgPROGM/${idmaj}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     // decline maj budg prog by OM 
     declineBudgProgMaj(idmaj:number){
         const url = `${this.projUrl}/declineMajBudgPROGM/${idmaj}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     
     verifyIfThereisnoBudgets(codeDep:string,codeprj:number):Observable<MajBudgProg[]>{
         const url = `${this.projUrl}/allMajsBudgProgOfprojet/${codeDep}/${codeprj}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     updateInitialDdeNBudgProg(a:AvoirBudgProg):Promise<MajBudgProg>{
@@ -88,25 +88,25 @@ export class BudgetService{
     // les budgets promis
     getSommeBudgetPECprojet(codedep:string,year:number,idproj:number):Observable<number>{
         const url = `${this.projUrl}/getToalFraisPECProjetPromis/${codedep}/${year}/${idproj}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     // departements budgets 
 
     getSommeBudgMissionObtenus(codedep:string,year:number):Observable<number>{
         const url = `${this.projUrl}/getSommeBudgetsMission/${codedep}/${year}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getSommeBudgTransportObtenus(codedep:string,year:number):Observable<number>{
         const url = `${this.projUrl}/getSommeBudgetsTransport/${codedep}/${year}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     getAllBudgetsOfDep():Observable<AvoirBudgDep[]>{
         return this.http.get(this.projUrl+"/allDepBudgets").map(this.extractData).catch(this.handleError);
     }
     getBudgDep(ref:string,year:number):Observable<AvoirBudgDep>{
         const url = `${this.projUrl}/getBudgetDep/${ref}/${year}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     insertBudgDep(d:AvoirBudgDep){
@@ -125,41 +125,41 @@ export class BudgetService{
         .toPromise().then(()=>null).catch(this.handleError);
     }
     getAllBudgetDepUpdates():Observable<MajBudgDep[]>{
-        return this.http.get(this.projUrl+"/allMajDepBudgets").map(this.extractData).catch(this.handleError);
+        return this.http.get(this.projUrl+"/allMajDepBudgets",{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     getAllBudgDepMajOfDep(codedep:string):Observable<MajBudgDep[]>{
         const url = `${this.projUrl}/allMajsBudgDep/${codedep}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);       
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);       
     }
     getAllBudgDepMajOfUser(idUser:number,codedep:string) : Observable<MajBudgDep[]>{
         const url = `${this.projUrl}/allMajsBudgDepOfUser/${codedep}/${idUser}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);    
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);    
     }
 
     verifyIfThereisnoBudgetsDep(codeDep:string):Observable<MajBudgDep[]>{
         const url = `${this.projUrl}/allMajsBudgProgOfdep/${codeDep}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     // save & cancel by Ordonnateur normal
     saveBudgDepMaj(idmaj:number){
         const url = `${this.projUrl}/saveMajBudgDEP/${idmaj}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     cancelBudgDepMaj(idmaj:number){
         const url = `${this.projUrl}/deleteMajBudgDepOfUser/${idmaj}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
    // end save & cancel
     // accept maj budget dep by OM 
     acceptBudgProgDep(idmaj:number){
         const url = `${this.projUrl}/acceptMajDEPM/${idmaj}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     // decline maj budg dep by OM 
     declineBudgDepMaj(idmaj:number){
         const url = `${this.projUrl}/declineMajBudgDEPM/${idmaj}`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
     updateInitialDdeNBudgDep(a:AvoirBudgDep):Promise<MajBudgDep>{
