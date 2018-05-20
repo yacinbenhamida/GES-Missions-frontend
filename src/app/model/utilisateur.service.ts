@@ -20,7 +20,7 @@ private extractData(res:Response) {
     let body = res.json();
     return body || [];
 }
-updateUsers(u:Utilisateur):Promise<Utilisateur[]>{
+updateUsers(u:Utilisateur):Promise<Utilisateur>{
     return this.http.post(this.usersUrl+"/updateUsers",JSON.stringify(u),{headers : this.headers})
     .toPromise().then(()=>null).catch(this.handleError); 
 }
@@ -45,7 +45,14 @@ getDepOfUser(id:number):Observable<Departement>{
         (res:Response)=>{
         return res.json() as Departement;}).catch(this.handleError);
 }   
-insertUser(u:UserStructs){
+
+getUsOfUSER(id:number):Observable<UserStructs>{
+    const url = `${this.usersUrl}/getUsOfUser/${id}`;
+    return this.http.get(url, {headers: this.headers}).map(
+        (res:Response)=>{
+        return res.json() as UserStructs;}).catch(this.handleError);
+}
+insertUser(u:UserStructs):Promise<UserStructs>{
     return this.http.post(this.usersUrl+"/userStruct",JSON.stringify(u),{headers : this.headers})
         .toPromise().then(()=>null).catch(this.handleError);   
 }

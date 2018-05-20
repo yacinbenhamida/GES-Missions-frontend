@@ -30,9 +30,6 @@ export class LoginComponent implements OnInit,AfterViewInit{
         window.location.reload();
       } 
     });
-   /* localStorage.removeItem('Array'); 
-    localStorage.removeItem('org');
-    localStorage.clear();   */
   }
   ngOnInit() {
     if(localStorage.getItem('Array')!=undefined &&     localStorage.getItem('user')!=undefined  ){
@@ -50,9 +47,7 @@ export class LoginComponent implements OnInit,AfterViewInit{
   public isEmpty(obj) {
     return (obj && (Object.keys(obj).length === 0));
   }
-  ngAfterViewInit(): void {
-    //localStorage.clear();
-  }
+  ngAfterViewInit(): void {}
 onSubmit() {
   if(this.username && this.pw){
   this.appc.start();

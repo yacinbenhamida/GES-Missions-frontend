@@ -61,6 +61,7 @@
   </fieldset>
   <footer>
         <button type="submit" class="btn-u">تأكيد</button>
+        <button type="reset" class="btn-u btn-u-red"><i class="fa fa-times"></i></button>
   </footer>
 </div>            
  </form>
@@ -68,21 +69,23 @@
 </div> 
 
 <div class="container content">
-    <form>
-        <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                    <input type="text" class="form-control" name="searchString" placeholder="اسم الوظيفة..." [(ngModel)]="searchString">
-                </div>
-            </div>
-    </form>
+    
         <div class="row ">   
                 <div   id="sky-form1" class="sky-form ">
                 <header class="arabparagraph">قائمة الوضائف 
                         <button *ngIf="tablevisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleTable()"><i class="fa fa-sort-desc"></i></button>
                         <button *ngIf="tablevisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleTable()"><i class="fa fa-sort-asc"></i></button>                                  
                 </header> 
-                <div *ngIf="isEmpty(projets)" class="arabparagraph">لا توجد مشاريع جاري العمل بها </div>     
+                <fieldset *ngIf="tablevisible == true">
+                <div *ngIf="isEmpty(projets)" class="arabparagraph">لا توجد مشاريع جاري العمل بها </div>  
+                <form *ngIf="!isEmpty(projets)">
+                        <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                    <input type="text" class="form-control" name="searchString" placeholder="اسم الوظيفة..." [(ngModel)]="searchString">
+                                </div>
+                            </div>
+                    </form>   
                 <table *ngIf="tablevisible && !isEmpty(projets)" class=" table table-bordered table-striped">
                         <thead>
                                 <tr>
@@ -116,6 +119,7 @@
                         </tr>
                         </tfoot>
                 </table>
+            </fieldset>
                 </div>
         </div>           
 </div>  

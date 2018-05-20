@@ -50,3 +50,11 @@ body{ margin: 0px 0px 0px 0px;}
 .grey{
     background-color: whitesmoke;
 }
+.errar{
+    font-family: 'Droid Arabic kufi', serif;
+    font-size: 80%
+}
+.errfr{
+    font-family: Arial;
+    font-size: 80%
+}

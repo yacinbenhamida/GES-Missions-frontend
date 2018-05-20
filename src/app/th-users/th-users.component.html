@@ -31,7 +31,7 @@
 </div>
 <div class="container content ">
   <div class="row ">
-  <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <form  id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
   <header class="arabparagraph">اضافة مستعمل
         <button *ngIf="adduserv == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAddUser()"><i class="fa fa-sort-desc"></i></button>
         <button *ngIf="adduserv == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAddUser()"><i class="fa fa-sort-asc"></i></button>                  
@@ -42,20 +42,34 @@
           <section class="col col-4 ">
               <label class="input">
                   <i class="icon-prepend fa fa-user"></i>
-                  <input required minlength="5"  type="text" name="name" placeholder="الأسم" [(ngModel)]="user.nomAr">
-              </label>
+                  <input required id="nomAr" minlength="4"  type="text" name="nomAr" 
+                  placeholder="الأسم" [(ngModel)]="user.nomAr" #nomAr="ngModel" class="form-control">
+                  <span class="errar" *ngIf="nomAr.invalid && (nomAr.dirty || nomAr.touched)">
+                        الرجاء التثبت من الإسم
+                  </span>
+                </label>
           </section>
           
           <section class="col col-4">
               <label class="input">
                   <i class="icon-prepend fa fa-user"></i>
-                  <input  minlength="5" required type="text" name="surname" placeholder="القب" [(ngModel)]="user.prenomAr">
+                  <input  minlength="5" required type="text" name="prenomAr" 
+                  placeholder="القب" [(ngModel)]="user.prenomAr" class="form-control" #prenomAr="ngModel">
+                  <span class="errar" *ngIf="prenomAr.invalid && (prenomAr.dirty || prenomAr.touched)">
+                        الرجاء التثبت من اللقب
+                  </span>
               </label>
           </section>
           <section class="col col-4">
             <label class="input">
                 <i class="icon-prepend fa fa-info"></i>
-                <input  minlength="8" maxlength="8" required type="number" name="CIN" placeholder="رقم بطاقة التعريف الوطنية  (login)" [(ngModel)]="user.login">
+                <input  minlength="8"  required type="number" name="login" placeholder="رقم بطاقة التعريف الوطنية  (login)"
+                 #login="ngModel" class="form-control" [(ngModel)]="user.login">
+                 <span class="errar" *ngIf="login.invalid && (login.dirty || login.touched)">
+                      <div *ngIf="login.errors.required||login.errors.minlength">
+                            رقم بطاقة التعريف يتكون من 8 ارقام على الأقل
+                      </div>
+                  </span>
             </label>
         </section>
         
@@ -64,25 +78,37 @@
             <section class="col col-4">
                     <label class="input">
                         <i class="icon-prepend fa fa-user"></i>
-                        <input  minlength="5" type="text" required name="prenomfr" placeholder="prenom" [(ngModel)]="user.prenomFr">
+                        <input  minlength="5" type="text" required name="prenomfr" #prenomFr="ngModel" placeholder="prenom" [(ngModel)]="user.prenomFr">
+                        <span  *ngIf="prenomFr.invalid && (prenomFr.dirty || prenomFr.touched)">
+                                <div class="errfr" *ngIf="prenomFr.errors.required||prenomFr.errors.minlength">
+                                       veuillez vérifier le prénom 
+                                </div>
+                            </span>
                     </label>
                 </section>
             <section class="col col-4">
                     <label class="input">
                         <i class="icon-prepend fa fa-user"></i>
-                        <input   minlength="5" type="text" required name="nomfr" placeholder="nom" [(ngModel)]="user.nomFr">
+                        <input   minlength="5" type="text" required name="nomfr" placeholder="nom"   [(ngModel)]="user.nomFr" #nomfr="ngModel" class="form-control">
+                        <span class="errfr" *ngIf="nomfr.invalid && (nomfr.dirty || nomfr.touched)">
+                                veuillez vérifier le nom 
+                            </span>
                     </label>
             </section>
             <section class="col col-4">
                 <label class="select">
-                    <select required name="job"  [(ngModel)]="user.codeProfile" >
+                    <select #job="ngModel" required name="job"  [(ngModel)]="user.codeProfile" >
                         <option value="none" disabled>وضيفة المستعمل</option>
-                        <option value="ordonnateur">آمر بالصرف</option>
-                        <option value="ordonateurministere">آمر بالصرف بوزارة الاشراف</option>
-                        <option value="controlleur">مراقب المصاريف</option>
-                        <option value="payeur">محاسب</option>
+                        <option value="O">آمر بالصرف</option>
+                        <option value="OM">آمر بالصرف بوزارة الاشراف</option>
+                        <option value="P">محاسب</option>
                     </select>
                     <i></i>
+                    <span  *ngIf="job.invalid && (job.dirty || job.touched)">
+                            <div class="errar" *ngIf="job.errors.required">
+                                    يجب إختيار وضيفة
+                            </div>
+                        </span>
                 </label>
             </section>
       </div>
@@ -90,34 +116,50 @@
           <section class="col col-4">
               <label class="input">
                   <i class="icon-prepend fa fa-lock"></i>
-                  <input   minlength="5" type="password" required #b name="pass1" placeholder="كلمة السر" [(ngModel)]="user.motDePasse">
+                  <input   class="form-control" minlength="5" type="password" required #b #e="ngModel" name="pass1" placeholder="كلمة السر" [(ngModel)]="user.motDePasse">
                   <i class="icon-append fa " [ngClass]="{'fa-eye' : b.type=='password','fa-eye-slash' : b.type=='text'}" (click)="b.type == 'password' ? b.type='text' : b.type='password'"></i>
+                  <span  *ngIf="e.invalid && (e.dirty || e.touched)">
+                        <div class="errar" *ngIf="e.errors.required||e.errors.minlength">
+                                كلمة سر ضعيفة
+                        </div>
+                    </span>
                 </label>
           </section>
           <section class="col col-4">
               <label class="input">
                   <i class="icon-prepend fa fa-lock"></i>
-                  <input  minlength="5"  type="password" #c required name="pass2" placeholder="تأكيد كلمة السر">
+                  <input  minlength="5" class="form-control" required type="password" #c #l="ngModel" [(ngModel)]="confirmPW"  name="l" placeholder="تأكيد كلمة السر">
                   <i class="icon-append fa " [ngClass]="{'fa-eye' : c.type=='password','fa-eye-slash' : c.type=='text'}" (click)="c.type == 'password' ? c.type='text' : c.type='password'"></i>  
-             </label>
+                  <span  *ngIf=" l!=e && ((l.dirty || l.touched))">
+                        <div class="errar" *ngIf=" c.value != b.value">
+                                كلمتي سر مطابقين
+                        </div>
+                    </span>
+                </label>
           </section>
           <section class="col col-4" *ngIf="departements!=null">
             <label class="select">
-                <select  required name="budget"  [(ngModel)]="departement">
+                <select  required name="budget" #h="ngModel" [(ngModel)]="departement">
                     <option value="null"  disabled>المؤسسة / الهيكل المعني</option>
                     <option *ngFor="let x of departements" [ngValue]="x" >{{x.libDepAr}}</option>
                 </select>
                 <i></i>
+                <span  *ngIf="h.invalid && h=='null' && (h.dirty || h.touched ) ">
+                    <div class="errar" *ngIf="h.errors.required">
+                        يجب إختيار مؤسسة   
+                    </div>
+                </span>
             </label>
         </section>
       </div>
   </fieldset>
   </div>
   <footer *ngIf="adduserv == true">
-      <button type="submit" class="btn-u">تأكيد</button>
+      <button type="submit" class="btn-u" [disabled]="f.valid == false">تأكيد</button>
       <button type="reset" class="btn-u btn-u-red"><i class="fa fa-times"></i></button>
   </footer>               
-</form></div> 
+</form>
+</div> 
 </div>  
 
 <div class="container content">
@@ -153,10 +195,9 @@
                                         كلمة السر
                                     </th>
                                     <th>
-                                         رمز وضيفة المستعمل
+                                         وضيفة المستعمل
                                     </th>
                                     <th style="width:110px;">قيام بتغيرات</th>
-                                    <th style="text-align: center;">التعينات</th>  
                             </tr>
                         </thead>
                         <tbody class="text-center">
@@ -172,64 +213,12 @@
                                 <td [innerHTML]="convCodeUser(u.codeProfile)"></td>
                                 <td><button  class="btn-u btn-u-red" (click)="deleteU(u)"><i class="fa fa-ban"></i></button>
                                     <button class="btn-u btn-u-blue" (click)="showInfosU(u)"><i class="fa fa-cogs"></i></button></td>
-                                <td style="text-align: center;"><button *ngIf="u.codeProfile == 'C' || u.codeProfile == 'P'" class="btn-u" (click)="affectations(u)"><i class="fa fa-th-list"></i></button></td>    
                             </tr>
                         </tbody>
                 </table>
             </fieldset> 
                 </div>
         </div>           
-</div>
-<div class="container content arabparagraph" >
-        <div class="row">    
-            <popup>             
-                <div class="container content">
-                    <span class="arabparagraph"> المستعمل : {{nomuser}}</span>
-                
-                            <div class="form-group">
-                                
-                                    <div class="input-group">
-                                        <section class="col col-1">
-                                        <span class="arabtext">إضافة مؤسسة</span></section>
-                                        <label class="select">
-                                                <select  required   [(ngModel)]="depctrl">
-                                                    <option value="0"  disabled>إضافة مؤسسة</option>
-                                                    <option *ngFor="let x of departementc" [ngValue]="x" >{{x.libDepAr}}</option>
-                                                </select>
-                                                <i></i>
-                                            </label>
-                                            
-                                        <button type="button" (click)="affecter()" class="btn-u">تأكيد</button>
-
-                                    </div>
-                                </div>  
-                            </div>        
-                    
-               <table class="table table-bordered table-striped">
-                   <thead>
-                       <tr>
-                       <th>المؤسسة</th>
-                        <th>تاريخ التعيين</th>
-                        <th></th>
-                    </tr>
-                   </thead>
-                   <tbody>
-                       <tr *ngFor="let u of lstStruct| paginate : { itemsPerPage:5, currentPage:p}">
-                            <td>{{u.departement.libDepAr}}</td>
-                            <td>{{u.dateAffectation}}</td>
-                            <td class="text-center"><button class="btn btn-u btn-u-red" (click) ="deleteUs(u)" type="button"><i class="fa fa-trash"></i></button></td>
-                       </tr>
-                   </tbody>
-                   <tfoot>
-                       <tr>
-                    <td colspan="3" class="text-center"><span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls></span></td>
-                      </tr>
-                   </tfoot>
-               </table>
-            
-            </popup>
-        </div>
-
 </div>
 
 <!-- modal edit -->
@@ -301,15 +290,24 @@
                                             <section class="col col-6">وضيفة المستعمل
                                                     <label class="select"> 
                                                         <select required name="job"  [(ngModel)]="user1.codeProfile" >
-                                                            <option value="ordonnateur">آمر بالصرف</option>
-                                                            <option value="ordonateurministere">آمر بالصرف بوزارة الاشراف</option>
-                                                            <option value="controlleur">مراقب المصاريف</option>
-                                                            <option value="payeur">محاسب</option>
+                                                            <option value="O">آمر بالصرف</option>
+                                                            <option value="OM">آمر بالصرف بوزارة الاشراف</option>
+                                                            <option value="P">محاسب</option>
                                                         </select>
                                                         <i></i>
                                                     </label>
                                                 </section>
                                                 
+                                    </div>
+                                    <div class="row">
+                                        <section class="col col-6">المؤسسة / الهيكل المعني
+                                            <label class="select">
+                                                <select class="form-control" required name="depupdate"  [(ngModel)]="userstructupdate.departement">
+                                                    <option *ngFor="let x of departements"   [ngValue]="x" [attr.selected]="x == userstructupdate.departement?true:null">{{x.libDepAr}}</option>
+                                                </select>
+                                                <i></i>
+                                            </label>
+                                        </section>
                                     </div>
                                 </fieldset>
                                 <footer>

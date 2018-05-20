@@ -1,3 +1,151 @@
-<p>
-  th-changappointment works!
-</p>
+<!DOCTYPE html>
+<head>
+    <title>Classes</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
+    <link rel="stylesheet" href="../../assets/plugins/bootstrap/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/style-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/headers/header-default-rtl.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/footers/footer-v1-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/animate.css">
+    <link rel="stylesheet" href="../../assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="../../assets/css/plugins/style-switcher.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-colors/dark-blue.css" id="style_color">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/theme-skins/dark.css">
+    <link rel="stylesheet" href="../../assets/css/css-rtl/rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/css/sky-forms-rtl.css">
+    <link rel="stylesheet" href="../../assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms-rtl.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>	
+<body> 
+<div class="wrapper" style="background-image: url('../assets/img/breadcrumbs.png');">   
+    <div class="breadcrumbs">
+        <div class="container arabparagraph">
+            <h1 class="pull-left"><span class="arabtext">تغيير تعيين منتفع</span></h1>
+            <ul class="pull-right breadcrumb arabparagraph">
+                <li>الثوابت</li>
+                <li>تغيير التعيين</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container content ">
+  <div class="row">
+      <div  class="sky-form ">
+          <header class="arabparagraph">إختيار الهيكل أو الوزارة المعنية</header>
+          <div class="arabparagraph">
+            <fieldset>
+              <label class="select">
+                  <select name="choosenorg" (change)="loadMissionaires()" [(ngModel)]="selectedOrg">
+                    <option *ngFor="let a of Organismes" [ngValue]="a">{{a.libDepAr}}</option>
+                  </select>
+                  <i></i>
+              </label>
+              
+            </fieldset>
+            <footer *ngIf="details == true">
+                <div  class="sky-form ">
+                    <header class="arabparagraph"> قائمة المنتفعين التابعة لل{{selectedOrg.libDepAr}}
+                            <button *ngIf="list == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="list = false"><i class="fa fa-sort-desc"></i></button>
+                            <button *ngIf="list == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="list = true"><i class="fa fa-sort-asc"></i></button>                                                                  
+                    </header>
+                    <div class="arabparagraph"  *ngIf="list==true">
+                    <fieldset>
+                    <div class="row">
+                            <form>
+                                    <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                                <input type="text" class="form-control" name="searchString" placeholder="اسم المنتفع..." [(ngModel)]="searchString">
+                                            </div>
+                                        </div>
+                                </form> 
+                    <table class=" table table-bordered table-striped"  >
+                            <thead>
+                                    <tr>
+                                        <th>  رقم بطاقة التعريف</th>
+                                        <th>المعرف الوحيد</th> 
+                                        <th> اسم ولقب المنتفع  </th>
+                                        <th style="width:20px;">التعيينات</th>                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let u of Missionaires | paginate : { itemsPerPage:5, currentPage:p}| filterfct: 'nomAr' : searchString; let i = index ">
+                                    <td>{{u.cin}}</td>
+                                    <td>{{u.matricule}}</td>
+                                    <td>{{u.nomAr}} {{u.prenomAr}}</td>
+                                    <td class="text-center"><button class="btn-u btn-u-blue" (click)="loadApps(u)"><i class="fa fa-map-marker"></i></button></td>         
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5" class="text-center">
+                                            <span class="arabparagraph"><pagination-controls  previousLabel="الصفحة السابقة"  nextLabel="الصفحة الموالية" (pageChange)="p=$event"></pagination-controls>
+                                            </span>
+                                        </td>
+                                    </tr> 
+                            </tfoot>
+                        </table>
+                    </div>
+                    </fieldset>
+                    </div>   
+                    </div>
+            </footer>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<!-- modal edit -->
+
+
+<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; background-color: hsla(0, 0%, 3%, 0.3);">
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button aria-hidden="true" (click)="modal = false" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">تعيينات العون :  {{choosenMissionaire.prenomAr + choosenMissionaire.nomAr}}</span></h4>
+            </div>
+            <div class="modal-body arabparagraph">
+              <fieldset>
+                <form   id="sky-form1" class="sky-form " style="height: 570px;">
+                  <fieldset>
+                      <section class="col col-1.5"></section>
+                    <section class="col col-1.5">
+                      <span class="arabparagraph">تغيير الهيكل</span>
+                    </section>
+                    <section class="col col-6">
+                      <label class="select">
+                        <select name="newaff" [(ngModel)]="depupdate">
+                          <option *ngFor="let dep of Organismes" [ngValue]="dep">{{dep.libDepAr}}</option>
+                        </select>
+                        <i></i>
+                      </label>
+                    </section>
+                    <section class="col col-2">
+                      <button class="btn-u" type="button" (click)="updateOrganisme()">تسجيل التعيين</button>
+                    </section>
+                    <section class="col col-4"></section>
+                    <section class="col col-6">الهيكل الحالي : {{missionaireDeptcurent.departement.libDepAr}}</section>  
+                    <table class=" table table-bordered table-striped" >
+                          <tr>
+                            <td>الهيكل</td>
+                            <td>تاريخ التعيين</td>
+                          </tr>
+                          <tr *ngFor="let x of choosenMissionaire.affectMissDeps">
+                            <td>{{x.departement.libDepAr}}</td>
+                            <td>{{x.dateAffectation}}</td>
+                          </tr>
+                        </table>
+                      </fieldset>
+                </form>
+              </fieldset>
+              <footer>
+                  
+              </footer>
+                </div>
+            </div>
+      </div>
+</div>
+</body>

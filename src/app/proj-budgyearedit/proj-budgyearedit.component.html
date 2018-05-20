@@ -41,7 +41,7 @@
     </div>       
   <div class="row ">
   <form   id="sky-form1" class="sky-form " (ngSubmit)="onSubmit(f)" #f="ngForm">
-  <header class="arabparagraph"> تحيين مصاريف المشاريع
+  <header class="arabparagraph"> تحيين إعتمادات مشروع
         <button *ngIf="addbudgmiss == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAddBudgMiss()"><i class="fa fa-sort-desc"></i></button>
         <button *ngIf="addbudgmiss == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleAddBudgMiss()"><i class="fa fa-sort-asc"></i></button>                  
   </header> 
@@ -88,7 +88,7 @@
 <div class="container content">
     <div class="row ">  
             <div   id="sky-form1" class="sky-form ">
-            <header class="arabparagraph"> قائمة المصاريف المشاريع
+            <header class="arabparagraph"> قائمة تحيينات مصاريف المشاريع
                     <button *ngIf="listvisible == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
                     <button *ngIf="listvisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                 
             </header> 
@@ -97,11 +97,12 @@
             <table *ngIf="isEmpty(budgets)==false && listvisible == true" class=" table table-bordered table-striped" >
                     <thead>
                             <tr>
+                                <th>المشروع</th>
                                 <th>
-                                    مرجع مصاريف المشاريع
+                                    مرجع مصاريف المشروع
                                 </th>
                                 <th>
-                                     قيمة الميزانية المشاريع
+                                     قيمة الميزانية المشروع
                                 </th> 
                                 <th>الوضعية</th>
                                 <th style="width:110px;">التاريخ</th>
@@ -111,6 +112,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let u of budgets">
+                            <td>{{u.budgetprojet.projet.libProjAr}}</td>
                             <td>{{u.refBudget}}</td>
                             <td>{{u.valeurMajBudgProg}}</td>
                          <td [innerHTML]='convertText(u.etat)'></td>

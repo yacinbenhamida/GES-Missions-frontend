@@ -12,7 +12,6 @@ import { ThDepartementsComponent } from './th-departements/th-departements.compo
 import { ThCategoriesComponent } from './th-categories/th-categories.component';
 import { ThProjectsComponent } from './th-projects/th-projects.component';
 import { ThTypefraisComponent } from './th-typefrais/th-typefrais.component';
-import { ThChangappointmentComponent } from './th-changappointment/th-changappointment.component';
 import { ThKeywordsComponent } from './th-keywords/th-keywords.component';
 import { ThZonesComponent } from './th-zones/th-zones.component';
 import { ThThemeEditComponent } from './th-theme-edit/th-theme-edit.component';
@@ -34,6 +33,8 @@ import { MAutoriMissionsComponent } from './m-autori-missions/m-autori-missions.
 import { MConfirmavanceComponent } from './m-confirmavance/m-confirmavance.component';
 import { AuthGuardService as AuthGuard } from './authguards/auth-guard.service';
 import {  RoleGuardService as RoleGuard } from './authguards/roleguard.service';
+import { ThChangappointmentComponent } from './th-changappointment/th-changappointment.component';
+
 const appRoutes: Routes = [
     // suivit
     {path : 'suivi' , component : SMainpanelComponent,canActivate : [RoleGuard],data: {roles :["O","OM"]}},
@@ -56,13 +57,13 @@ const appRoutes: Routes = [
   { path : 'th-keywords' , component : ThKeywordsComponent,canActivate: [RoleGuard],data: {roles :["A"]}},
   { path : 'th-grade' , component : ThGradeComponent,canActivate: [RoleGuard],data: {roles :["A"]}},
   { path : 'th-projects' , component : ThProjectsComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]} },
-  { path : 'th-typefrais' , component : ThTypefraisComponent,canActivate: [AuthGuard]},
-  { path : 'th-changeAppointment' , component : ThChangappointmentComponent,canActivate: [AuthGuard]},
+  { path : 'th-typefrais' , component : ThTypefraisComponent,canActivate: [RoleGuard],data: {roles :["A"]}},
   { path : 'th-zone' , component : ThZonesComponent,canActivate: [RoleGuard],data: {roles :["A"]}},
   { path : 'th-classes' , component : ThClassesComponent,canActivate: [RoleGuard],data: {roles :["A"]}},
   { path : 'th-fonct' , component : ThFonctionsComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]}},
   { path : 'th-org', component : ThOrganisationsComponent,canActivate: [RoleGuard],data: {roles :["OM"]} },
   { path : 'th-groupes' , component : ThGroupesComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]}}, 
+  { path : 'th-affectation', component : ThChangappointmentComponent, canActivate : [RoleGuard],data: {roles :["A"]}},
   { path : 'confirmbudg-year' , component : ConfirmbudgYearComponent,canActivate:[RoleGuard],data: {roles :["OM"]}},
   { path : 'insbud-org',component: EntBudgyearinsertComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]} },
   { path :  'insbudg-proj', component : ProjBudgyearinsertComponent,canActivate: [RoleGuard],data: {roles :["O","OM"]} },
@@ -85,7 +86,7 @@ const appRoutes: Routes = [
 export class AppRoutingModule{}
 export const routingComponents = [ThUsersComponent,HomepageComponent,LoginComponent,ThCountriesComponent,
     ThFonctionsComponent,ThGradeComponent,ThDepartementsComponent,ThProjectsComponent,ThZonesComponent
-    ,ThChangappointmentComponent,ThClassesComponent,ThTypefraisComponent,ThZonesComponent,
+    ,ThClassesComponent,ThTypefraisComponent,ThZonesComponent,ThChangappointmentComponent,
     ThKeywordsComponent,ThCategoriesComponent,ThThemeEditComponent
     ,NotfoundcomponentComponent,EntBudgyearinsertComponent
     ,ProjBudgyearinsertComponent, ProjBudgyeareditComponent,EntBudgyeareditComponent,ThOrganisationsComponent

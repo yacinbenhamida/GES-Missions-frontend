@@ -21,6 +21,14 @@ export class MissionaireServices{
         const url = `${this.missUrl}/getallMissionairesNHAM/${deb}/${end}/${codeDep}`;
         return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
     }
+    getAllAffectationsMissionaire(id:number):Observable<AffectMissDep[]>{
+        const url = `${this.missUrl}/getAllAffectationOfMissionaire/${id}`;
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
+    }
+    getDepofMissionaire(id:number):Observable<AffectMissDep>{
+        const url = `${this.missUrl}/getCurrentDepOFMIssionaire/${id}`;
+        return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
+    }
     getAllMissionaire(id:string):Observable<Missionaire[]>{
         const url = `${this.missUrl}/getallMissionairesOfDEP/${id}`;
         return this.http.get(url,{headers : this.headers}).map(this.extractData).catch(this.handleError);
@@ -41,7 +49,7 @@ export class MissionaireServices{
         return this.http.post(this.missUrl+"/insertMissionaire",JSON.stringify(affect),{headers : this.headers})
         .map(res=>res.json() as AffectMissDep).catch(this.handleError);  
     }
-    updateAffectMissionaire(affect:AffectMissDep){
+    updateAffectMissionaire(affect:AffectMissDep): Observable<AffectMissDep>{
         return this.http.post(this.missUrl+"/updateAffectMissionaire",JSON.stringify(affect),{headers : this.headers})
         .map(res=>res.json() as AffectMissDep).catch(this.handleError);  
     }

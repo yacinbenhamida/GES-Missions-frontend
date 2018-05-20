@@ -57,7 +57,7 @@
                   <input required minlength="5"  type="text" name="nomfctfr" placeholder=" nom du pays" [(ngModel)]="pays.libPaysFr">
               </label>
           </section>
-          <section class="col col-6 ">
+          <section class="col col-3 ">
             <label class="select">
                 <select  required name="budget"  [(ngModel)]="pays.zonepays">
                     <option value="null" disabled>المنطقة</option>
@@ -66,21 +66,15 @@
                 <i></i>
             </label>
           </section>
- 
+          <section class="col col-3 ">
+                <label class="input">
+                        <i class="icon-prepend fa fa-object-ungroup"></i>
+                        <input required minlength="3"  type="text" name="lang" placeholder="اللغة" [(ngModel)]="pays.langue">
+                    </label>
+          </section>
       </div>
       <div class="row">
-      <section class="col col-6 ">
-        <label class="select">
-            <select  required name="langue"  [(ngModel)]="pays.langue">
-                <option value="null"  disabled>اللغة</option>
-                <option value="العربية">العربية</option>
-                <option value="الفرنسية">الفرنسية</option>
-                <option value="الانجليزية">الانجليزية</option>
-                <option value="اليابانية">اليابانية</option>
-            </select>
-            <i></i>
-        </label>
-      </section>
+      
     </div>
   </fieldset>
   <footer>
@@ -185,7 +179,7 @@
                                                               <input  minlength="5" type="text" required name="prenomfr"  [(ngModel)]="pays2.libPaysFr">
                                                           </label>
                                                       </section>
-                                                      <section class="col col-6">المنطقة
+                                                      <section class="col col-3">المنطقة
                                                             <label class="select"> 
                                                             <select  required name="budget"  [(ngModel)]="pays2.zonepays">
                                                                         <option *ngFor="let x of zones" [selected]="x.idZone == pays2.zonepays.idZone" [ngValue]="x" >{{x.libZoneAr}}</option>
@@ -193,16 +187,11 @@
                                                                 <i></i>
                                                             </label>
                                                         </section>
-                                                        <section class="col col-6">اللغة
-                                                                <label class="select"> 
-                                                                        <select  required name="langue"  [(ngModel)]="pays2.langue">
-                                                                                <option value="0" selected disabled>اللغة</option>
-                                                                                <option value="العربية">العربية</option>
-                                                                                <option value="الفرنسية">الفرنسية</option>
-                                                                                <option value="الانجليزية">الانجليزية</option>
-                                                                                <option value="اليابانية">اليابانية</option>
-                                                                            </select><i></i>
-                                                                            </label>
+                                                        <section class="col col-3">اللغة
+                                                                <label class="input">
+                                                                        <i class="icon-prepend fa fa-user"></i>
+                                                                        <input   type="text" required name="langue2"  [(ngModel)]="pays2.langue">
+                                                                    </label>
                                                             </section>
                                                   
                                             </div>

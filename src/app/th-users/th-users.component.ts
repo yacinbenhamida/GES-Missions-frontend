@@ -8,7 +8,6 @@ import { UtilisateurService } from '../model/utilisateur.service';
 import { UserStructs } from '../model/userstructs';
 import {DataTableModule} from "angular2-datatable";
 import {FormControl, FormGroup} from '@angular/forms';
-import { Popup } from "ng2-opd-popup";
 @Component({
   selector: 'app-th-users',
   templateUrl: './th-users.component.html',
@@ -32,7 +31,10 @@ export class ThUsersComponent implements OnInit,AfterViewInit {
   depctrl:Departement;
   modal:boolean = false;
   user1:Utilisateur = new Utilisateur();
-  constructor(private popup:Popup,public usserv:UtilisateurService
+  userstructupdate:UserStructs = new UserStructs();
+  // form controls 
+  confirmPW:string = "";
+  constructor(public usserv:UtilisateurService
     ,public depserv:DepartementService,public router:Router,public route:ActivatedRoute) {
   }
    getDeps(){
@@ -60,22 +62,17 @@ departt:Departement;
     this.adduserv = true;
     this.listusers = true;}
   onSubmit(f:NgForm){
-      if(this.user.codeProfile=="ordonnateur"){
-        this.user.codeProfile = "O";
-      }
-      else if(this.user.codeProfile=="ordonateurministere"){
-        this.user.codeProfile = "OM";
-      }
-      else if(this.user.codeProfile=="payeur"){
-        this.user.codeProfile = "P";
-      }
-      else if(this.user.codeProfile=="admin"){
-        this.user.codeProfile = "ADMIN";
-      }
+    if(this.user.motDePasse == this.confirmPW && f.valid){
       this.userstruct.utilisateur = this.user;
       this.userstruct.departement = this.departement;
-      this.usserv.insertUser(this.userstruct).then(()=>null);
-      this.allusers.push(this.user);
+      this.usserv.insertUser(this.userstruct).then((b)=>{
+        alert("تمة الإضافة");
+        this.allusers.push(b.utilisateur);
+
+      });
+      f.reset();
+    }else alert("الرجاء مراجعة المعطيات ");
+      
   }
   deleteU(u:Utilisateur){
     if(confirm("هل انت متأكد من إزالة هذا المستعمل ?")){
@@ -84,8 +81,11 @@ departt:Departement;
       }
   }
   showInfosU(u:Utilisateur){
-    this.toggleModal();
-    this.user1 = u;
+    this.usserv.getUsOfUSER(u.codeUtilisateur).subscribe(o=>{
+      this.userstructupdate = o;
+      this.user1 = u;
+      this.toggleModal();
+    })
   }
   toggleAddUser(){
     this.adduserv = !(this.adduserv);
@@ -99,19 +99,7 @@ departt:Departement;
     this.usserv.getAllUserStructs(u).subscribe(data=>this.lstStruct = data);
     this.nomuser = u.nomAr + " "+ u.nomFr;
     this.controlleur = u;
-    this.popup.options = {
-      header : "قائمة التعينات",
-      widthProsentage: 78,
-      color:"#4765a0",
-      cancleBtnContent: "خروج"
-    }
-    this.popup.show();
-  }
-  affecter(){
-    let us:UserStructs = new UserStructs();
-    us.utilisateur = this.controlleur;
-    us.departement = this.depctrl;
-    this.usserv.affectController(us).subscribe(data=>this.lstStruct.push(data));
+
   }
   deleteUs(u:UserStructs){
     if(confirm("هل انت متأكد من إزالة هذا التعيين ?")){
@@ -120,9 +108,11 @@ departt:Departement;
       }
   }
   updateUser(){
-    this.usserv.updateUsers(this.user1).then(x=>null);
-    this.toggleModal();
-    alert("تم");
+      this.userstructupdate.utilisateur = this.user1;
+      this.usserv.updateUser(this.userstructupdate).then(a=>{
+        this.toggleModal();
+        alert("تم");
+      })
   }
   exitEdit(){
     this.usserv.getUsers().subscribe(us=>{
@@ -133,7 +123,7 @@ departt:Departement;
   }
   convCodeUser(x:string){
     switch(x){
-      case 'P' :  return 'دافع المؤسسة';
+      case 'P' :  return 'محاسب';
       case 'O' : return 'آمر بالصرف';
       case 'OM' : return 'آمر بالصرف لدى الوزارة';
       case 'ADMIN' : return 'تقني' ;
