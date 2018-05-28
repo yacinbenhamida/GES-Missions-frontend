@@ -26,12 +26,19 @@ export class BudgetService{
         const url = `${this.projUrl}/getBudgetProjet/${ref}`;
         return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
-
-    getBudgOfProg(codeproj:number){
+    allBudgProgOfDEP(codeDep:string,year:number):Observable<AvoirBudgProg[]>{
+        const url = `${this.projUrl}/getAllBudgetsProjets/${codeDep}/${year}`;
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
+    }
+    getBudgOfProg(codeproj:number) : Observable<AvoirBudgProg>{
         const url = `${this.projUrl}/getBudgetOfprojet/${codeproj}`;
         return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
 
+    getSommeBudgetPECprojet(codedep:string,year:number,idproj:number):Observable<number>{
+        const url = `${this.projUrl}/getToalFraisPECProjetPromis/${codedep}/${year}/${idproj}`;
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
+    }
     insertBudgProg(d:AvoirBudgProg){
         return this.http.post(this.projUrl+"/insertBudgetProjet",JSON.stringify(d),
         {headers : this.headers}).map(()=>null).catch(this.handleError);
@@ -85,28 +92,25 @@ export class BudgetService{
         return this.http.post(this.projUrl + "/updateInitialBudgProg",JSON.stringify(a),{headers : this.headers})
         .toPromise().then(()=>null).catch(this.handleError);
     }
-    // les budgets promis
-    getSommeBudgetPECprojet(codedep:string,year:number,idproj:number):Observable<number>{
-        const url = `${this.projUrl}/getToalFraisPECProjetPromis/${codedep}/${year}/${idproj}`;
-        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
-    }
+    
 
     // departements budgets 
 
     getSommeBudgMissionObtenus(codedep:string,year:number):Observable<number>{
         const url = `${this.projUrl}/getSommeBudgetsMission/${codedep}/${year}`;
-        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map((response: Response) => {return response.json() as number}).catch(this.handleError);
     }
     getSommeBudgTransportObtenus(codedep:string,year:number):Observable<number>{
         const url = `${this.projUrl}/getSommeBudgetsTransport/${codedep}/${year}`;
-        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map((response: Response) => {return response.json() as number}).catch(this.handleError);
     }
     getAllBudgetsOfDep():Observable<AvoirBudgDep[]>{
         return this.http.get(this.projUrl+"/allDepBudgets").map(this.extractData).catch(this.handleError);
     }
     getBudgDep(ref:string,year:number):Observable<AvoirBudgDep>{
         const url = `${this.projUrl}/getBudgetDep/${ref}/${year}`;
-        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(
+            (x:Response)=>{return x.text() ? x.json() : {};}).catch(error=>Promise.reject(error.message || error));
     }
 
     insertBudgDep(d:AvoirBudgDep){

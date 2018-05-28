@@ -10,6 +10,7 @@ import { Utilisateur } from '../model/utilisateur';
 import { DepartementJS } from '../model/departementjson';
 import { Departement } from '../model/departement';
 import { error } from 'util';
+import { AES } from 'crypto-ts';
 
 @Component({
   selector: 'app-login',
@@ -48,50 +49,60 @@ export class LoginComponent implements OnInit,AfterViewInit{
     return (obj && (Object.keys(obj).length === 0));
   }
   ngAfterViewInit(): void {}
+
+  decrypt(x:string) : any{
+    var CryptoTS = require("crypto-ts");
+    var bytes  = CryptoTS.AES.decrypt(x.toString(),'dergmatok77892777');
+    var b = bytes.toString(CryptoTS.enc.Utf8);
+    return  b;
+  }
+
 onSubmit() {
   if(this.username && this.pw){
   this.appc.start();
-  this.userServ.getLoginCredentials(this.username,this.pw).subscribe(user=>
-    {this.user=user;
-      if(!(this.isEmpty(this.user))){
+  this.userServ.VLoginCredentials(this.username).subscribe(res=>{
+    if(!this.isEmpty(res))
+    {
+      if(this.decrypt(res.motDePasse)== this.pw)
+      {
+        this.user = res;
         localStorage.setItem('user',JSON.stringify(this.user));
-        if(this.user.codeProfile == "C"){
-          this.userServ.getDepOfUser(this.user.codeUtilisateur).subscribe(data=>{
+        if(this.user.codeProfile == "C")
+        {
+          this.userServ.getDepOfUser(this.user.codeUtilisateur).subscribe(data=>
+          {
             localStorage.setItem('org',JSON.stringify(data));
             localStorage.removeItem('Array');
             localStorage.setItem('Array', JSON.stringify("C"));
             this.router.navigate(['home']);
             this.appserv.showNavbar();
-    });     
+          });    
         }
-        else if(this.user.codeProfile == "O"){
+        else if(this.user.codeProfile == "O")
+        {
           this.userServ.getDepOfUser(this.user.codeUtilisateur).subscribe(data=>{
                                 localStorage.setItem('org',JSON.stringify(data));
                                 localStorage.removeItem('Array');
                                 localStorage.setItem('Array', JSON.stringify("O"));
                                 this.router.navigate(['home']);
-                                this.appserv.showNavbar();
-                        });         
+                                this.appserv.showNavbar(); });         
         }
-        else if(this.user.codeProfile == "P"){
+        else if(this.user.codeProfile == "P")
+        {
           this.userServ.getDepOfUser(this.user.codeUtilisateur).subscribe(data=>{
             localStorage.setItem('org',JSON.stringify(data));
             localStorage.removeItem('Array');
             localStorage.setItem('Array', JSON.stringify("P"));
             this.router.navigate(['home']);
-            this.appserv.showNavbar();
-    });  
-          
-        } 
+            this.appserv.showNavbar();});  
+        }
         else if(this.user.codeProfile == "OM"){
           this.userServ.getDepOfUser(this.user.codeUtilisateur).subscribe(data=>{
             localStorage.setItem('org',JSON.stringify(data));
             localStorage.removeItem('Array');
             localStorage.setItem('Array', JSON.stringify("OM"));
             this.router.navigate(['home']);
-            this.appserv.showNavbar();
-    });  
-          
+            this.appserv.showNavbar();});       
         }
         else if (this.user.codeProfile == "ADMIN"){
           localStorage.removeItem('Array');
@@ -100,15 +111,9 @@ onSubmit() {
           this.router.navigate(['home']);
           this.appserv.showNavbar();
         }
-        else {
-          alert("مستعمل غير مسجل");
-        }   
-      }
-      else this.error = true;
-    }
-  ,error=>{
-    this.error = true;
-  });
+      }else this.error = true;
+    }else this.error = true;
+    },error=>this.error = true);
       setTimeout(()=>{
           this.appc.stop(); }, 1200);
   }else this.error = true;

@@ -64,10 +64,17 @@ export class MMissionsComponent implements OnInit {
    
      }
     calculDuree(){
+      if(this.mission.dateDepartP !=undefined && this.mission.dateArriveP != undefined){   
         if(new Date(this.mission.dateDepartP).getTime() > new Date(this.mission.dateArriveP).getTime() )
         {
-          alert("تاريخ الذهاب يجب ان يكون اقل من تاريخ الإياب");}
-          else  if(this.mission.dateArriveP!=undefined && this.mission.dateDepartP !=undefined && this.duree >=0){
+          alert("تاريخ الذهاب يجب ان يكون اقل من تاريخ الإياب");
+          this.mission.dateDepartP = undefined;
+          this.mission.dateArriveP = undefined;
+          this.duree = 0;
+          this.duree2 = 0;
+          return;
+        }
+         else  if(this.mission.dateArriveP!=undefined && this.mission.dateDepartP !=undefined && this.duree >=0){
           let date1 = new Date(this.mission.dateArriveP).getTime();
           let date2 = new Date(this.mission.dateDepartP).getTime();
           var diff = Math.abs(date2 - date1);
@@ -79,6 +86,8 @@ export class MMissionsComponent implements OnInit {
         this.ordre.mission.dateDepartP = this.mission.dateDepartP;
         this.ordre.mission.dateArriveP = this.mission.dateArriveP;
       }
+      else return;
+    }
  
   toggleAdd(){
     this.add = !this.add;

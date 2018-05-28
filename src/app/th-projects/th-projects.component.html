@@ -39,18 +39,18 @@
   <div class="arabparagraph" *ngIf="visibleAdd == true">
     <fieldset>                  
       <div class="row ">
-            <section class="col col-3">
+            <section class="col col-3">رمز المشروع
                     <label class="input">
                             <i class="icon-prepend fa fa-barcode"></i>
                         <input   maxlength="10" required type="text" name="codeprj" placeholder="رمز المشروع" [(ngModel)]="proj.codeProjet">                    </label>
             </section>
-          <section class="col col-4">
+          <section class="col col-4">اسم المشروع
               <label class="input">
                   <i class="icon-prepend fa fa-align-justify"></i>
                   <input  minlength="4" maxlength="10" required type="text" name="nomprjar" placeholder="اسم المشروع" [(ngModel)]="proj.libProjAr">
               </label>
           </section>
-          <section class="col col-4 ">
+          <section class="col col-4 ">intitulé du projet
               <label class="input">
                   <i class="icon-prepend fa fa-align-justify"></i>
                   <input required minlength="2"  type="text" name="nomprjfr" placeholder="intitulé du projet" [(ngModel)]="proj.libProjFr">

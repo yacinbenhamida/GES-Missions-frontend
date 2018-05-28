@@ -7,6 +7,7 @@ import { Projet } from '../model/projets';
 import { NgForm } from '@angular/forms';
 import { Utilisateur } from '../model/utilisateur';
 import { MajBudgProg } from '../model/MajBudgProg';
+import { AvoirFraisService } from '../model/avoirfrais.service';
 
 @Component({
   selector: 'app-proj-budgyearinsert',
@@ -35,7 +36,7 @@ export class ProjBudgyearinsertComponent implements OnInit {
    // budgets : obtenus , pris en charge par le projet choisit
    valubudginitiale:number = 0;
    valbudgpromis:number = 0;
-  constructor(public budgserv:BudgetService,public projserv:ProjetService) { 
+  constructor(public budgserv:BudgetService,public projserv:ProjetService,public avserv:AvoirFraisService) { 
     this.choosenProject = new Projet();
     this.initalbudget = new MajBudgProg();
     this.initialmodif = [];
@@ -82,7 +83,7 @@ export class ProjBudgyearinsertComponent implements OnInit {
         this.budget.refBudgProg = this.initalbudget.refBudget;
         this.valubudginitiale = this.initalbudget.valeurMajBudgProg;
         this.budget.idbudgProg = this.initalbudget.budgetprojet.idbudgProg;
-        this.budgserv.getSommeBudgetPECprojet(this.departement.codeDep,this.d.getFullYear(),this.choosenProject.idprojet)
+        this.avserv.getSommeBudgetPECprojet(this.departement.codeDep,this.d.getFullYear(),this.choosenProject.idprojet)
         .subscribe(v=>{this.valbudgpromis = v});
         this.currentbudgprog.totalBudget = this.initalbudget.valeurMajBudgProg;
 

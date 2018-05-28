@@ -19,11 +19,11 @@ export class AvoirFraisService{
 
     getFraisMissionPromis(codeDep:string,year:number):Observable<number>{
         const url = `${this.frUrl}/getTotFraisMissionPromis/${codeDep}/${year}`;
-        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map((response: Response) => {return response.json() as number}).catch(this.handleError);
     }
     getFraisTransportPromis(codeDep:string,year:number):Observable<number>{
         const url = `${this.frUrl}/getTotFraisTransportPromis/${codeDep}/${year}`;
-        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map((response: Response) => {return response.json() as number}).catch(this.handleError);
     }
     getAllFrais():Observable<AvoirFrais[]>{
         return this.http.get(this.frUrl+"/allFrais",{headers:this.headers}).map(this.extractData).catch(this.handleError);
@@ -48,6 +48,11 @@ export class AvoirFraisService{
     insertFrais(d:AvoirFrais):Promise<AvoirFrais>{
         return this.http.post(this.frUrl+"/insertAvoirFrai",JSON.stringify(d),{headers : this.headers})
         .toPromise().then(res=>res.json() as Categorie).catch(this.handleError);  
+    }
+    // les budgets promis
+    getSommeBudgetPECprojet(codedep:string,year:number,idproj:number):Observable<number>{
+        const url = `${this.frUrl}/getToalFraisPECProjetPromis/${codedep}/${year}/${idproj}`;
+        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
     }
     deleteFrais(d:AvoirFrais):Promise<void>{
         const url = `${this.frUrl}/deleteAvoirFrai/${d.idAvoirfrais}`;

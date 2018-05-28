@@ -14,6 +14,9 @@ import { OrdreMissionService } from '../model/ordremission.service';
 import { AvoirFrais } from '../model/avoirfrais';
 import { Results } from '../model/Results';
 import { google, Marker } from '@agm/core/services/google-maps-types';
+import { Projet } from '../model/projets';
+import { ProjetService } from '../model/projet.service';
+import { AvoirBudgProg } from '../model/AvoirBudgProg';
 @Component({
   selector: 'app-s-mainpanel',
   templateUrl: './s-mainpanel.component.html',
@@ -40,6 +43,19 @@ export class SMainpanelComponent implements OnInit {
   destinations:string = ' ';
   anneesAdministratives:number[] = [];
   choosenyear:number = 0;
+
+  choosenproj:Projet = new Projet();
+  lstProj:Projet[] = [];
+  valbudgprojobt:number =0;
+  valbudgprojpromis:number = 0;
+  lineChartData:Array<any> = [];
+  public lineChartLabels:Array<any> = [];
+  public lineChartOptions:any = {
+    responsive: true
+  };
+  public lineChartLegend:boolean = true;
+  public lineChartType:string = 'bar';
+
   public barChartLabels:string[] =  []; 
   public barChartType:string = 'bar';
   public barChartLegend:boolean = true;
@@ -58,11 +74,8 @@ export class SMainpanelComponent implements OnInit {
   markers:marker[] =  [ ];
   constructor(public paysserv:PaysService,public reportService:ReportService,public fraisServ:AvoirFraisService
     ,public cserv:ConcerneServices,public budgserv:BudgetService,public ordmserv:OrdreMissionService
-    ,public concerneServ:ConcerneServices) {
-    paysserv.getAllPays().subscribe(p=>{this.listPays=p
-    
-      
-    });
+    ,public concerneServ:ConcerneServices,public projserv:ProjetService) {
+    paysserv.getAllPays().subscribe(p=>{this.listPays=p});
     reportService.getCountPaysMissions(this.dep.codeDep,this.d.getFullYear()).subscribe(dist=>{
       this.distributionPays = dist;
       dist.forEach(element => {
@@ -102,7 +115,24 @@ export class SMainpanelComponent implements OnInit {
   
         });
       });
-      
+      projserv.getProjectsOfDepartment(this.dep.codeDep).subscribe(proj=>{
+        this.lstProj = proj;
+      })
+
+      budgserv.allBudgProgOfDEP(this.dep.codeDep,this.d.getFullYear()).subscribe(a=>{
+        a.forEach(element => {
+          fraisServ.getSommeBudgetPECprojet(this.dep.codeDep,this.d.getFullYear(),element.projet.idprojet).subscribe(x=>{
+            if(a && x ){
+              this.lineChartLabels.push(element.projet.libProjAr);  
+              this.valbudgprojpromis = x;
+                this.lineChartData = [
+                  {data : [element.montantBudg],label : 'الإعتمادات المرصودة'},
+                  {data : [this.valbudgprojpromis] , label : 'الإعتمادات المستهلكة'}
+                ]
+            }
+          })
+        });
+      })
    }
 
   ngOnInit() {}
@@ -432,6 +462,32 @@ export class SMainpanelComponent implements OnInit {
       });   
     }
     return sum;
+  }
+
+
+  fetchProj(){
+    this.budgserv.getBudgOfProg(this.choosenproj.idprojet).subscribe(v=>{
+        this.fraisServ.getSommeBudgetPECprojet(this.dep.codeDep,this.d.getFullYear(),this.choosenproj.idprojet).subscribe(b=>{
+          if(v && b && v!=undefined && b!=undefined){
+            this.lineChartLabels.push(2018);  
+            this.valbudgprojpromis = b;
+              let budg:AvoirBudgProg = v;
+  
+              this.lineChartData = [
+                {data : [budg.montantBudg],label : 'الإعتمادات المرصودة'},
+                {data : [b] , label : 'الإعتمادات المستهلكة'}
+              ]
+          }
+        },error=>{
+          this.valbudgprojpromis = 0;
+          this.lineChartLabels = [];
+          this.lineChartData = [];}
+        )
+    },error=>{
+      this.valbudgprojpromis = 0;
+      this.lineChartLabels = [];
+      this.lineChartData = [];
+    })
   }
 }
 interface marker {

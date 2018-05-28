@@ -39,10 +39,7 @@
   <div class="arabparagraph" *ngIf="add == true">
     <fieldset>                  
       <div class="row ">
-            <section class="col col-1.5">
-                    <span class="arabparagraph">صبغة المؤسسة</span>
-              </section>
-              <section class="col col-4" *ngIf="typedeps!=null">
+              <section class="col col-6" *ngIf="typedeps!=null">صبغة المؤسسة
                     <label class="select">
                         <select  required name="budget" (change)="modifcode()"  [(ngModel)]="dep.typedep">
                             <option value="0"  disabled>صبغة المؤسسة</option>
@@ -51,10 +48,7 @@
                         <i></i>
                     </label>
                 </section>
-                <section class="col col-1.5">
-                        <span class="arabparagraph">رمز المؤسسة</span>
-                  </section>
-          <section class="col col-4">
+          <section class="col col-6">رمز المؤسسة
               <label class="input">
                   <i class="icon-prepend fa fa-barcode"></i>
                   <input style="background-color: whitesmoke;" minlength="4" maxlength="5" disabled required type="text" name="codeDep" placeholder="رمز المؤسسة" [(ngModel)]="dep.codeDep" value="{{newcodeDep}}">
@@ -64,19 +58,13 @@
 
       </div>
       <div class="row">
-            <section class="col col-1.5">
-                    <span class="arabparagraph">اسم المؤسسة</span>
-              </section>
-            <section class="col col-4 ">
+            <section class="col col-6 ">اسم المؤسسة
                 <label class="input">
                     <i class="icon-prepend fa fa-home"></i>
                     <input required minlength="5"  type="text" name="nomdepar" placeholder="اسم المؤسسة" [(ngModel)]="dep.libDepAr">
                 </label>
             </section>
-            <section class="col col-1.5">
-                    <span class="arabparagraph">nom de l'organisme</span>
-              </section>
-            <section class="col col-4">
+            <section class="col col-6">nom de l'organisme
                 <label class="input">
                     <i class="icon-prepend fa fa-home"></i>
                     <input  minlength="5" required type="text" name="nomdepfr" placeholder="nom de l'organisme " [(ngModel)]="dep.libDepFr">
@@ -95,20 +83,22 @@
 
 <div class="container content">
         <div class="row ">   
-                <form>
-                        <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                                    <input type="text" class="form-control" name="searchString" placeholder="اسم المؤسسة..." [(ngModel)]="searchString">
-                                </div>
-                            </div>
-                    </form>
+               
                 <div   id="sky-form1" class="sky-form ">
                 <header class="arabparagraph">قائمة المؤسسات
                         <button *ngIf="list == true" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-desc"></i></button>
                         <button *ngIf="list == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleList()"><i class="fa fa-sort-asc"></i></button>                                                  
-                </header>    
-                <table class=" table table-bordered table-striped"  *ngIf="list == true">
+                </header>  
+                <fieldset *ngIf="list == true"> 
+                        <form>
+                                <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                            <input type="text" class="form-control" name="searchString" placeholder="اسم المؤسسة..." [(ngModel)]="searchString">
+                                        </div>
+                                    </div>
+                            </form>
+                <table class=" table table-bordered table-striped"  >
                         <thead>
                                 <tr>
                                     <th>
@@ -143,6 +133,7 @@
                             </tr>
                         </tfoot>
                 </table>
+            </fieldset> 
                 </div>
         </div>           
 </div>  
@@ -163,10 +154,7 @@
                     <form   id="sky-form1" class="sky-form " style="width: 800px;">
                             <fieldset>
                                     <div class="row ">
-                                            <section class="col col-1.5">
-                                                    <span class="arabparagraph">صبغة المؤسسة</span>
-                                              </section>
-                                              <section class="col col-4" *ngIf="typedeps!=null">
+                                              <section class="col col-6" *ngIf="typedeps!=null">صبغة المؤسسة
                                                     <label class="select">
                                                         <select  required name="nature" (change)="modifcode2()"  [(ngModel)]="dep2.typedep">
                                                             <option value="0"  disabled>صبغة المؤسسة</option>
@@ -175,10 +163,7 @@
                                                         <i></i>
                                                     </label>
                                                 </section>
-                                                <section class="col col-1.5">
-                                                        <span class="arabparagraph">رمز المؤسسة</span>
-                                                  </section>
-                                          <section class="col col-4">
+                                          <section class="col col-6">رمز المؤسسة
                                               <label class="input">
                                                   <i class="icon-prepend fa fa-barcode"></i>
                                                   <input style="background-color: whitesmoke;" minlength="4" maxlength="5" disabled required type="text" name="codeDepModif" placeholder="رمز المؤسسة" [(ngModel)]="dep2.codeDep" value="{{newcodeDep2}}">
@@ -186,13 +171,13 @@
                                           </section>        
                                       </div>
                                       <div class="row">
-                                            <section class="col col-5 ">
+                                            <section class="col col-6 ">اسم المؤسسة
                                                 <label class="input">
                                                     <i class="icon-prepend fa fa-home"></i>
                                                     <input required minlength="5"  type="text" name="nomdepar" placeholder="اسم المؤسسة" [(ngModel)]="dep2.libDepAr">
                                                 </label>
                                             </section>
-                                            <section class="col col-5">
+                                            <section class="col col-6">nom de l'organisme
                                                 <label class="input">
                                                     <i class="icon-prepend fa fa-home"></i>
                                                     <input  minlength="5" required type="text" name="nomdepfr" placeholder="nom de l'organisme " [(ngModel)]="dep2.libDepFr">

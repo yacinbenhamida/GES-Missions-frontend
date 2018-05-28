@@ -39,22 +39,22 @@
   <div class="arabparagraph" *ngIf="add == true">
     <fieldset>                  
       <div class="row ">
-            <section class="col col-4">
+            <section class="col col-4">رمز الصنف
                     <label class="input">
                         <i class="icon-prepend fa fa-align-justify"></i>
                         <input  minlength="8" maxlength="8" required type="text" name="nomcatAr" placeholder="رمز الصنف" [(ngModel)]="cat.codeCat">
                     </label>
             </section>
-          <section class="col col-4">
+          <section class="col col-4">اسم الصنف
               <label class="input">
                   <i class="icon-prepend fa fa-align-justify"></i>
                   <input  minlength="2" maxlength="20" required type="text" name="nomcatAr" placeholder="اسم الصنف" [(ngModel)]="cat.libCatAr">
               </label>
           </section>
-          <section class="col col-4 ">
+          <section class="col col-4 "> nom de la catégorie
               <label class="input">
                   <i class="icon-prepend fa fa-align-justify"></i>
-                  <input required minlength="2"  type="text" name="nomcatFr" placeholder=" nom de la classe" [(ngModel)]="cat.libCatFr">
+                  <input required minlength="2"  type="text" name="nomcatFr" placeholder=" nom de la catégorie" [(ngModel)]="cat.libCatFr">
               </label>
           </section>
       </div>
@@ -90,7 +90,7 @@
                                         رمز الصنف
                                     </th>
                                     <th>
-                                        اسم المجموعة
+                                        اسم الصنف
                                     </th>
                                     <th>
                                         nom de la catégorie 

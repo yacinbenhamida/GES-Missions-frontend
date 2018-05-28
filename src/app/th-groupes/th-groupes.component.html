@@ -39,25 +39,25 @@
           <div class="arabparagraph" *ngIf="add == true">
             <fieldset>                  
               <div class="row ">
-                    <section class="col col-6">
+                    <section class="col col-6">رمز المجموعة
                             <label class="input">
                                 <i class="icon-prepend fa fa-info"></i>
                                 <input  minlength="8" maxlength="8" required type="text"  [(ngModel)]="groupeadd.codeGroupe" name="nomcatAr" placeholder="رمز المجموعة" [(ngModel)]="groupe.codeGroupe">
                             </label>
                     </section>
-                  <section class="col col-6">
+                  <section class="col col-6">اسم المجموعة
                       <label class="input">
                           <i class="icon-prepend fa fa-info"></i>
                           <input  minlength="2" maxlength="20"  [(ngModel)]="groupeadd.libGroupeFr" required type="text" name="nomcatAr" placeholder="اسم المجموعة" [(ngModel)]="groupe.libGroupeAr">
                       </label>
                   </section>
-                  <section class="col col-6 ">
+                  <section class="col col-6 "> nom du groupe
                       <label class="input">
                           <i class="icon-prepend fa fa-info"></i>
                           <input required minlength="2" [(ngModel)]="groupeadd.libGroupeAr"  type="text" name="nomcatFr" placeholder=" nom du groupe" [(ngModel)]="groupe.libGroupeAr">
                       </label>
                   </section>
-                  <section class="col col-6">
+                  <section class="col col-6">المنحة
                     <label class="select">
                       <select name="taux" [(ngModel)]="groupeadd.taux">
                           <option [value]="null" [selected]="true" [disabled]="true">المنحة</option>
@@ -84,13 +84,13 @@
           <div class="arabparagraph" *ngIf="addtaux == true">
             <fieldset>                  
               <div class="row ">
-                  <section class="col col-6 ">
+                  <section class="col col-6 ">رمز المنحة
                       <label class="input">
                           <i class="icon-prepend fa fa-info"></i>
                           <input required minlength="2" [(ngModel)]="tauxtoadd.codeTaux"  type="text" name="codeaux" placeholder="رمز المنحة" [(ngModel)]="groupe.libGroupeAr">
                       </label>
                   </section>
-                  <section class="col col-6 ">
+                  <section class="col col-6 ">قيمة المنحة
                       <label class="input">
                           <i class="icon-prepend fa fa-info"></i>
                           <input required minlength="2" [(ngModel)]="tauxtoadd.valTaux"  type="text" name="valtaux" placeholder="قيمة المنحة" [(ngModel)]="groupe.libGroupeAr">

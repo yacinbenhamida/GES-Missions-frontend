@@ -39,90 +39,123 @@
   <div class="arabparagraph" *ngIf="add == true">
     <fieldset>                  
       <div class="row ">
-            <section class="col col-6">
+            <section class="col col-6">رقم بطاقة التعريف الوطنية
+                    <span class="errar" *ngIf="( vcin == false) && (cin.touched || cin.dirty)" style="color: brown;">
+                           *(رقم بطاقة التعريف يتكون من 8 أرقام)
+                        </span>
                     <label class="input">
                         <i class="icon-prepend fa fa-info"></i>
-                        <input  minlength="8" maxlength="8" required type="number" name="cin" placeholder=" رقم بطاقة التعريف الوطنية" [(ngModel)]="missionaire.missionaire.cin">
+                        <input  class="form-control" (change)="checkcin(cin)" minlength="8" maxlength="8" required type="number" #cin="ngModel" name="cin" placeholder=" رقم بطاقة التعريف الوطنية" [(ngModel)]="missionaire.missionaire.cin">
                     </label>
+                  
             </section>
-            <section class="col col-2">
-                <span style="font-size: 12px;" class="arabparagraph">تاريخ إصدار بطاقة التعريف الوطنية</span>    
-            </section>
-            <section class="col col-4">
+            <section class="col col-6">تاريخ إصدار بطاقة التعريف الوطنية
+                    <span  *ngIf="( datecin.invalid ) && (datecin.touched || datecin.dirty)" style="color: brown;">
+                            *
+                         </span>
               <label class="input">
                   <i class="icon-prepend fa fa-calendar"></i>
-                  <input  minlength="8" maxlength="8" required type="date" name="cindate"  placeholder="" [(ngModel)]="missionaire.missionaire.dateCin">
+                  <input   #datecin="ngModel" required type="date" name="cindate"  placeholder="" [(ngModel)]="missionaire.missionaire.dateCin">
               </label>
              </section>
-            <section class="col col-6 ">
+            <section class="col col-6 ">المعرف الوحيد
+                    <span class="errar" *ngIf="( vmatr == false ) && (matr.touched || matr.dirty)" style="color: brown;">
+                            * (المعرف الوحيد يتكون من 4 أرقام على الأقل)
+                         </span>
               <label class="input">
                   <i class="icon-prepend fa fa-barcode"></i>
-                  <input required minlength="2"  type="number" name="nomcatFr" name="matricule" placeholder="المعرف الوحيد" [(ngModel)]="missionaire.missionaire.matricule">
+                  <input required minlength="2" (change)="checkmatr(matr)" #matr="ngModel" type="number" name="nomcatFr" name="matricule" placeholder="المعرف الوحيد" [(ngModel)]="missionaire.missionaire.matricule">
               </label>
           </section>
-          <section class="col col-6">
+          <section class="col col-6">اسم المنتفع
+                <span  *ngIf="( vnom == false ) && (prenomar.touched || prenomar.dirty)" style="color: brown;">
+                        *
+                     </span>
               <label class="input">
                   <i class="icon-prepend fa fa-user"></i>
-                  <input  minlength="2" maxlength="20" required type="text" name="prenomar"  placeholder="اسم المنتفع" [(ngModel)]="missionaire.missionaire.prenomAr">
+                  <input  minlength="2" (change)="checknom(prenomar)" maxlength="20" #prenomar="ngModel" required type="text" name="prenomar"  placeholder="اسم المنتفع" [(ngModel)]="missionaire.missionaire.prenomAr">
               </label>
           </section>
-          <section class="col col-6 ">
+          <section class="col col-6 ">prenom du missionaire
+                <span  *ngIf="( vnomfr == false ) && (prenomfr.touched || prenomfr.dirty)" style="color: brown;">
+                        *
+                     </span>
               <label class="input">
                   <i class="icon-prepend fa fa-user"></i>
-                  <input required minlength="2"  type="text" name="prenomfr" placeholder=" prenom du missionaire" [(ngModel)]="missionaire.missionaire.prenomFr">
+                  <input required minlength="2" (change)="checknomfr(prenomfr)" type="text" name="prenomfr" #prenomfr="ngModel" placeholder=" prenom du missionaire" [(ngModel)]="missionaire.missionaire.prenomFr">
               </label>
           </section>
-          <section class="col col-6 ">
+          <section class="col col-6 ">لقب المتنفع
+                <span  *ngIf="( vprenomar == false ) && (nomar.touched || nomar.dirty)" style="color: brown;">
+                        *
+                     </span>
               <label class="input">
                   <i class="icon-prepend fa fa-user"></i>
-                  <input required minlength="2"  type="text" name="nomar"  placeholder="لقب المتنفع" [(ngModel)]="missionaire.missionaire.nomAr">
+                  <input required minlength="2" (change)="checkprenomar(nomar)" type="text" name="nomar" #nomar="ngModel"  placeholder="لقب المتنفع" [(ngModel)]="missionaire.missionaire.nomAr">
               </label>
           </section>
-          <section class="col col-6 ">
+          <section class="col col-6 ">nom du missionaire
+                <span  *ngIf="( nomfr.invalid ) && (nomfr.touched || nomfr.dirty)" style="color: brown;">
+                        *
+                     </span>
             <label class="input">
                 <i class="icon-prepend fa fa-user"></i>
-                <input required minlength="2"  type="text" name="nomfr" placeholder="nom du missionaire" [(ngModel)]="missionaire.missionaire.nomFr">
+                <input required minlength="2" #nomfr="ngModel" type="text" name="nomfr" placeholder="nom du missionaire" [(ngModel)]="missionaire.missionaire.nomFr">
             </label>
         </section>
-        <section class="col col-6 ">
+        <section class="col col-6 ">الجنسية
+                <span  *ngIf="( nat.invalid ) && (nat.touched || nat.dirty)" style="color: brown;">
+                        *
+                     </span>
           <label class="input">
               <i class="icon-prepend fa fa-globe"></i>
-              <input required minlength="2"  type="text" name="natioAr" placeholder="الجنسية" [(ngModel)]="missionaire.missionaire.nationaliteAr">
+              <input required minlength="2" #nat="ngModel"  type="text" name="natioAr" placeholder="الجنسية" [(ngModel)]="missionaire.missionaire.nationaliteAr">
           </label>
       </section>
-      <section class="col col-6 ">
+      <section class="col col-6 ">nationalité
+            <span  *ngIf="( natfr.invalid ) && (natfr.touched || natfr.dirty)" style="color: brown;">
+                    *
+                 </span>
         <label class="input">
             <i class="icon-prepend fa fa-globe"></i>
-            <input required minlength="2"  type="text" name="natioFr" placeholder="nationalité" [(ngModel)]="missionaire.missionaire.nationaliteFr">
+            <input required minlength="2" #natfr="ngModel" type="text" name="natioFr" placeholder="nationalité" [(ngModel)]="missionaire.missionaire.nationaliteFr">
         </label>
     </section>
-    <section class="col col-1.5">
-        <span style="font-size: 12px;" class="arabparagraph">تاريخ الولادة</span>
-    </section>
-    <section class="col col-5 ">
+    <section class="col col-6 ">تاريخ الولادة
+            <span  *ngIf="( dnaiss.invalid ) && (dnaiss.touched || dnaiss.dirty)" style="color: brown;">
+                    *
+                 </span>
       <label class="input">
           <i class="icon-prepend fa fa-calendar"></i>
-          <input type="date"  required minlength="2"  name="dateAr" [(ngModel)]="missionaire.missionaire.dateNaissance">
+          <input type="date" #dnaiss="ngModel"  required minlength="2"  name="dateAr" [(ngModel)]="missionaire.missionaire.dateNaissance">
       </label>
     </section>
-    <section class="col col-6 ">
+    <section class="col col-6 ">مكان الولادة
+            <span  *ngIf="( lnaissar.invalid ) && (lnaissar.touched || lnaissar.dirty)" style="color: brown;">
+                    *
+                 </span>
       <label class="input">
           <i class="icon-prepend fa fa-location-arrow"></i>
-          <input type="text" required minlength="2"  type="text" name="lieuAr" placeholder="مكان الولادة" [(ngModel)]="missionaire.missionaire.lieuNaissanceAr">
+          <input type="text" #lnaissar="ngModel" required minlength="2"  type="text" name="lieuAr" placeholder="مكان الولادة" [(ngModel)]="missionaire.missionaire.lieuNaissanceAr">
       </label>
     </section>
-    <section class="col col-6 ">
+    <section class="col col-6 ">lieu de naissance
+            <span  *ngIf="( lnaissfr.invalid ) && (lnaissfr.touched || lnaissfr.dirty)" style="color: brown;">
+                    *
+                 </span>
       <label class="input">
           <i class="icon-prepend fa fa-location-arrow"></i>
-          <input type="text" required minlength="2"  type="text" name="lieuFr" placeholder="lieu de naissance" [(ngModel)]="missionaire.missionaire.lieuNaissanceFr">
+          <input type="text" #lnaissfr="ngModel" required minlength="2"  type="text" name="lieuFr" placeholder="lieu de naissance" [(ngModel)]="missionaire.missionaire.lieuNaissanceFr">
       </label>
     </section>
     <section class="col col-1">
-        
     </section>
-    <section class="col col-2 ">
+    <section class="col col-2 ">الرتبة
+            <span  *ngIf="( grd.invalid ) && (grd.touched || grd.dirty)" style="color: brown;">
+                    *
+                 </span>
         <label class="select">
-            <select  required name="grade"  [(ngModel)]="missionaire.missionaire.grade">
+            <select  required name="grade" #grd="ngModel" [(ngModel)]="missionaire.missionaire.grade">
                 <option value="null" [selected]="true"  [disabled]="true">الرتبة</option>
                 <option *ngFor="let x of grades" [ngValue]="x" >{{x.libGradeAr}}</option>
             </select>
@@ -130,36 +163,48 @@
         </label>
     </section>
 
-    <section class="col col-2 ">
+    <section class="col col-2 ">السلك
+            <span  *ngIf="( cls.invalid ) && (cls.touched || cls.dirty)" style="color: brown;">
+                    *
+                 </span>
         <label class="select">
-            <select  required name="classe"  [(ngModel)]="missionaire.missionaire.classe">
+            <select  required name="classe" #cls="ngModel" [(ngModel)]="missionaire.missionaire.classe">
                 <option value="null" [selected]="true"  [disabled]="true">السلك</option>
                 <option *ngFor="let x of classes" [ngValue]="x" >{{x.libClasseAr}}</option>
             </select>
             <i></i>
         </label>
     </section>
-    <section class="col col-2 ">
+    <section class="col col-2 ">الصنف
+            <span  *ngIf="( cat.invalid ) && (cat.touched || cat.dirty)" style="color: brown;">
+                    *
+                 </span>
         <label class="select">
-            <select  required name="cats"  [(ngModel)]="missionaire.missionaire.categorie">
+            <select  required name="cats" #cat="ngModel" [(ngModel)]="missionaire.missionaire.categorie">
                 <option value="null" [selected]="true"  [disabled]="true">الصنف</option>
                 <option *ngFor="let x of cats" [ngValue]="x" >{{x.libCatAr}}</option>
             </select>
             <i></i>
         </label>
     </section>
-    <section class="col col-2 ">
+    <section class="col col-2 ">الوظيفة
+            <span  *ngIf="( fct.invalid ) && (fct.touched || fct.dirty)" style="color: brown;">
+                    *
+                 </span>
         <label class="select">
-            <select  required name="cats"  [(ngModel)]="missionaire.missionaire.fonction">
+            <select  required name="cats" #fct="ngModel"  [(ngModel)]="missionaire.missionaire.fonction">
                 <option value="null" [selected]="true"  [disabled]="true">الوظيفة</option>
                 <option *ngFor="let x of fonctions" [ngValue]="x" >{{x.libFctAr}}</option>
             </select>
             <i></i>
         </label>
     </section>
-    <section class="col col-2 ">
+    <section class="col col-2 ">المجموعة
+            <span  *ngIf="( grp.invalid ) && (grp.touched || grp.dirty)" style="color: brown;">
+                    *
+                 </span>
         <label class="select">
-            <select  required name="classe"  [(ngModel)]="missionaire.missionaire.groupe">
+            <select  required name="classe" #grp="ngModel" [(ngModel)]="missionaire.missionaire.groupe">
                 <option value="null" [selected]="true"  [disabled]="true">المجموعة</option>
                 <option *ngFor="let x of groupes" [ngValue]="x" >{{x.libGroupeAr}}</option>
             </select>
@@ -245,10 +290,10 @@
         <div class="modal-content" >
             <div class="modal-header">
                 <button aria-hidden="true" (click)="exitModal()" data-dismiss="modal" class="close" type="button">×</button>
-                <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">تغيير مستعمل </span></h4>
+                <h4 id="myLargeModalLabel2" class="modal-title"><span class="arabparagraph">تغيير منتفع </span></h4>
             </div>
-            <div class="modal-body arabparagraph">
                     <form   id="sky-form1" class="sky-form " style="height: 570px;">
+                        <fieldset>
                                <div class="row ">
                                 <section class="col col-6">رقم بطاقة التعريف الوطنية
                                         <label class="input"> 
@@ -325,7 +370,7 @@
                         <section class="col col-1">
                             
                         </section>
-                        <section class="col col-2 ">
+                        <section class="col col-2 ">الرتبة
                             <label class="select">
                                 <select  required name="grade"  [(ngModel)]="missionaire1.missionaire.grade">
                                     <option *ngFor="let x of grades" [ngValue]="x" >{{x.libGradeAr}}</option>
@@ -334,7 +379,7 @@
                             </label>
                         </section>
                     
-                        <section class="col col-2 ">
+                        <section class="col col-2 ">السلك
                             <label class="select">
                                 <select  required name="classe"  [(ngModel)]="missionaire1.missionaire.classe">
                                     <option *ngFor="let x of classes" [ngValue]="x" >{{x.libClasseAr}}</option>
@@ -342,7 +387,7 @@
                                 <i></i>
                             </label>
                         </section>
-                        <section class="col col-2 ">
+                        <section class="col col-2 ">الصنف
                             <label class="select">
                                 <select  required name="cats"  [(ngModel)]="missionaire1.missionaire.categorie">
                                     <option *ngFor="let x of cats" [ngValue]="x" >{{x.libCatAr}}</option>
@@ -350,7 +395,7 @@
                                 <i></i>
                             </label>
                         </section>
-                        <section class="col col-2 ">
+                        <section class="col col-2 ">الوظيفة
                             <label class="select">
                                 <select  required name="cats"  [(ngModel)]="missionaire1.missionaire.fonction">
                                     <option *ngFor="let x of fonctions" [ngValue]="x" [selected]="x.idfct == missionaire1.missionaire.fonction.idfct">{{x.libFctAr}}</option>
@@ -358,7 +403,7 @@
                                 <i></i>
                             </label>
                         </section>
-                        <section class="col col-2 ">
+                        <section class="col col-2 ">المجموعة
                             <label class="select">
                                 <select  required name="classe"  [(ngModel)]="missionaire1.missionaire.groupe">
                                     <option *ngFor="let x of groupes" [ngValue]="x" >{{x.libGroupeAr}}</option>
@@ -368,10 +413,10 @@
                         </section>
                         </div>
                                         <button type="button" (click)="exitModal()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
-                                        <button  type="button" (click)="updateUser()" class="btn-u btn-u-primary"><span class="arabparagraph">تأكيد</span></button>                                  
-                    </form>
+                                        <button  type="button" (click)="updateUser()" class="btn-u btn-u-primary"><span class="arabparagraph">تسجيل</span></button>                                  
+                                    </fieldset>
+                                    </form>
             </div>
-        </div>
     </div>
 </div>
 <!-- End Order Form -->

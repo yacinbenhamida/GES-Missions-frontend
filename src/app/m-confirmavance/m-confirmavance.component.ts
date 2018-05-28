@@ -62,18 +62,7 @@ export class MConfirmavanceComponent implements OnInit {
 toggleOrdMb(){
   this.ordremisschb = ! this.ordremisschb;
 }
-confirmMissionWithRefuse(){
-  if(confirm("هل انت متأكد من المصادقة على هذا الأمر مع رفض التسبقة ؟")){
-    this.details = false;
-    this.choosenord.etat = "PAR";
-    this.ordserv.updateOrdMission(this.choosenord).subscribe(w=>{
-      alert("تمة المصادقة");
-      this.tabOrdresMiss = this.tabOrdresMiss.filter(h=>h!==this.choosenord);
-      this.tabOrdresMiss.splice(this.tabOrdresMiss.indexOf(this.choosenord),1);
-    },error=>alert("فشلة المصادقة"));
-    this.choosenord = new OrdreMission();
-    }
-}
+
 refuseMission(){
   if(confirm("هل انت متأكد من رفض على هذا الأمر كليا ؟")){
     this.details = false;

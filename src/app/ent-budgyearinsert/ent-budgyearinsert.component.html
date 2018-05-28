@@ -23,7 +23,7 @@
         <div class="container arabparagraph">
             <h1 class="pull-left"><span class="arabtext">ادخال الاعتمادات السنوية للهيكل</span></h1>
             <ul class="pull-right breadcrumb arabparagraph">
-                <li>ادخال الاعتمادات السنوتة</li>
+                <li>ادخال الاعتمادات السنوية</li>
                 <li>للهيكل </li>
             </ul>
         </div>
@@ -33,7 +33,7 @@
     <div class="row">
         <div class="panel panel-dark-blue">
                 <div class="panel-heading">
-                    <h3 class="panel-title"> <span style="font:arial;font-weight: bold;">{{year}}</span>
+                    <h3 class="panel-title"><span class="arabparagraph">السنة الإدارية : </span> <span style="font:arial;font-weight: bold;">{{year}}  </span>
                     </h3>
                 </div>           
         </div>
@@ -51,13 +51,13 @@
             <section class="col col-10">
                     <label class="arabtext">مصاريف المأمورية</label>
                 </section>
-            <section class="col col-6">
+            <section class="col col-6">مرجع الميزانة 
                     <label class="input">
                         <i class="icon-prepend fa fa-info"></i>
                         <input [disabled]="canEdit == false"  required type="text" name="codez" placeholder="مرجع الميزانة " [(ngModel)]="budget.refBudgMission">
                     </label>
                 </section>
-          <section class="col col-6">
+          <section class="col col-6">المبلغ
               <label class="input">
                   <i class="icon-prepend fa fa-dollar"></i>
                   <input [disabled]="canEdit == false"  required type="text" name="nomfctar" placeholder="المبلغ" [(ngModel)]="budget.montantBudgMission">
@@ -66,13 +66,13 @@
           <section class="col col-10">
               <label class="arabtext">مصاريف النقل</label>
           </section>
-          <section class="col col-6">
+          <section class="col col-6">مرجع الميزانة
                 <label class="input">
                     <i class="icon-prepend fa fa-info"></i>
                     <input  [disabled]="canEdit == false" required type="text" name="codez" placeholder="مرجع الميزانة " [(ngModel)]="budget.refBudgTransport">
                 </label>
             </section>
-      <section class="col col-6">
+      <section class="col col-6">المبلغ
           <label class="input">
               <i class="icon-prepend fa fa-dollar"></i>
               <input  [disabled]="canEdit == false" required type="text" name="nomfctar" placeholder="المبلغ" [(ngModel)]="budget.montantBudgTransport">
@@ -81,11 +81,16 @@
       </div>
   </fieldset>
   <footer>
-    <button *ngIf="canEdit == true && isApproved == false" (click)="modify()" class="btn-u btn-u-dark">تثبيت</button>
-    <button *ngIf="canEdit == false && isApproved == false" [disabled]="canEdit == false" (click)="onSubmit()" class="btn-u">تأكيد</button>
+    <button *ngIf="canEdit == true && isApproved == false && isFirstelem == true" (click)="modify()" class="btn-u btn-u-dark">تثبيت</button>
+    <button *ngIf="canEdit == true && isApproved == false && !isFirstelem" (click)="onSubmit()" class="btn-u">تأكيد</button>
+    <br/>
     <div class="alert alert-danger fade in" *ngIf="canEdit == false && isApproved == true">
-       وقعت المصادقة على الميزانية الأولية بتاريخ :  {{budget.dateBudg}}
+       وقعت المصادقة على الميزانية الأولية بتاريخ  :  {{budget.dateBudg}}  
     </div>
+    <br/>
+    <div class="alert alert-danger fade in" *ngIf="canEdit == true && isApproved == false && isFirstelem == true">
+        وقع إصدار المطلب الأول الخاص بإعتمادات هذا الهيكل بتاريخ  :  {{budget.dateBudg}} &emsp;<a routerLink="/updbudg-org">(للتثبيت المطلب إضعط هنا)</a>
+     </div>
 </footer>
 </div>            
  </form>

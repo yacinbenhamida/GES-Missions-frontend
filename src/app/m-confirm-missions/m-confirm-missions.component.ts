@@ -36,9 +36,9 @@ export class MConfirmMissionsComponent implements OnInit,AfterViewInit {
   avance:number = 0;
   user:string;
   // support frais
-  supfraisM:string='';
-  supfraisP:string='';
-  supfraisT:string='';
+  supfraisM:string='غير محدد';
+  supfraisP:string='غير محدد';
+  supfraisT:string='غير محدد';
   frais:boolean = false;
   valfraisM:number=0;
   valfraisP:number=0;
@@ -103,10 +103,10 @@ export class MConfirmMissionsComponent implements OnInit,AfterViewInit {
       else if(x=="M") return "تحمل مشترك بين الهيكل المضيف والمشروع";
   }
   loadDetails(){
-    this.destinations=' ';
-    this.supfraisT = '';
-    this.supfraisM = '';
-    this.supfraisP = '';
+    this.destinations='';
+    this.supfraisT = 'غير محدد';
+    this.supfraisM = 'غير محدد';
+    this.supfraisP = 'غير محدد';
     this.concerneService.getAllConcerneOfORDRE(this.choosenord.idOrdre,this.choosenord.mission.departement.codeDep).subscribe(t=>
       {
         this.choosenconcerne = t;

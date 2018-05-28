@@ -39,19 +39,19 @@
   <div class="arabparagraph" *ngIf="add == true">
     <fieldset>                  
       <div class="row ">
-          <section class="col col-4">
+          <section class="col col-4">رمز الوزارة
               <label class="input">
                   <i class="icon-prepend fa fa-barcode"></i>
                   <input type="number"  minlength="2" maxlength="2" required type="text" name="codeDep" placeholder="رمز الوزارة" [(ngModel)]="dep.codeDep">
               </label>
           </section>
-          <section class="col col-4 ">
+          <section class="col col-4 ">اسم الوزارة
               <label class="input">
                   <i class="icon-prepend fa fa-home"></i>
                   <input required minlength="5"  type="text" name="nomdepar" placeholder="اسم الوزارة" [(ngModel)]="dep.libDepAr">
               </label>
           </section>
-          <section class="col col-4">
+          <section class="col col-4">nom du ministére
               <label class="input">
                   <i class="icon-prepend fa fa-home"></i>
                   <input  minlength="5" required type="text" name="nomdepfr" placeholder="nom du ministére" [(ngModel)]="dep.libDepFr">

@@ -39,19 +39,19 @@
   <div class="arabparagraph" *ngIf="inputvisible">
     <fieldset>                  
       <div class="row ">
-            <section class="col col-6">
+            <section class="col col-6">رمز الوظيفة
                     <label class="input">
                         <i class="icon-prepend fa fa-info"></i>
                         <input  minlength="4" maxlength="25" required type="text" name="codefonct" placeholder="رمز الوظيفة " [(ngModel)]="fct.codeFonction">
                     </label>
                 </section>
-          <section class="col col-6">
+          <section class="col col-6">اسم الوظيفة
               <label class="input">
                   <i class="icon-prepend fa fa-industry"></i>
                   <input  minlength="3" maxlength="25" required type="text" name="nomfctar" placeholder="اسم الوظيفة" [(ngModel)]="fct.libFctAr">
               </label>
           </section>
-          <section class="col col-6 ">
+          <section class="col col-6 ">nom de la fonction
               <label class="input">
                   <i class="icon-prepend fa fa-object-ungroup"></i>
                   <input required   type="text" name="nomfctfr" placeholder=" nom de la fonction" [(ngModel)]="fct.libFctFr">
@@ -77,8 +77,8 @@
                         <button *ngIf="tablevisible == false" class="btn-u btn-brd rounded-2x btn-u-dark btn-u-xs pull-right" type="button" (click)="toggleTable()"><i class="fa fa-sort-asc"></i></button>                                  
                 </header> 
                 <fieldset *ngIf="tablevisible == true">
-                <div *ngIf="isEmpty(projets)" class="arabparagraph">لا توجد مشاريع جاري العمل بها </div>  
-                <form *ngIf="!isEmpty(projets)">
+                <div *ngIf="isEmpty(fcts)" class="arabparagraph">لا توجد وضائف جاري العمل بها </div>  
+                <form *ngIf="!isEmpty(fcts)">
                         <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon"><i class="fa fa-search"></i></div>
@@ -86,7 +86,7 @@
                                 </div>
                             </div>
                     </form>   
-                <table *ngIf="tablevisible && !isEmpty(projets)" class=" table table-bordered table-striped">
+                <table *ngIf="tablevisible && !isEmpty(fcts)" class=" table table-bordered table-striped">
                         <thead>
                                 <tr>
                                     <th>
@@ -139,19 +139,19 @@
                     <form   id="sky-form1" class="sky-form " style="width: 800px;">
                             <fieldset>
                     <div class="row ">
-                            <section class="col col-6">
+                            <section class="col col-6">رمز الوظيفة
                                     <label class="input">
                                         <i class="icon-prepend fa fa-info"></i>
                                         <input type="number" minlength="4" maxlength="25" required type="text" name="codefct" placeholder="رمز الوظيفة " [(ngModel)]="fonct.codeFonction">
                                     </label>
                             </section>
-                            <section class="col col-6">
+                            <section class="col col-6">اسم الوظيفة
                               <label class="input">
                                   <i class="icon-prepend fa fa-industry"></i>
                                   <input  minlength="3" maxlength="25" required type="text" name="nomfctar" placeholder="اسم الوظيفة" [(ngModel)]="fonct.libFctAr">
                               </label>
                             </section>
-                            <section class="col col-6 ">
+                            <section class="col col-6 ">nom de la fonction
                               <label class="input">
                                   <i class="icon-prepend fa fa-object-ungroup"></i>
                                   <input required   type="text" name="nomfctfr" placeholder=" nom de la fonction" [(ngModel)]="fonct.libFctFr">

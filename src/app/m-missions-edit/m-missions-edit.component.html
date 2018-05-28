@@ -52,12 +52,12 @@
                   <table class=" table table-bordered table-striped"  *ngIf="missions == true">
                       <thead>
                               <tr>
-                                  <th>رقم المأمورية</th>
-                                  <th>الموضوع</th>
-                                  <th >تاريخ الذهاب </th>    
-                                  <th >تاريخ الإياب</th>
-                                  <th >المدة</th>
-                                  <th style="width: 10px;visibility: hidden;"></th>  
+                                  <th style="width: 100px;">رقم المأمورية</th>
+                                  <th style="width: 350px;">الموضوع</th>
+                                  <th style="width: 100px;">تاريخ الذهاب </th>    
+                                  <th style="width: 100px;">تاريخ الإياب</th>
+                                  <th style="width: 50px;">المدة</th>
+                                  <th style="width: 5px;visibility: hidden;"></th>  
                                   <th style="width: 5px;visibility: hidden;"></th>                                                
                           </tr>
                       </thead>
@@ -107,11 +107,11 @@
             </section>
         </div>
         <div class="row">
-                <div class="panel panel-green">
+                <div class="panel panel-dark-blue">
                     <div class="panel-heading">
                         <h3 class="panel-title"><i class="fa fa-cogs"></i> <span class="arabparagraph">المأمورية</span>
-                          <button *ngIf="frais == true" class="btn-u btn-u-green rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleF()"><i class="fa fa-sort-desc"></i></button>
-                          <button *ngIf="frais == false" class="btn-u btn-u-green rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleF()"><i class="fa fa-sort-asc"></i></button>                                                                          
+                          <button *ngIf="frais == true" class="btn-u  rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleF()"><i class="fa fa-sort-desc"></i></button>
+                          <button *ngIf="frais == false" class="btn-u  rounded-2x btn-u-white btn-u-xs pull-right" type="button" (click)="toggleF()"><i class="fa fa-sort-asc"></i></button>                                                                          
                         </h3>
                     </div>                   
                 <div class="arabparagraph" *ngIf="frais == true">
@@ -171,6 +171,9 @@
                           </div>
 
                     </fieldset>
+                    <footer>
+                            <button class="btn-u pull-right" (click)="update()">تسجيل التغييرات</button>
+                        </footer> 
                   </div>
             </div>
         </div>  
@@ -246,18 +249,15 @@
               </div>
             </div>
           </div> 
-      </fieldset>
-      <footer>
-        <button class="btn-u pull-right" (click)="update()">تسجيل التغييرات</button>
-    </footer>  
+      </fieldset> 
     </div>
   </form>
 </div> 
 </div> 
 
-<!--  modal box -->
+<!--  modal box add -->
 <br/> <br/>
-<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px;">
+<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px; background-color: hsla(0, 0%, 3%, 0.3);">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -266,26 +266,21 @@
             </div>
             <div class="modal-body">
               <div class="container content">
-                  <div class="modal-body">
-                          <section class="col col-3">
-                            <label class="select" for="missionaires" class="arabparagraph">إضافة منتفع <input  name="miss"  [(ngModel)]="n" (change)="disp()"  list="missionaires" type="text" class="form-control">            
-                            <datalist  id="missionaires" >
-                              <option *ngFor="let x of missionairesAff" [ngValue]="x"  >  {{x.cin}} : {{x.nomAr}} {{x.prenomAr}}</option>
-                            </datalist> 
-                            <i></i>
-                            </label> 
-                        </section>             
-                      </div>
-                      <div class="row">
-                          <div class="col-md-4">
-                              <label class="arabparagraph">الاسم</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.nomAr" class="form-control" type="text"></p>
-                              <label class="arabparagraph">ر.ب.ت.و</label><p><input style="background-color: ghostwhite;" disabled  [(ngModel)]="ordre.missionaire.cin" class="form-control" type="text"></p>
-                              <label class="arabparagraph">المجموعة</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.groupe.libGroupeAr" class="form-control" type="text"></p>
+                      <div class="row arabparagraph">
+                          <div class="col-md-4">    
+                                إختيار منتفع <input  name="miss"  [(ngModel)]="n" (change)="disp()"  list="missionaires" type="text" class="form-control">            
+                                <datalist  id="missionaires" >
+                                  <option *ngFor="let x of missionairesAff" [ngValue]="x"  >  {{x.cin}} : {{x.nomAr}} {{x.prenomAr}}</option>
+                                </datalist> 
+                                <i></i>           
+                              <label class="arabparagraph">الاسم</label><p><input  disabled [(ngModel)]="ordre.missionaire.nomAr" class="form-control" type="text"></p>
+                              <label class="arabparagraph">ر.ب.ت.و</label><p><input  disabled  [(ngModel)]="ordre.missionaire.cin" class="form-control" type="text"></p>
+                              <label class="arabparagraph">المجموعة</label><p><input disabled [(ngModel)]="ordre.missionaire.groupe.libGroupeAr" class="form-control" type="text"></p>
                               <label class="arabparagraph">تاريخ الإياب</label><p><input  class="form-control" type="date" (change)="convDur()" [(ngModel)]="ordre.dateArrP"></p>
                           </div>
                           <div class="col-md-5">
-                              <label class="arabparagraph">اللقب</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.prenomAr" class="form-control" type="text"></p>
-                              <label class="arabparagraph">المعرف الوحيد</label><p><input style="background-color: ghostwhite;"  [(ngModel)]="ordre.missionaire.matricule" class="form-control" type="text"></p>
+                              <label class="arabparagraph">اللقب</label><p><input disabled [(ngModel)]="ordre.missionaire.prenomAr" class="form-control" type="text"></p>
+                              <label class="arabparagraph">المعرف الوحيد</label><p><input  disabled  [(ngModel)]="ordre.missionaire.matricule" class="form-control" type="text"></p>
                               <label class="arabparagraph">تاريخ الذهاب</label><p><input class="form-control" type="date" (change)="convDur()"  [(ngModel)]="ordre.dateDepP"></p>
                               <label class="arabparagraph">المدة </label><p><input class="form-control" type="number" disabled value="{{duree2}}"></p>
                           </div>
@@ -295,7 +290,7 @@
                   <div class="col-md-13">
                   <div class="modal-footer">
                       <button type="button" (click)="toggleModal()" class="btn-u btn-u-default"><span class="arabparagraph">خروج</span></button>
-                      <button  type="button" (click)="addMissionaire()" class="btn-u btn-u-primary"><span class="arabparagraph">تأكيد</span></button>
+                      <button  type="button" (click)="addMissionaire()" class="btn-u btn-u-primary"><span class="arabparagraph">إضافة المنتفع</span></button>
                 </div>
                 </div>
               </div>
@@ -304,8 +299,8 @@
     </div>
 </div>
 
-
-<div *ngIf="modaledit == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px;">
+<!-- modal edit box-->
+<div *ngIf="modaledit == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px; background-color: hsla(0, 0%, 3%, 0.3);">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -314,28 +309,23 @@
                 </div>
                 <div class="modal-body">
                   <div class="container content">
-                      <div class="modal-body">
-                              <section class="col col-4">
-                                <label class="select" for="missionaires" class="arabparagraph">تغيير المنتفع<input  name="miss"  [(ngModel)]="n" (change)="disp()"  list="missionaires" type="text" class="form-control">            
-                                <datalist  id="missionaires" >
-                                  <option *ngFor="let x of missionairesAff" [ngValue]="x"  >  {{x.cin}} : {{x.nomAr}} {{x.prenomAr}}</option>
-                                </datalist> 
-                                <i></i>
-                                </label> 
-                            </section>             
-                          </div>
-                          <div class="row">
-                              <div class="col-md-4">
-                                  <label class="arabparagraph">الاسم</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.nomAr" class="form-control" type="text"></p>
-                                  <label class="arabparagraph">ر.ب.ت.و</label><p><input style="background-color: ghostwhite;" disabled  [(ngModel)]="ordre.missionaire.cin" class="form-control" type="text"></p>
-                                  <label class="arabparagraph">المجموعة</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.classe.libClasseFr" class="form-control" type="text"></p>
-                                  <label class="arabparagraph">تاريخ الإياب</label><p><input  class="form-control" type="date" (change)="convDur()" [(ngModel)]="ordre.dateArrP"></p>
+                          <div class="row arabparagraph">
+                              <div class="col-md-4"> 
+                                    إختيار منتفع <input  name="miss"  [(ngModel)]="n" (change)="disp()"  list="missionaires" type="text" class="form-control">            
+                                    <datalist  id="missionaires" >
+                                      <option *ngFor="let x of missionairesAff" [ngValue]="x"  >  {{x.cin}} : {{x.nomAr}} {{x.prenomAr}}</option>
+                                    </datalist> 
+                                    <i></i>              
+                                  <label class="arabparagraph">الاسم</label><p><input name="nomarup"  disabled [(ngModel)]="ordre.missionaire.nomAr" class="form-control" type="text"></p>
+                                  <label class="arabparagraph">ر.ب.ت.و</label><p><input name="cinrup"  disabled  [(ngModel)]="ordre.missionaire.cin" class="form-control" type="text"></p>
+                                  <label class="arabparagraph">المجموعة</label><p><input  disabled name="libclfrup"  [(ngModel)]="ordre.missionaire.classe.libClasseFr" class="form-control" type="text"></p>
+                                  <label class="arabparagraph">تاريخ الإياب</label><p><input  class="form-control" name="dateup"  type="date" (change)="convDur()" [(ngModel)]="ordre.dateArrP"></p>
                               </div>
                               <div class="col-md-5">
-                                  <label class="arabparagraph">اللقب</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.prenomAr" class="form-control" type="text"></p>
-                                  <label class="arabparagraph">المعرف الوحيد</label><p><input style="background-color: ghostwhite;"  [(ngModel)]="ordre.missionaire.matricule" class="form-control" type="text"></p>
-                                  <label class="arabparagraph">تاريخ الذهاب</label><p><input class="form-control" type="date" (change)="convDur()"  [(ngModel)]="ordre.dateDepP"></p>
-                                  <label class="arabparagraph">المدة </label><p><input class="form-control" type="number" disabled value="{{duree2}}"></p>
+                                  <label class="arabparagraph">اللقب</label><p><input  disabled name="prear"  [(ngModel)]="ordre.missionaire.prenomAr" class="form-control" type="text"></p>
+                                  <label class="arabparagraph">المعرف الوحيد</label><p><input disabled name="matrup"  [(ngModel)]="ordre.missionaire.matricule" class="form-control" type="text"></p>
+                                  <label class="arabparagraph">تاريخ الذهاب</label><p><input class="form-control" name="datedepup"  type="date" (change)="convDur()"  [(ngModel)]="ordre.dateDepP"></p>
+                                  <label class="arabparagraph">المدة </label><p><input class="form-control" type="number" name="durup"  disabled value="{{duree2}}"></p>
                               </div>
                           </div>
                       </div>
@@ -366,123 +356,6 @@
         <app-m-fraisdest [id]="1" [missionaire]="missionaire" [missionconcernee]="missionconcerne" [ordremission]="ordremiss"></app-m-fraisdest>
 </div>
 
-<!--
-<div id="print-section" style="display: none;">
-
-    <h1 style="text-align:center;">
-        بطاقة تجميد وطلب تسبقة  <br/> بعنوان مأمورية بالخارج
-        </h1>
-        <p>
-        أمر بالمأمورية عدد : &emsp; {{u.numOrdre > 10 ? u.numOrdre : '0' + u.numOrdre }}  / {{u.mission.numMission}} / {{u.mission.departement.codeDep}}
-        </p>
-        <p>
-          المعرف الوحيد :&emsp;  {{u.missionaire.matricule}}
-        </p>
-        <p>
-        الأسم واللقب : &emsp; {{u.missionaire.nomAr}}  {{u.missionaire.prenomAr}}
-        </p>
-        <p>
-        الرتبة : {{u.missionaire.grade.libGradeAr}} &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp; 
-        الصنف أو السلك :  {{u.missionaire.classe.libClasseAr}} &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp; 
-        مستوى التأجير : {{u.missionaire.groupe.taux.valTaux}} 
-        </p>
-        <p>
-        الخطة الوظيفية : &emsp; {{u.missionaire.fonction.libFctAr}}
-        </p>
-        <p>
-        مكان المأمورية : &emsp; {{destination}}
-        </p>
-        <p>
-        مدتها : {{this.calcduree(u.dateDepP,u.dateArrP)}} أيام &emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;  
-        من : {{u.dateDepP}} &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp; &emsp;&emsp;&emsp; 
-        إلى : {{u.dateArrP}} 
-        </p>
-        <p>
-        موضوع المأمورية : &emsp; {{u.mission.objectifMissionAr  !=null ? u.mission.objectifMissionAr : ''}}
-        </p>
-        <p>
-        تحمل مصاريف المأمورية على : &emsp; {{supfraismiss  !=null ? supfraismiss : ''}}
-        </p>
-        <p>
-        تحمل مصاريف السكن على : &emsp; {{supfraislogement  !=null ? supfraislogement : ''}}
-        </p>
-        <p>
-        تحمل مصاريف المشاركة على : &emsp; {{supfraispartic !=null ? supfraispartic : ''}}
-        </p>
-        <p>
-        تحمل مصاريف النقل على : &emsp; {{supfraistransport!=null ? supfraistransport : ''}}
-        </p>
-        <p>
-        وسيلة النقل :  &emsp;  {{moytransport!=null ? moytransport : ''}}
-        <p>
-        <p> 
-        مصاريف النقل :  &emsp; {{fraistransp}} دينار 
-        </p>
-        &emsp;
-        <table>
-        <tr>
-          <th> الاعتمادات <br/> (د)</th>
-          <th> الاعتمادات المخصصة<br/> (د)</th>
-          <th> الاعتمادات المجمدة<br/> (د)</th>
-          <th> الاعتمادات المتبقية  <br/> (د)</th>
-          <th> تقدير مصاريف المأمورية <br/> (د)</th>
-        </tr>
-        <tr>
-          <td> مصاريف المأمورية</td>
-          <td> </td>
-          <td> </td>
-          <td> </td>
-          <td> {{fraismiss}}</td>
-        </tr>
-        <tr>
-          <td>مصاريف النقل</td>
-          <td> </td>
-          <td> </td>
-          <td> </td>
-          <td>{{fraistransp}}</td>
-        </tr>
-        <tr>
-
-        <td colspan='3' style='visibility:hidden;'> </td>
-        <td style='border:0px;'> المجموع</td>
-        <th>{{fraistransp + fraismiss}} </th>
-        </tr>
-        </table>
-        <h3>بيان حول مصاريف المأمورية بإستثناء مصاريف النقل : </h3>
-        &emsp;
-        <table>
-          <tr>
-            <th> المدة</th>
-            <th> المنحة اليومية <br/> (د) </th>
-            <th> المنحة الجملية <br/> للمأمورية</th>
-            <th> منحة السكن  <br/> اليومية</th>
-            <th> المصاريف الجملية <br/> للسكن</th>
-            <th> الطابع الجبائي <br/> (د)</th>
-            <th> مصاريف أخرى <br/> (د)</th>
-            <th> مبلغ التسبقة  <br/> (د)</th>
-          </tr>
-          <tr>
-            <td>{{this.calcduree(u.dateDepP,u.dateArrP)}} </td>
-            <td>{{u.missionaire.groupe.taux.valTaux}}</td>
-            <td>{{this.calcduree(u.dateDepP,u.dateArrP) * u.missionaire.groupe.taux.valTaux}}</td>
-            <td>{{fraislogement}}</td>
-            <td>{{fraislogementtot}}</td>
-            <td>{{timbre}}</td>
-            <td>{{fraisdivers}}</td>
-            <td>{{u.avance}}</td>
-          </tr>
-        </table>
-        <p> ملاحظات :  </p>
-        <p> حرر ب &emsp;&emsp;&emsp;&emsp; في  </p> 
-        <br/>
-        <p>&emsp;&emsp;&emsp;&emsp; آمر بالصرف 
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        سلطة الإشراف
-        </p>
-</div>
--->
 <!-- End Order Form -->
 <!-- JS Global Compulsory -->			
 <script src="../../assets/plugins/jquery/jquery.min.js"></script>

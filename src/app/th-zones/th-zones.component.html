@@ -39,19 +39,19 @@
   <div class="arabparagraph" *ngIf="add == true">
     <fieldset>                  
       <div class="row ">
-            <section class="col col-3">
+            <section class="col col-3">رمز المنطقة
                     <label class="input">
                         <i class="icon-prepend fa fa-info"></i>
                         <input  minlength="4" maxlength="5" required type="text" name="codez" placeholder="رمز المنطقة " [(ngModel)]="zone.codeZone">
                     </label>
                 </section>
-          <section class="col col-4">
+          <section class="col col-4">اسم المنطقة
               <label class="input">
                   <i class="icon-prepend fa fa-industry"></i>
                   <input  minlength="4" maxlength="5" required type="text" name="nomfctar" placeholder="اسم المنطقة" [(ngModel)]="zone.libZoneAr">
               </label>
           </section>
-          <section class="col col-4 ">
+          <section class="col col-4 "> nom de la zone
               <label class="input">
                   <i class="icon-prepend fa fa-object-ungroup"></i>
                   <input required minlength="5"  type="text" name="nomfctfr" placeholder=" nom de la zone" [(ngModel)]="zone.libZoneFr">

@@ -32,6 +32,10 @@ getLoginCredentials(cin:number,password:string):Observable<Utilisateur>{
     return this.http.get(url).map(this.extractData, {headers: this.headers}).catch(this.handleError);
 }
 
+VLoginCredentials(cin:number):Observable<Utilisateur>{
+    const url = `${this.usersUrl}/getverifLoginUser/${cin}`;
+    return this.http.get(url).map(this.extractData, {headers: this.headers}).catch(this.handleError);
+}
 getUser(id:number):Promise<Utilisateur>{
     const url = `${this.usersUrl}/findUser/${id}`;
     return this.http.get(url, {headers: this.headers})
@@ -54,7 +58,8 @@ getUsOfUSER(id:number):Observable<UserStructs>{
 }
 insertUser(u:UserStructs):Promise<UserStructs>{
     return this.http.post(this.usersUrl+"/userStruct",JSON.stringify(u),{headers : this.headers})
-        .toPromise().then(()=>null).catch(this.handleError);   
+        .toPromise().then((res:Response)=>{
+            return res.json() as UserStructs;}).catch(this.handleError);   
 }
 updateUser(u:UserStructs):Promise<UserStructs>{
     return this.http.post(this.usersUrl + "/updateUser",JSON.stringify(u),{headers : this.headers})

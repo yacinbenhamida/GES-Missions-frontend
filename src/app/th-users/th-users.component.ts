@@ -8,6 +8,8 @@ import { UtilisateurService } from '../model/utilisateur.service';
 import { UserStructs } from '../model/userstructs';
 import {DataTableModule} from "angular2-datatable";
 import {FormControl, FormGroup} from '@angular/forms';
+import { AES } from 'crypto-ts';
+
 @Component({
   selector: 'app-th-users',
   templateUrl: './th-users.component.html',
@@ -34,6 +36,8 @@ export class ThUsersComponent implements OnInit,AfterViewInit {
   userstructupdate:UserStructs = new UserStructs();
   // form controls 
   confirmPW:string = "";
+  confirmPW2:string = "";
+  departt:Departement;
   constructor(public usserv:UtilisateurService
     ,public depserv:DepartementService,public router:Router,public route:ActivatedRoute) {
   }
@@ -45,7 +49,6 @@ export class ThUsersComponent implements OnInit,AfterViewInit {
    }
 
    ngAfterViewInit(){}
-departt:Departement;
   ngOnInit() {
     this.controlleur = new Utilisateur();
     this.depserv.getAllDeps().subscribe(
@@ -60,19 +63,28 @@ departt:Departement;
     this.usserv.getUsers().subscribe(
     us=>this.allusers = us);
     this.adduserv = true;
-    this.listusers = true;}
+    this.listusers = true;    
+  }
   onSubmit(f:NgForm){
     if(this.user.motDePasse == this.confirmPW && f.valid){
+      var CryptoTS = require("crypto-ts");
+      this.user.motDePasse = AES.encrypt(this.user.motDePasse, 'dergmatok77892777').toString();
       this.userstruct.utilisateur = this.user;
       this.userstruct.departement = this.departement;
       this.usserv.insertUser(this.userstruct).then((b)=>{
         alert("تمة الإضافة");
         this.allusers.push(b.utilisateur);
-
       });
       f.reset();
     }else alert("الرجاء مراجعة المعطيات ");
       
+  }
+
+  decrypt(x:string) : any{
+    var CryptoTS = require("crypto-ts");
+    var bytes  = CryptoTS.AES.decrypt(x.toString(),'dergmatok77892777');
+    var b = bytes.toString(CryptoTS.enc.Utf8);
+    return  b;
   }
   deleteU(u:Utilisateur){
     if(confirm("هل انت متأكد من إزالة هذا المستعمل ?")){
@@ -83,7 +95,8 @@ departt:Departement;
   showInfosU(u:Utilisateur){
     this.usserv.getUsOfUSER(u.codeUtilisateur).subscribe(o=>{
       this.userstructupdate = o;
-      this.user1 = u;
+      this.userstructupdate.utilisateur = u;
+      this.userstructupdate.utilisateur.motDePasse = this.decrypt(this.userstructupdate.utilisateur.motDePasse);
       this.toggleModal();
     })
   }
@@ -108,12 +121,17 @@ departt:Departement;
       }
   }
   updateUser(){
-      this.userstructupdate.utilisateur = this.user1;
+    if(this.userstructupdate.utilisateur.motDePasse == this.confirmPW2){
+    var CryptoTS = require("crypto-ts");
+    const encryptedMessage = AES.encrypt(this.userstructupdate.utilisateur.motDePasse,'dergmatok77892777').toString();
       this.usserv.updateUser(this.userstructupdate).then(a=>{
         this.toggleModal();
         alert("تم");
       })
-  }
+    }
+    else alert("الرجاء التثبت من كلمة السر");
+  } 
+  
   exitEdit(){
     this.usserv.getUsers().subscribe(us=>{
       this.allusers = us;
@@ -126,7 +144,7 @@ departt:Departement;
       case 'P' :  return 'محاسب';
       case 'O' : return 'آمر بالصرف';
       case 'OM' : return 'آمر بالصرف لدى الوزارة';
-      case 'ADMIN' : return 'تقني' ;
+      case 'ADMIN' : return 'مشرف (ADMIN)' ;
     }
   }
 }

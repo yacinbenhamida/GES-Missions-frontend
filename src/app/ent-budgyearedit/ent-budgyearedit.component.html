@@ -64,14 +64,14 @@
             <section class="col col-5">
                     <label class="input">
                         <i class="icon-prepend fa fa-info"></i>
-                        <input [disabled]="canEnterBudg == false"  required type="text" name="codez" placeholder="مرجع الميزانة " [(ngModel)]="budget.refBudgMission">
+                        <input [disabled]="canEnterBudg == false"  required type="text" name="codebudgm" placeholder="مرجع الميزانة " [(ngModel)]="budget.refBudgMission">
                     </label>
             </section>
                 
           <section class="col col-6">
               <label class="input">
                   <i class="icon-prepend fa fa-dollar"></i>
-                  <input [disabled]="canEnterBudg == false"  required type="text" name="nomfctar" placeholder="المبلغ" [(ngModel)]="budget.montantBudgMission">
+                  <input [disabled]="canEnterBudg == false"  required type="text" name="mntbudgm" placeholder="المبلغ" [(ngModel)]="budget.montantBudgMission">
               </label>
           </section>
 
@@ -82,29 +82,34 @@
         </div>
           <section class="col col-1">
                 <label>
-                        <input [disabled]="canEnterBudg == false" type="radio" name="radio" value="-" [(ngModel)]="signetransp"> <span class="label-text">-</span>
+                        <input [disabled]="canEnterBudg == false" type="radio" name="radio2" value="-" [(ngModel)]="signetransp"> <span class="label-text">-</span>
                 </label>  
                 <label>
-                        <input [disabled]="canEnterBudg == false" type="radio" name="radio" value="+" [(ngModel)]="signetransp" > <span class="label-text">+</span>
+                        <input [disabled]="canEnterBudg == false" type="radio" name="radio2" value="+" [(ngModel)]="signetransp" > <span class="label-text">+</span>
                 </label>                         
         </section>
           <section class="col col-5">
                 <label class="input">
                     <i class="icon-prepend fa fa-info"></i>
-                    <input  [disabled]="canEnterBudg == false" required type="text" name="codez" placeholder="مرجع الميزانة " [(ngModel)]="budget.refBudgTransport">
+                    <input  [disabled]="canEnterBudg == false" required type="text" name="codebudgt" placeholder="مرجع الميزانة " [(ngModel)]="budget.refBudgTransport">
                 </label>
             </section>
       <section class="col col-6">
           <label class="input">
               <i class="icon-prepend fa fa-dollar"></i>
-              <input  [disabled]="canEnterBudg == false" required type="text" name="nomfctar" placeholder="المبلغ" [(ngModel)]="budget.montantBudgTransport">
+              <input  [disabled]="canEnterBudg == false" required type="text" name="montbudgt" placeholder="المبلغ" [(ngModel)]="budget.montantBudgTransport">
           </label>
       </section>
          <section class="col col-1">
-            <button [disabled]="canEnterBudg == false" type="submit" class="btn-u">تأكيد</button>
          </section>
       </div>
   </fieldset>
+  <footer>
+        <button *ngIf="canEnterBudg == true" type="submit" class="btn-u">تسجيل التحيين</button>
+    <div class="alert alert-danger fade in" *ngIf="canEnterBudg == false">      
+          {{message}}
+     </div>
+  </footer>
 </div>            
  </form>
 </div> 
@@ -125,7 +130,7 @@
                                         مرجع مصاريف المأموريات
                                     </th>
                                     <th>
-                                         قيمة الميزانية المأموريات
+                                         قيمة ميزانية المأموريات
                                     </th>
                                     <th>
                                         مرجع مصاريف النقل

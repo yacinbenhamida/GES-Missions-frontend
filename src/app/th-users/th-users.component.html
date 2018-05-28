@@ -39,7 +39,7 @@
   <div class="arabparagraph" *ngIf="adduserv == true">
     <fieldset>                  
       <div class="row ">
-          <section class="col col-4 ">
+          <section class="col col-4 ">الأسم
               <label class="input">
                   <i class="icon-prepend fa fa-user"></i>
                   <input required id="nomAr" minlength="4"  type="text" name="nomAr" 
@@ -50,17 +50,17 @@
                 </label>
           </section>
           
-          <section class="col col-4">
+          <section class="col col-4">اللقب
               <label class="input">
                   <i class="icon-prepend fa fa-user"></i>
                   <input  minlength="5" required type="text" name="prenomAr" 
-                  placeholder="القب" [(ngModel)]="user.prenomAr" class="form-control" #prenomAr="ngModel">
+                  placeholder="اللقب" [(ngModel)]="user.prenomAr" class="form-control" #prenomAr="ngModel">
                   <span class="errar" *ngIf="prenomAr.invalid && (prenomAr.dirty || prenomAr.touched)">
                         الرجاء التثبت من اللقب
                   </span>
               </label>
           </section>
-          <section class="col col-4">
+          <section class="col col-4">رقم بطاقة التعريف الوطنية  (login)
             <label class="input">
                 <i class="icon-prepend fa fa-info"></i>
                 <input  minlength="8"  required type="number" name="login" placeholder="رقم بطاقة التعريف الوطنية  (login)"
@@ -75,7 +75,7 @@
         
       </div>
       <div class="row">
-            <section class="col col-4">
+            <section class="col col-4"><span style="font-family: Tahoma;">prenom</span>
                     <label class="input">
                         <i class="icon-prepend fa fa-user"></i>
                         <input  minlength="5" type="text" required name="prenomfr" #prenomFr="ngModel" placeholder="prenom" [(ngModel)]="user.prenomFr">
@@ -86,7 +86,7 @@
                             </span>
                     </label>
                 </section>
-            <section class="col col-4">
+            <section class="col col-4"><span style="font-family: Tahoma;">nom</span>
                     <label class="input">
                         <i class="icon-prepend fa fa-user"></i>
                         <input   minlength="5" type="text" required name="nomfr" placeholder="nom"   [(ngModel)]="user.nomFr" #nomfr="ngModel" class="form-control">
@@ -95,7 +95,7 @@
                             </span>
                     </label>
             </section>
-            <section class="col col-4">
+            <section class="col col-4">وضيفة المستعمل
                 <label class="select">
                     <select #job="ngModel" required name="job"  [(ngModel)]="user.codeProfile" >
                         <option value="none" disabled>وضيفة المستعمل</option>
@@ -113,7 +113,7 @@
             </section>
       </div>
       <div class="row">
-          <section class="col col-4">
+          <section class="col col-4">كلمة السر
               <label class="input">
                   <i class="icon-prepend fa fa-lock"></i>
                   <input   class="form-control" minlength="5" type="password" required #b #e="ngModel" name="pass1" placeholder="كلمة السر" [(ngModel)]="user.motDePasse">
@@ -125,7 +125,7 @@
                     </span>
                 </label>
           </section>
-          <section class="col col-4">
+          <section class="col col-4">تأكيد كلمة السر
               <label class="input">
                   <i class="icon-prepend fa fa-lock"></i>
                   <input  minlength="5" class="form-control" required type="password" #c #l="ngModel" [(ngModel)]="confirmPW"  name="l" placeholder="تأكيد كلمة السر">
@@ -137,7 +137,7 @@
                     </span>
                 </label>
           </section>
-          <section class="col col-4" *ngIf="departements!=null">
+          <section class="col col-4" *ngIf="departements!=null">المؤسسة / الهيكل المعني
             <label class="select">
                 <select  required name="budget" #h="ngModel" [(ngModel)]="departement">
                     <option value="null"  disabled>المؤسسة / الهيكل المعني</option>
@@ -201,12 +201,12 @@
                             </tr>
                         </thead>
                         <tbody class="text-center">
-                            <tr *ngFor="let u of allusers| filterfct: 'prenomAr': searchString; let i = index; ">
-                                <td>{{u.login}}</td>
-                                <td>{{u.nomFr}}  {{u.prenomFr}}</td>
+                            <tr *ngFor="let u of allusers| filterfct: 'prenomAr': searchString; let i = index; " [ngClass]="{'admin':u.codeProfile=='ADMIN'}">
+                                <td class="fr">{{u.login}}</td>
+                                <td class="fr">{{u.nomFr}}  {{u.prenomFr}}</td>
                                 <td>{{u.prenomAr}}  {{u.nomAr}} </td>
                                 <td>    <label class="input">
-                                        <i (click)="a.value == '******'?a.value = u.motDePasse:a.value='******'" class="icon-prepend fa" [ngClass]="{' fa-toggle-off':a.value == '******','fa-toggle-on':a.value!='******'}"></i>
+                                        <i (click)="a.value == '******'?a.value = decrypt(u.motDePasse):a.value='******'" class="icon-prepend fa" [ngClass]="{' fa-toggle-off':a.value == '******','fa-toggle-on':a.value!='******'}"></i>
                                             <input style="width: 170px;" disabled type="text" #a name="mdpshowhide" value="******">
                                         </label>
                                 </td>
@@ -237,14 +237,14 @@
                                         <section class="col col-6 ">الأسم
                                             <label class="input">
                                                 <i class="icon-prepend fa fa-user"></i>
-                                                <input required minlength="5"  type="text" name="name"  [(ngModel)]="user1.nomAr">
+                                                <input required minlength="5"  type="text" name="name"  [(ngModel)]="userstructupdate.utilisateur.nomAr">
                                             </label>
                                         </section>
                                         
                                         <section class="col col-6">القب
                                             <label class="input">
                                                 <i class="icon-prepend fa fa-user"></i>
-                                                <input  minlength="5" required type="text" name="surname"  [(ngModel)]="user1.prenomAr">
+                                                <input  minlength="5" required type="text" name="surname"  [(ngModel)]="userstructupdate.utilisateur.prenomAr">
                                             </label>
                                         </section>
                                         
@@ -254,13 +254,13 @@
                                           <section class="col col-6">prenom
                                                   <label class="input">
                                                       <i class="icon-prepend fa fa-user"></i>
-                                                      <input  minlength="5" type="text" required name="prenomfr"  [(ngModel)]="user1.prenomFr">
+                                                      <input  minlength="5" type="text" required name="prenomfr"  [(ngModel)]="userstructupdate.utilisateur.prenomFr">
                                                   </label>
                                               </section>
                                           <section class="col col-6"> nom
                                                   <label class="input">
                                                       <i class="icon-prepend fa fa-user"></i>
-                                                      <input   minlength="5" type="text" required name="nomfr"  [(ngModel)]="user1.nomFr">
+                                                      <input   minlength="5" type="text" required name="nomfr"  [(ngModel)]="userstructupdate.utilisateur.nomFr">
                                                   </label>
                                           </section>
                                           
@@ -269,13 +269,15 @@
                                         <section class="col col-6">كلمة السر
                                             <label class="input">
                                                 <i class="icon-prepend fa fa-lock"></i>
-                                                <input   minlength="5" type="password" required name="pass1"  [(ngModel)]="user1.motDePasse">
+                                                <input   minlength="5" type="password" required name="pass1" #kk [(ngModel)]="userstructupdate.utilisateur.motDePasse">
+                                                <i class="icon-append fa " [ngClass]="{'fa-eye' : kk.type=='password','fa-eye-slash' : kk.type=='text'}" (click)="kk.type == 'password' ? kk.type='text' : kk.type='password'"></i>
                                             </label>
                                         </section>
                                         <section class="col col-6">تأكيد كلمة السر
                                             <label class="input"> 
                                                 <i class="icon-prepend fa fa-lock"></i>
-                                                <input   minlength="5" [value]="user1.motDePasse"  type="password" required name="pass2" >
+                                                <input   minlength="5" [(ngModel)]="confirmPW2" #kkk  type="password" required name="pass2" >
+                                                <i class="icon-append fa " [ngClass]="{'fa-eye' : kkk.type=='password','fa-eye-slash' : kkk.type=='text'}" (click)="kkk.type == 'password' ? kkk.type='text' : kkk.type='password'"></i>
                                             </label>
                                         </section>
                                         
@@ -284,30 +286,33 @@
                                             <section class="col col-6">رقم بطاقة التعريف الوطنية (login)
                                                     <label class="input">
                                                         <i class="icon-prepend fa fa-info"></i>
-                                                        <input  minlength="8" maxlength="8" required type="number" name="CIN"  [(ngModel)]="user1.login">
+                                                        <input  minlength="8" maxlength="8" required type="number" name="CIN"  [(ngModel)]="userstructupdate.utilisateur.login">
                                                     </label>
                                                 </section>
-                                            <section class="col col-6">وضيفة المستعمل
-                                                    <label class="select"> 
-                                                        <select required name="job"  [(ngModel)]="user1.codeProfile" >
-                                                            <option value="O">آمر بالصرف</option>
-                                                            <option value="OM">آمر بالصرف بوزارة الاشراف</option>
-                                                            <option value="P">محاسب</option>
+
+                                                <section class="col col-6">المؤسسة / الهيكل المعني
+                                                    <label class="select">
+                                                        <select class="form-control" required name="depupdate"  [(ngModel)]="userstructupdate.departement">
+                                                            <option *ngFor="let x of departements"   [ngValue]="x" [attr.selected]="x == userstructupdate.departement?true:null">{{x.libDepAr}}</option>
                                                         </select>
                                                         <i></i>
                                                     </label>
                                                 </section>
+                                            
                                                 
                                     </div>
                                     <div class="row">
-                                        <section class="col col-6">المؤسسة / الهيكل المعني
-                                            <label class="select">
-                                                <select class="form-control" required name="depupdate"  [(ngModel)]="userstructupdate.departement">
-                                                    <option *ngFor="let x of departements"   [ngValue]="x" [attr.selected]="x == userstructupdate.departement?true:null">{{x.libDepAr}}</option>
+                                        <section class="col col-6" *ngIf="userstructupdate.utilisateur.codeProfile != 'ADMIN'">وضيفة المستعمل
+                                            <label class="select"> 
+                                                <select required name="job"  [(ngModel)]="userstructupdate.utilisateur.codeProfile" >
+                                                    <option value="O">آمر بالصرف</option>
+                                                    <option value="OM">آمر بالصرف بوزارة الاشراف</option>
+                                                    <option value="P">محاسب</option>
                                                 </select>
                                                 <i></i>
                                             </label>
                                         </section>
+
                                     </div>
                                 </fieldset>
                                 <footer>

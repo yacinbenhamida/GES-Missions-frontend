@@ -6,4 +6,8 @@ input{
 .hide{
     visibility: hidden;
 }
+.admin{
+    background-color: rgb(40, 40, 247);
+    color: rgb(179, 6, 6);
+}
 

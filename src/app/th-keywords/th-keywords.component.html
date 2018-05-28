@@ -39,19 +39,19 @@
   <div class="arabparagraph" *ngIf="sujvisible == true">
     <fieldset>                  
       <div class="row ">
-            <section class="col col-3">
+            <section class="col col-3">رمز الموضوع
                     <label class="input">
                         <i class="icon-prepend fa fa-info"></i>
                         <input  minlength="4" required type="text" name="codez" placeholder="رمز الموضوع " [(ngModel)]="theme.codetheme">
                     </label>
                 </section>
-          <section class="col col-3">
+          <section class="col col-3">اسم الموضوع
               <label class="input">
                   <i class="icon-prepend fa fa-industry"></i>
                   <input  minlength="4"  required type="text" name="nomfctar" placeholder="اسم الموضوع" [(ngModel)]="theme.libThemeAr">
               </label>
           </section>
-          <section class="col col-3 ">
+          <section class="col col-3 "> nom du théme
               <label class="input">
                   <i class="icon-prepend fa fa-object-ungroup"></i>
                   <input required minlength="5"  type="text" name="nomfctfr" placeholder=" nom du théme " [(ngModel)]="theme.libThemeFr">
@@ -78,25 +78,25 @@
     <fieldset>
     <div *ngIf="isEmpty(themes)==true" class="arabparagraph">يجب ادخال مواضيع قبل ادخال كلمات المفاتيح</div>             
       <div class="row " *ngIf="isEmpty(themes)==false">      
-            <section class="col col-2">
+            <section class="col col-2">رمز كلمة المفتاح 
                     <label class="input">
                         <i class="icon-prepend fa fa-info"></i>
                         <input  minlength="4"  required type="text" name="codez" placeholder="رمز كلمة المفتاح " [(ngModel)]="motcle.codeMotCle">
                     </label>
                 </section>
-          <section class="col col-3">
+          <section class="col col-3">اسم كلمة المفتاح
               <label class="input">
                   <i class="icon-prepend fa fa-industry"></i>
                   <input  minlength="4"  required type="text" name="nomfctar" placeholder="اسم كلمة المفتاح" [(ngModel)]="motcle.libMcAr">
               </label>
           </section>
-          <section class="col col-3 ">
+          <section class="col col-3 "> nom du mot clé
               <label class="input">
                   <i class="icon-prepend fa fa-object-ungroup"></i>
                   <input required minlength="5"  type="text" name="nomfctfr" placeholder=" nom du mot clé " [(ngModel)]="motcle.libMcFr">
               </label>
           </section>
-          <section class="col col-2" *ngIf="themes!=null">
+          <section class="col col-2" *ngIf="themes!=null">الموضوع
             <label class="select">
                 <select  required name="thememc"  [(ngModel)]="motcle.theme">
                     <option value="0"  disabled>الموضوع</option>

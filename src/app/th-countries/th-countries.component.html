@@ -39,25 +39,25 @@
   <div class="arabparagraph" *ngIf="addC == true">
     <fieldset>                  
       <div class="row ">
-            <section class="col col-6">
+            <section class="col col-6">رمز البلد
                     <label class="input">
                         <i class="icon-prepend fa fa-info"></i>
                         <input  minlength="4"  required type="text" name="codez" placeholder="رمز البلد " [(ngModel)]="pays.codepays">
                     </label>
                 </section>
-          <section class="col col-6">
+          <section class="col col-6">اسم البلد
               <label class="input">
                   <i class="icon-prepend fa fa-industry"></i>
                   <input  minlength="4" required type="text" name="nomfctar" placeholder="اسم البلد" [(ngModel)]="pays.libPaysAr">
               </label>
           </section>
-          <section class="col col-6 ">
+          <section class="col col-6 ">nom du pays
               <label class="input">
                   <i class="icon-prepend fa fa-object-ungroup"></i>
                   <input required minlength="5"  type="text" name="nomfctfr" placeholder=" nom du pays" [(ngModel)]="pays.libPaysFr">
               </label>
           </section>
-          <section class="col col-3 ">
+          <section class="col col-3 ">المنطقة
             <label class="select">
                 <select  required name="budget"  [(ngModel)]="pays.zonepays">
                     <option value="null" disabled>المنطقة</option>
@@ -66,7 +66,7 @@
                 <i></i>
             </label>
           </section>
-          <section class="col col-3 ">
+          <section class="col col-3 ">اللغة
                 <label class="input">
                         <i class="icon-prepend fa fa-object-ungroup"></i>
                         <input required minlength="3"  type="text" name="lang" placeholder="اللغة" [(ngModel)]="pays.langue">

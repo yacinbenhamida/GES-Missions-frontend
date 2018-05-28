@@ -27,6 +27,7 @@ export class EntBudgyeareditComponent implements OnInit {
    budgets:MajBudgDep[];
     u:Utilisateur;
     canEnterBudg:boolean = false;
+    message : string = "في انتضار موافقة سلطة الاشراف";
   constructor(public budgserv:BudgetService,public projserv:ProjetService) {
     this.budgets = [];
     this.projets = [];
@@ -42,22 +43,38 @@ export class EntBudgyeareditComponent implements OnInit {
     this.departement = JSON.parse(localStorage.getItem('org'));
     this.projserv.getProjectsOfDepartment(this.departement.codeDep).subscribe(data=>this.projets = data);
     this.budgserv.getAllBudgDepMajOfUser(this.u.codeUtilisateur,this.departement.codeDep).subscribe(budg=>{
-      this.budgets = budg;
+      if(!this.isEmpty(budg)){
+        this.budgets = budg;
       this.budgets.forEach(element => {
-        if(this.budgets.length > 1 && element.etat == "S"){
+
+        if(this.budgets.length >= 1 && element.etat == "S"){
           this.canEnterBudg = true;
         }
+        else if(this.budgets.length == 1 && element.etat == "N"){
+          this.canEnterBudg = false;
+          this.message = "لا تستطيع تحيين مصاريف الهيكل إلا بعد المصادقة ";
+        }
       });
+      }
+      else {
+        this.budgets = [];
+        this.canEnterBudg = false;
+        this.message = "يجب إدخال الإعتمادات الأولية قبل تحيينها";
+      }
       /*if(this.budgets.length > 1 || this.budgets[0].etat == "S"){
         this.canEnterBudg = true;
       }
       else this.canEnterBudg = false;*/
+    },error=>{
+      this.budgets = [];
+      this.canEnterBudg = false;
+      this.message = "يجب إدخال الإعتمادات الأولية قبل تحيينها";
     });
     
   }
   msg(){
     if(this.canEnterBudg == false){
-      alert("في انتضار موافقة سلطة الاشراف");
+      alert(this.message);
     }
   }
   isEmpty(obj){
@@ -83,13 +100,18 @@ export class EntBudgyeareditComponent implements OnInit {
   }
   saveEdition(u:MajBudgDep){
     if(confirm("هل انت متأكد من تثبيت هذا التغيير  ?")){
-    this.budgserv.saveBudgDepMaj(u.idMajBdugDep).subscribe(()=>null);
-    this.budgets = this.budgets.filter(h=>h!==u);}
-  }
+    this.budgserv.saveBudgDepMaj(u.idMajBdugDep).subscribe(
+      (val)=>{
+        //this.budgets = this.budgets.filter(h=>h!==u);
+        u = val;
+      });
+  }}
   delEdition(u:MajBudgDep){
     if(confirm("هل انت متأكد من إزالة هذا التغيير ?")){
-    this.budgserv.cancelBudgDepMaj(u.idMajBdugDep).subscribe(()=>null);
-    this.budgets = this.budgets.filter(h=>h!==u);}
+    this.budgserv.cancelBudgDepMaj(u.idMajBdugDep).subscribe(x=>{
+      this.budgets = this.budgets.filter(h=>h!==u);
+    });
+    }
   }
 
   convertEtat(e:string){

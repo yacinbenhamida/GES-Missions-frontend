@@ -3,6 +3,7 @@ import {AppComponent} from '../app.component';
 import { AppService } from '../app.service';
 import { Utilisateur } from '../model/Utilisateur';
 import { Route, Router } from '@angular/router';
+import { AES } from 'crypto-ts';
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
@@ -12,13 +13,15 @@ export class HomepageComponent implements OnInit {
   u:Utilisateur;
   constructor(public appserv:AppService,router:Router) {
     this.u = JSON.parse(localStorage.getItem('Array'));
-   // alert(this.u);
-
-    //console.log("paramcode "+localStorage.getItem('org'));
-    console.log(JSON.parse(localStorage.getItem('org')));
     if(this.u==undefined){
         router.navigate(['error']);
     }
+   /* var CryptoTS = require("crypto-ts");
+    const encryptedMessage = AES.encrypt('message', 'secret key 123').toString();
+    var bytes  = CryptoTS.AES.decrypt(encryptedMessage.toString(), 'secret key 123');
+    alert(encryptedMessage);
+    alert(bytes);
+    alert(bytes.toString(CryptoTS.enc.Utf8))*/
    }
 
   ngOnInit() {

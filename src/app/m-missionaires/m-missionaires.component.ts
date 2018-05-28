@@ -36,6 +36,13 @@ export class MMissionairesComponent implements OnInit {
   groupes:Groupe[] = [];
   modal:boolean = false;
   missionaire1:AffectMissDep = new AffectMissDep();
+  vcin : boolean = false;
+  vmatr:boolean = false;
+  vnom:boolean = false;
+  vnomfr : boolean = false;
+  vprenomar : boolean = false;
+   regex = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+
   constructor(public mserv:MissionaireServices,public depServ:DepartementService,
     public fonctserv:FonctionService,gradeServ:GradeService,classServ:ClasseService,
     public catserv:CategorieService,public router:Router,grserv:TauxGroupeServices) {
@@ -93,4 +100,36 @@ export class MMissionairesComponent implements OnInit {
       this.missionaires = a;
     })
   }
+
+  checkcin(event){
+    if(this.missionaire.missionaire.cin && event){
+       event.length == 8 || this.missionaire.missionaire.cin.toString().length == 8? this.vcin = true : this.vcin = false;
+    }else this.vcin = false
+}
+
+checkmatr(event){
+  if(this.missionaire.missionaire.matricule && event){
+     event.length >= 4 || this.missionaire.missionaire.matricule.toString().length >= 4? this.vmatr = true : this.vmatr = false;
+  }else this.vmatr = false
+}
+checknom(event){ // nom ar 
+  if(this.missionaire.missionaire.prenomAr && event){
+    let str = this.missionaire.missionaire.prenomAr;
+    for (let index = 0; index <str.length; index++) { Number(str[index]) || this.regex.test(str[index]) ? this.vnom = false : this.vnom = true;}
+  }else this.vnom = false
+}
+
+checknomfr(event){ // nom fr
+  if(this.missionaire.missionaire.prenomFr && event){
+    let str = this.missionaire.missionaire.prenomFr;
+    for (let index = 0; index <str.length; index++) { Number(str[index]) || this.regex.test(str[index]) ? this.vnomfr = false : this.vnomfr = true;}
+  }else this.vnomfr = false
+}
+
+checkprenomar(event){ // prenom ar
+  if(this.missionaire.missionaire.nomAr && event){
+    let str = this.missionaire.missionaire.nomAr;
+    for (let index = 0; index <str.length; index++) { Number(str[index]) || this.regex.test(str[index]) ? this.vprenomar = false : this.vprenomar = true;}
+  }else this.vprenomar = false
+}
 }

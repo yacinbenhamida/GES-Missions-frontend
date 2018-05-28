@@ -51,9 +51,13 @@
             </section>
         </div> 
         <div class="row">
-            <label class="label">كلمة المفتاح</label>
+            <label class="label">كلمة المفتاح
+            <span *ngIf="theme.invalid && (theme.touched || theme.dirty)" style="color: brown;">
+                *
+            </span>
+            </label>
             <label class="select">
-                <select (change)="fetchTheme()"  required  name="motcle"  [(ngModel)]="choosenMc">
+                <select required (change)="fetchTheme()" #theme="ngModel" required  name="motcle"  [(ngModel)]="choosenMc">
                     <option *ngFor="let x of motcles" [ngValue]="x" >{{x.libMcAr}}</option>
                 </select>
                 <i></i>
@@ -61,17 +65,25 @@
         </div> 
           <div class="row">
               <section>
-                  <label class="label">هدف المأمورية</label>
+                  <label class="label">موضوع المأمورية
+                        <span *ngIf="obj.invalid && (obj.touched || obj.dirty)" style="color: brown;">
+                                *
+                            </span>
+                  </label>
                   <label class="textarea textarea-resizable">
-                      <textarea name="objectifMissionAr"  [(ngModel)]="mission.objectifMissionAr" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 123px;"></textarea>
+                      <textarea name="objectifMissionAr" #obj="ngModel" required [(ngModel)]="mission.objectifMissionAr" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 123px;"></textarea>
                   </label>
               </section>
           </div>
           <div class="row">
               <section>
-                  <label class="label" style="font-family: Arial;">objectif de la mission</label>
+                  <label class="label" style="font-family: Arial;">objectif de la mission
+                        <span *ngIf="objfr.invalid && (objfr.touched || objfr.dirty)" style="color: brown;">
+                                *
+                            </span>
+                  </label>
                   <label class="textarea textarea-resizable">
-                      <textarea name="objectifMissionFr" [(ngModel)]="mission.objectifMissionFr" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 123px;"></textarea>
+                      <textarea name="objectifMissionFr" required #objfr="ngModel" [(ngModel)]="mission.objectifMissionFr" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 123px;"></textarea>
                   </label>
               </section>
           </div>
@@ -82,7 +94,7 @@
             </section>
             <section class="col col-2">
                 <label class="input">
-                    <input name="dateDepartP" (change)="calculDuree()" required type="date" [(ngModel)]="mission.dateDepartP" >
+                    <input name="dateDepartP" required (change)="calculDuree()" required type="date" [(ngModel)]="mission.dateDepartP" >
                 </label>
             </section>
             <section class="col col-1.5">
@@ -90,7 +102,7 @@
             </section>
             <section class="col col-2">
                 <label class="input">
-                    <input name="dateArriveP" (change)="calculDuree()" required type="date" [(ngModel)]="mission.dateArriveP">
+                    <input name="dateArriveP" required (change)="calculDuree()" required type="date" [(ngModel)]="mission.dateArriveP">
                 </label>
             </section>
             <section class="col col-1.5">

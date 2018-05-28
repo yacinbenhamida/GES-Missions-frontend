@@ -90,9 +90,11 @@ export class MMissionsEditComponent implements OnInit {
   convEtat(e:string):string{
     switch(e){
       case "V":return "مصادق عليه من قبل الآمر بالصرف";
-      case "E": return "في إنتضار المصادقة";
+      case "E": return " في إنتضار المصادقة من قبل الآمر بالصرف";
       case "S": return "مصادق عليه من قبل سلطة الإشراف";
       case "R" : return "وقع رفضه من قبل سلطة الإشراف";
+      case "PA" : return "مصادق عليه من قبل المحاسب";
+      case "PR" : return "وقع رفض صرف التسبقة من قبل المحاسب";
     }
   }
   disp(){
@@ -118,13 +120,31 @@ export class MMissionsEditComponent implements OnInit {
   }
 
   deleteMiss(u:Mission){
-    if(confirm(" إلغاء المأمورية عدد "+u.numMission+" ? ")){
-        this.missionsservice.deleteMission(u).then(a=>{
-         this.tabmissions =  this.tabmissions.filter(h=>h!==u);
-          alert("تم")
-        },
-      error=>alert("لا يمكن التخلي عن هذه المأمورية "));
-    }
+    this.ordMService.getAllOrdMissionsOfMiss(u.numMission,u.departement.codeDep).subscribe(compte=>{
+      let can:boolean = false;
+      if(compte.length == 0){
+        can = true;
+      }else {
+      compte.forEach(element => {
+          if(element.etat=="S" || element.etat=="V" || element.etat=="E"){
+            can = false;
+          }else can = true;
+      });
+      }
+      if (can == true){
+        if(confirm(" إلغاء المأمورية عدد "+u.numMission+" ? ")){
+          this.missionsservice.deleteMission(u).then(a=>{
+           this.tabmissions =  this.tabmissions.filter(h=>h!==u);
+            alert("تم")
+          },
+        error=>alert("لا يمكن التخلي عن هذه المأمورية "));
+      }
+      }else {
+        alert("لا يمكن إلغاء مأمورية وقعت المصادقة على الأوامر التابعة لها");
+        return;
+      }
+    })
+    
   }
   editMiss(u:Mission){
     this.missionsservice.findMissionByNum(u.numMission,this.dep.codeDep).subscribe(m=>{

@@ -150,9 +150,11 @@
           </div>
           <div class="arabparagraph" *ngIf="bilan">
           <form   id="sky-form1" class="sky-form " >
+                <fieldset>
               <div class="row">
                   <br/>
-                  <section class="col col-1.5"></section>
+                  <section class="col col-2"></section>        
+                  <section class="col col-2"></section>
                   <section class="col col-1.5">
                       <p class="arabparagraph">
                             السنة
@@ -164,11 +166,16 @@
                               <option *ngFor="let a of anneesAdministratives" [ngValue]="a">{{a}}</option>
                           </select><i></i>
                       </label>
-                  </section>            
+                  </section>    
                   <section class="col col-3">
-                      <button type="button" (click)="bilanDepenses()" class="btn-u btn-u-sea"><i class="fa fa-print"></i> </button>
+                      <button type="button" (click)="bilanDepenses()" class="btn-u btn-u-sea"><i class="fa fa-print"></i> طباعة البيان</button>
                   </section>
               </div>
+              <br/><br/>
+              <div class="row">
+                    <h1 class="arabtext text-center"> <span class="arabtext">إتستهلاك اعتمادات الهيكل للسنة {{d.getFullYear()}}</span></h1>
+                </div>
+                <br/><br/><br/>
               <div class="row">
                     <div class="col-md-6" >
                             <span class="text-center"> إستهلاك الإعتمادات المخصصة للمأمورية </span>
@@ -190,6 +197,26 @@
                                 </canvas>
                             </section>
                 </div>
+                <br/><br/>
+                <div class="row">
+                        <h1 class="arabtext text-center"> <span class="arabtext">إستهلاك اعتمادات المشاريع للسنة :  {{d.getFullYear()}}</span></h1>
+                    </div>
+                    <br/><br/><br/>
+                  
+                  <div class="row" *ngIf="!isEmpty(lineChartData)">
+                        <div class="col-md-12">
+                          <div style="display: block;">
+                          <canvas baseChart width="650" height="200"
+                                      [datasets]="lineChartData"
+                                      [labels]="lineChartLabels"
+                                      [options]="lineChartOptions"
+                                      [legend]="lineChartLegend"
+                                      [chartType]="lineChartType"></canvas>
+                          </div>
+                        </div>
+                    </div>
+            </fieldset>
+
           </form>
         </div>
         </div>

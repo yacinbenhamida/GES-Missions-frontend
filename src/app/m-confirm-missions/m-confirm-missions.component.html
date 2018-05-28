@@ -151,20 +151,16 @@
                                                                     <td>{{f.valeurPrevue}}</td>
                                                                 </tr>
                                                             </tbody>
+                                                            <tfoot>
+                                                                <tr style="background-color: rgb(7, 207, 147);color: white;">
+                                                                <td>التسبقة</td>
+                                                                <td>{{avance}}</td>
+                                                                </tr>
+                                                            </tfoot>
                                                         </table>
                                                     </div>
                                         </div>
                                         
-                                  </div>
-                                  <div class="row" style="margin-right:10px;">
-                                        <section class="col-md-3">
-                                            <span class="arabparagraph">
-                                                  التسبقة
-                                            </span>
-                                            <label class="input">
-                                            <input type="number" disabled class="disabled" name="avance" value="{{avance}}">
-                                          </label>
-                                        </section>
                                   </div>
 
                                   <div class="row text-center">
@@ -187,7 +183,7 @@
                             </div>
                             <div class="arabparagraph" *ngIf="ordremisschb == true">
                                 <fieldset>
-                                        <div class="row">
+                                        <div class="row arabparagraph">
                                           <div class="col-md-1"><p class="arabparagraph">المعرف الوحيد</p></div>
                                           <div class="col-md-2">
                                               <label class="input">
@@ -354,7 +350,7 @@
                                                                         <td>{{valfraisT}}</td>
                                                                         <td>{{valffraisTimbre}}</td>
                                                                         <td>{{valfraisDivers + valfraisP}}</td>
-                                                                        <td>{{valfraisT + valfraisDivers + valffraisTimbre + (choosenord.missionaire.groupe.taux.valTaux * convDur(choosenord.dateArrP,choosenord.dateDepP)) + valfraisT}}</td>
+                                                                        <td>{{valfraisT + valfraisDivers + valffraisTimbre + (choosenord.missionaire.groupe.taux.valTaux * convDur(choosenord.dateArrP,choosenord.dateDepP))}}</td>
                                                                     </tr>
                                                                 </table>
                                                                 <br/>

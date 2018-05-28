@@ -4,6 +4,7 @@ import { TauxGroupeServices } from '../model/tauxgroupe.service';
 import { Taux } from '../model/taux';
 import { NgForm } from '@angular/forms';
 import { error } from 'util';
+import { Departement } from '../model/departement';
 
 @Component({
   selector: 'app-th-groupes',
@@ -22,6 +23,7 @@ export class ThGroupesComponent implements OnInit {
   searchString:string;
   listt:boolean = true;
   modal:boolean = false;
+  dep:Departement = JSON.parse(localStorage.getItem('org'));
   constructor(public tauxgrservice:TauxGroupeServices) { 
     tauxgrservice.getAllGroupes().subscribe(a=>this.grps=a);
     tauxgrservice.getAllTaux().subscribe(t=>this.taux=t);
