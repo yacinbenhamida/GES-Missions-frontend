@@ -173,7 +173,7 @@
               </div>
               <br/><br/>
               <div class="row">
-                    <h1 class="arabtext text-center"> <span class="arabtext">إتستهلاك اعتمادات الهيكل للسنة {{d.getFullYear()}}</span></h1>
+                    <h1 class="arabtext text-center"> <span class="arabtext">إستهلاك اعتمادات الهيكل للسنة {{d.getFullYear()}}</span></h1>
                 </div>
                 <br/><br/><br/>
               <div class="row">
@@ -203,7 +203,7 @@
                     </div>
                     <br/><br/><br/>
                   
-                  <div class="row" *ngIf="!isEmpty(lineChartData)">
+                  <div class="row" *ngIf=" loaded == true">
                         <div class="col-md-12">
                           <div style="display: block;">
                           <canvas baseChart width="650" height="200"

@@ -26,6 +26,7 @@ export class ProjBudgyeareditComponent implements OnInit {
    signe:string;
     u:Utilisateur = JSON.parse(localStorage.getItem('user'));;
     canEdit:boolean = true;
+    message = "يجب إدخال على الأقل مشروع كي تتمكن من تحيين اعتماداته"
   constructor(public budgserv:BudgetService,public projserv:ProjetService) {   }
 
   ngOnInit() {
@@ -45,6 +46,18 @@ export class ProjBudgyeareditComponent implements OnInit {
         this.canEdit = true;
         }
     });
+  }
+
+  verifBudgProg(){
+    this.budgserv.getBudgOfProg(this.budget.projet.idprojet).subscribe(v=>{
+      if(this.isEmpty(v)){
+        this.canEdit = false;
+        alert("يجب إدخال الإعتمدات الإولية لهذا المشروع كي تتمكن من التحيين");
+        this.message = "يجب إدخال الإعتمدات الإولية لهذا المشروع كي تتمكن من التحيين";
+      }else{
+        this.canEdit = true;
+      }
+    })
   }
 
   isEmpty(obj){

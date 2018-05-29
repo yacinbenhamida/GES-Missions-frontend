@@ -32,7 +32,7 @@ export class BudgetService{
     }
     getBudgOfProg(codeproj:number) : Observable<AvoirBudgProg>{
         const url = `${this.projUrl}/getBudgetOfprojet/${codeproj}`;
-        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map( (x:Response)=>{return x.text() ? x.json() : {};}).catch(this.handleError);
     }
 
     getSommeBudgetPECprojet(codedep:string,year:number,idproj:number):Observable<number>{
@@ -85,7 +85,7 @@ export class BudgetService{
     
     verifyIfThereisnoBudgets(codeDep:string,codeprj:number):Observable<MajBudgProg[]>{
         const url = `${this.projUrl}/allMajsBudgProgOfprojet/${codeDep}/${codeprj}`;
-        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map( (x:Response)=>{return x.text() ? x.json() : {};}).catch(this.handleError);
     }
 
     updateInitialDdeNBudgProg(a:AvoirBudgProg):Promise<MajBudgProg>{

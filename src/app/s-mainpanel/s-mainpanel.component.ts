@@ -17,6 +17,7 @@ import { google, Marker } from '@agm/core/services/google-maps-types';
 import { Projet } from '../model/projets';
 import { ProjetService } from '../model/projet.service';
 import { AvoirBudgProg } from '../model/AvoirBudgProg';
+import { isRegExp } from 'util';
 @Component({
   selector: 'app-s-mainpanel',
   templateUrl: './s-mainpanel.component.html',
@@ -48,13 +49,14 @@ export class SMainpanelComponent implements OnInit {
   lstProj:Projet[] = [];
   valbudgprojobt:number =0;
   valbudgprojpromis:number = 0;
-  lineChartData:Array<any> = [];
+  lineChartData:Array<any> = [{data : null , label : "الإعتمادات المستهلكة"},{data : null, label:"الإعتمادات المرصودة"}];
+  loaded:boolean = false;
   public lineChartLabels:Array<any> = [];
   public lineChartOptions:any = {
     responsive: true
   };
   public lineChartLegend:boolean = true;
-  public lineChartType:string = 'bar';
+  public lineChartType:string = 'line';
 
   public barChartLabels:string[] =  []; 
   public barChartType:string = 'bar';
@@ -75,8 +77,9 @@ export class SMainpanelComponent implements OnInit {
   constructor(public paysserv:PaysService,public reportService:ReportService,public fraisServ:AvoirFraisService
     ,public cserv:ConcerneServices,public budgserv:BudgetService,public ordmserv:OrdreMissionService
     ,public concerneServ:ConcerneServices,public projserv:ProjetService) {
-    paysserv.getAllPays().subscribe(p=>{this.listPays=p});
+    paysserv.getAllPays().subscribe(p=>{if(!this.isEmpty(p))this.listPays=p});
     reportService.getCountPaysMissions(this.dep.codeDep,this.d.getFullYear()).subscribe(dist=>{
+      if(!this.isEmpty(dist)){
       this.distributionPays = dist;
       dist.forEach(element => {
         this.doughnutChartLabels.push(element.nomPays + " ( عدد المأموريات ) ");
@@ -90,9 +93,10 @@ export class SMainpanelComponent implements OnInit {
           })
         })
       });
-    })
+    }
+  })
     reportService.getYears(this.currentDep.codeDep).subscribe(a=>
-      { 
+      { if(!this.isEmpty(a)){
         this.barChartLabels.push(a+"");
         this.anneesAdministratives =a
         a.forEach(element => {
@@ -114,28 +118,39 @@ export class SMainpanelComponent implements OnInit {
           });
   
         });
-      });
+      }
+    });
       projserv.getProjectsOfDepartment(this.dep.codeDep).subscribe(proj=>{
         this.lstProj = proj;
       })
 
-      budgserv.allBudgProgOfDEP(this.dep.codeDep,this.d.getFullYear()).subscribe(a=>{
-        a.forEach(element => {
-          fraisServ.getSommeBudgetPECprojet(this.dep.codeDep,this.d.getFullYear(),element.projet.idprojet).subscribe(x=>{
-            if(a && x ){
-              this.lineChartLabels.push(element.projet.libProjAr);  
-              this.valbudgprojpromis = x;
-                this.lineChartData = [
-                  {data : [element.montantBudg],label : 'الإعتمادات المرصودة'},
-                  {data : [this.valbudgprojpromis] , label : 'الإعتمادات المستهلكة'}
-                ]
-            }
-          })
-        });
-      })
    }
 
-  ngOnInit() {}
+  ngOnInit() {
+    
+    this.budgserv.allBudgProgOfDEP(this.dep.codeDep,this.d.getFullYear()).subscribe(a=>{
+      let d = [];
+      let b = [];
+      if(!this.isEmpty(a)){
+      a.forEach(element => {
+        this.fraisServ.getSommeBudgetPECprojet(this.dep.codeDep,this.d.getFullYear(),element.projet.idprojet).subscribe(x=>{
+          if(!this.isEmpty(x)){
+            this.lineChartLabels.push(element.projet.libProjAr);
+            d.push(x);
+            b.push(element.montantBudg);
+           /* this.lineChartData.push({data : [element.montantBudg],label : '(الإعتمادات المرصودة) '+element.projet.libProjAr})
+            this.lineChartData.push({data : [x] , label : '(الإعتمادات المستهلكة)  ' +element.projet.libProjAr});
+          */
+         }
+        })
+        this.lineChartData[0].data = d;
+        this.lineChartData[1].data = b;
+      });
+      //this.lineChartLabels.push(this.d.getFullYear());   
+      this.loaded = true;
+    }}
+  )
+  }
   convDur(d1:Date,d2:Date){
     let diff =  Math.abs(new Date(d2).getTime() - new Date(d1).getTime());
     return Math.ceil(diff / (1000 * 3600 * 24));
@@ -333,11 +348,11 @@ export class SMainpanelComponent implements OnInit {
   totalAutres:number = 0;
   totalTransport:number = 0;
   bilanDepenses(){
+    if(!this.isEmpty(this.lstOrdres)){
     this.fraisMObt = 0;
-  this.fraisMConsom = 0;
-  this.fraisTObt = 0;
-  this.fraisTConsom = 0;
-
+    this.fraisMConsom = 0;
+    this.fraisTObt = 0;
+    this.fraisTConsom = 0;
     this.budgserv.getSommeBudgMissionObtenus(this.dep.codeDep,this.choosenyear).subscribe(
       a=>{
         this.fraisMObt=a;
@@ -382,14 +397,9 @@ export class SMainpanelComponent implements OnInit {
           
           }
         );
-        
-        
-
-       
-      }
-    );
-    
-    
+        }
+    ); 
+  } else alert("لم تسجل مأموريات في هذه السنة الإدارية");
   }
 
   chYear(){

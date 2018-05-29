@@ -50,7 +50,7 @@
       <div class="row ">  
                 <section class="col col-5" *ngIf="projets!=null">المشروع
                     <label class="select">
-                        <select [disabled]="canEdit == false"  required name="budget"  [(ngModel)]="budget.projet">
+                        <select  (change)="verifBudgProg()"  required name="budget"  [(ngModel)]="budget.projet">
                             <option value="0"  disabled>المشروع</option>
                             <option *ngFor="let x of projets" [ngValue]="x" >{{x.libProjAr}}</option>
                         </select>
@@ -78,7 +78,7 @@
   <footer>
         <button *ngIf="canEdit == true  " [disabled]="canEdit == false" [ngClass]="{'btn-u disabled':canEdit == false,'btn-u':canEdit == true}" type="submit">تسجيل التحيين</button>
         <div class="alert alert-danger fade in" *ngIf="canEdit == false">
-                يجب إدخال على الأقل مشروع كي تتمكن من تحيين اعتماداته
+            {{message}}
         </div>
     </footer>
 </div>            

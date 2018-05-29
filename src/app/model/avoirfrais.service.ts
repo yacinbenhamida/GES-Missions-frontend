@@ -52,7 +52,7 @@ export class AvoirFraisService{
     // les budgets promis
     getSommeBudgetPECprojet(codedep:string,year:number,idproj:number):Observable<number>{
         const url = `${this.frUrl}/getToalFraisPECProjetPromis/${codedep}/${year}/${idproj}`;
-        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map( (x:Response)=>{return x.text() ? x.json() : {};}).catch(this.handleError);
     }
     deleteFrais(d:AvoirFrais):Promise<void>{
         const url = `${this.frUrl}/deleteAvoirFrai/${d.idAvoirfrais}`;

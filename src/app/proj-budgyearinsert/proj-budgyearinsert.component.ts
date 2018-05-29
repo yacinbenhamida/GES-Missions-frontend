@@ -61,7 +61,7 @@ export class ProjBudgyearinsertComponent implements OnInit {
     this.budget.projet = this.choosenProject;
     this.budget.dateBudg = this.d;
     this.budget.anneeAttr = this.year;
-    this.budgserv.insertBudgProg(this.budget).subscribe(()=>null);
+    this.budgserv.insertBudgProg(this.budget).subscribe(a=>alert("تمة الإضافة"));
   }
   isEmpty(obj){
     return (obj && (Object.keys(obj).length === 0));
@@ -76,6 +76,7 @@ export class ProjBudgyearinsertComponent implements OnInit {
     this.valbudgpromis = 0;
     this.budgserv.verifyIfThereisnoBudgets(this.departement.codeDep,this.choosenProject.idprojet)
     .subscribe(data=>{
+      if(!this.isEmpty(data)){
       this.initialmodif = data;
       if(this.initialmodif.length>1 || this.initialmodif[0].etat=="R"){
         this.initalbudget = this.initialmodif[0];
@@ -128,7 +129,16 @@ export class ProjBudgyearinsertComponent implements OnInit {
       else {
         this.canEdit = false;
       }
-      this.budgserv.getBudgOfProg(this.choosenProject.idprojet).subscribe(d=>this.currentbudgprog = d);
+      this.budgserv.getBudgOfProg(this.choosenProject.idprojet).subscribe(d=>
+        {
+          if(!this.isEmpty(d)) this.currentbudgprog = d
+        });
+    }else  {
+      this.canEdit = true;
+      this.btnAdd = true;
+      this.btnModif = false;
+      this.isApproved = false;
+    }
     });
 
     
