@@ -120,7 +120,7 @@ export class MMissionsComponent implements OnInit {
     this.ordre.mission = this.mission;
     this.ordre.dateDepP = this.mission.dateDepartP;
     this.ordre.dateArrP = this.mission.dateArriveP;
-    this.miserv.getMissionaireByCin(Number(this.n.substr(this.n.indexOf(":")+2,8)))
+    this.miserv.getMissionaireByCin(Number(this.n.substr(this.n.indexOf(":")-9,9)))
     .subscribe(d=>this.ordre.missionaire = d);
     }
     addMissionaireToOrd(){

@@ -216,8 +216,8 @@ export class MMissionsEditComponent implements OnInit {
           this.ordre.mission.numMission = Number(this.missionmodif.numMission); 
           this.ordre.avance = (this.ordre.missionaire.groupe.taux.valTaux) * Number(this.calcduree(this.ordre.dateDepP,this.ordre.dateArrP));   
           this.ordMService.insertOrdMission(this.ordre).then(x=>{
-            x.dateArrP = this.ordre.dateArrP;
-            x.dateDepP = this.ordre.dateDepP;
+            /*x.dateArrP = this.ordre.dateArrP;
+            x.dateDepP = this.ordre.dateDepP;*/
             this.tabOrdresMiss.push(x);      
             const index:number = this.tabOrdresMiss.indexOf(this.ordre);
                 if(index!==-1){

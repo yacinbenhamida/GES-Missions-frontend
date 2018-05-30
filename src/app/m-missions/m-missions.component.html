@@ -197,7 +197,7 @@
 </div> 
 <!--  modal box -->
 <br/> <br/>
-<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px;">
+<div *ngIf="modal == true" class="modal fade bs-example-modal-lg in"   style="display: block; padding-right: 17px;padding-top : 20px;background-color: hsla(0, 0%, 3%, 0.3);">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -206,18 +206,13 @@
             </div>
             <div class="modal-body">
               <div class="container content">
-                  <div class="modal-body">
-                          <section class="col col-4">
-                            <label class="select" for="missionaires" class="arabparagraph">إضافة منتفع <input  name="miss"  [(ngModel)]="n" (change)="disp()"  list="missionaires" type="text" class="form-control">            
-                            <datalist  id="missionaires" >
-                              <option *ngFor="let x of missionairesAff" [ngValue]="x"  > : {{x.cin}} {{x.nomAr}} {{x.prenomAr}}</option>
-                            </datalist> 
-                            <i></i>
-                            </label> 
-                        </section>             
-                      </div>
-                      <div class="row">
+                      <div class="row arabparagraph">
                           <div class="col-md-4">
+                                إضافة منتفع <input  name="miss"  [(ngModel)]="n" (change)="disp()"  list="missionaires" type="text" class="form-control">            
+                                    <datalist  id="missionaires" >
+                                      <option *ngFor="let x of missionairesAff" [ngValue]="x"  >   {{x.cin}} : {{x.nomAr}} {{x.prenomAr}}</option>
+                                    </datalist> 
+                                    <i></i>
                               <label class="arabparagraph">الاسم</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.nomAr" class="form-control" type="text"></p>
                               <label class="arabparagraph">ر.ب.ت.و</label><p><input style="background-color: ghostwhite;" disabled  [(ngModel)]="ordre.missionaire.cin" class="form-control" type="text"></p>
                               <label class="arabparagraph">المجموعة</label><p><input style="background-color: ghostwhite;" disabled [(ngModel)]="ordre.missionaire.groupe.libGroupeAr" class="form-control" type="text"></p>

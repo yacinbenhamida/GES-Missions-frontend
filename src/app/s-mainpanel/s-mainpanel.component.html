@@ -257,12 +257,10 @@
                     <td>{{a.mission.dateArriveP}}</td>
                     <td>{{convDur(a.mission.dateDepartP,a.mission.dateArriveP)}}</td>
                     <td>{{a.mission.objectifMissionAr}}</td>
-                    <td ><span *ngFor="let f of a.avoirfrais">{{f.typeFrai.codeTypefr=='0808' && f!=undefined ?f.valeurPrevue :return}}</span></td>
-                    <td><span *ngFor="let d of a.avoirfrais">{{d.typeFrai.codeTypefr=='0606' && d!=undefined ?d.valeurPrevue :return}}</span></td>
-                    <td *ngIf="missionsres.length > 1"><span *ngFor="let x of a.avoirfrais">{{(x.typeFrai.codeTypefr!='0606' && x.typeFrai.codeTypefr!='0808') && x!=undefined ?x.valeurPrevue :return}}</span></td>
-                    <td *ngIf="missionsres.length == 1 || a.length == 0">{{totaldivers}}</td>
+                    <td>{{getFraisMission(a.avoirfrais)}}</td>
+                    <td>{{getFraisTransp(a.avoirfrais)}}</td>
+                    <td>{{getFraisDivers(a.avoirfrais)}}</td>
                     <td>{{affichageEtat(a.etat)}}</td>
-
                </tr>
                <tfoot>
                    <tr>
@@ -289,7 +287,7 @@
     <p>الجمهورية التونسية
         <br/> {{this.currentDep.libDepAr}}</p>
         <h1 style="text-align:center;">
-        المأموريات المنجزة من قبل الهيكل :  
+        المأموريات المنجزة من قبل الهيكل   
         </h1>
         <h3 style="text-align:center;">
          من {{deball}} إلى {{finall}}
@@ -318,10 +316,9 @@
             <td>{{a.mission.dateArriveP}}</td>
             <td>{{destinations}}</td>
             <td>{{convDur(a.mission.dateDepartP,a.mission.dateArriveP)}}</td>
-            <td ><span *ngFor="let f of a.avoirfrais">{{f.typeFrai.codeTypefr=='0808' && f!=undefined ?f.valeurPrevue :return}}</span></td>
-            <td><span *ngFor="let d of a.avoirfrais">{{d.typeFrai.codeTypefr=='0606' && d!=undefined ?d.valeurPrevue :return}}</span></td>
-            <td *ngIf="mismissionres2.length > 1"><span *ngFor="let x of a.avoirfrais">{{(x.typeFrai.codeTypefr!='0606' && x.typeFrai.codeTypefr!='0808') && x!=undefined ?x.valeurPrevue :return}}</span></td>
-            <td *ngIf="mismissionres2.length == 1 || a.length == 0">{{totaldivers}}</td>
+            <td>{{getFraisMission(a.avoirfrais)}}</td>
+            <td>{{getFraisTransp(a.avoirfrais)}}</td>
+            <td>{{getFraisDivers(a.avoirfrais)}}</td>
             <td>{{affichageEtat(a.etat)}}</td>
        </tr>
        <tfoot>

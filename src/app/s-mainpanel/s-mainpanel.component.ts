@@ -61,8 +61,8 @@ export class SMainpanelComponent implements OnInit {
   public barChartLabels:string[] =  []; 
   public barChartType:string = 'bar';
   public barChartLegend:boolean = true;
-  public barChartData:any[] = [];
-  public barChartData2:any[] = [];
+  public barChartData:any[] = [{data : null , label : "اعتمادات المخصصة للمأمورية الاولية (د.ت )"},{data : null, label:"اعتمادات المخصصة للمأمورية المستهلكة (د.ت)"}];
+  public barChartData2:any[] = [{data : null , label : "اعتمادات المخصصة للنقل الاولية (د.ت )"},{data : null, label:"اعتمادات المخصصة للنقل المستهلكة (د.ت)"}]
   // doghnut shcema impl 
   distributionPays:Results[] =[];
   d:Date = new Date();
@@ -97,27 +97,35 @@ export class SMainpanelComponent implements OnInit {
   })
     reportService.getYears(this.currentDep.codeDep).subscribe(a=>
       { if(!this.isEmpty(a)){
-        this.barChartLabels.push(a+"");
+        //this.barChartLabels.push(a+"");
         this.anneesAdministratives =a
+        let i = [];
+        let j =[];
+        let g = [];
+        let ke = [];
+        let yr = [];
         a.forEach(element => {
           budgserv.getSommeBudgMissionObtenus(this.dep.codeDep,element).subscribe(d=>{
             fraisServ.getFraisMissionPromis(this.dep.codeDep,element).subscribe(e=>{
-              this.barChartData = [
-                {data : [d],label : 'اعتمادات المخصصة للمأمورية الاولية (د.ت )'},
-                {data : [e] , label : 'اعتمادات المخصصة للمأمورية المستهلكة (د.ت)'}
-              ]
+               i.push(d);
+               j.push(e);
+               yr.push(element);
             })
               budgserv.getSommeBudgTransportObtenus(this.dep.codeDep,element).subscribe(c=>{
                 fraisServ.getFraisTransportPromis(this.dep.codeDep,element).subscribe(k=>{
-                  this.barChartData2 = [
-                    {data : [c] ,label : 'اعتمادات المخصصة للنقل الاولية (د.ت )'},
-                    {data : [k] , label : 'اعتمادات المخصصة للنقل المستهلكة (د.ت)'}
-                  ]
+                  g.push(c);
+                  ke.push(k);
                 })
               });
           });
-  
+          this.barChartData[0].data = i;
+          this.barChartData[1].data = j;
+          this.barChartData2[0].data = g;
+          this.barChartData2[1].data = ke;
+          this.barChartLabels = yr;
+
         });
+        
       }
     });
       projserv.getProjectsOfDepartment(this.dep.codeDep).subscribe(proj=>{
@@ -138,15 +146,11 @@ export class SMainpanelComponent implements OnInit {
             this.lineChartLabels.push(element.projet.libProjAr);
             d.push(x);
             b.push(element.montantBudg);
-           /* this.lineChartData.push({data : [element.montantBudg],label : '(الإعتمادات المرصودة) '+element.projet.libProjAr})
-            this.lineChartData.push({data : [x] , label : '(الإعتمادات المستهلكة)  ' +element.projet.libProjAr});
-          */
          }
         })
         this.lineChartData[0].data = d;
         this.lineChartData[1].data = b;
       });
-      //this.lineChartLabels.push(this.d.getFullYear());   
       this.loaded = true;
     }}
   )
@@ -163,6 +167,7 @@ export class SMainpanelComponent implements OnInit {
       case "E": return "لم تتم المصادقة بعد";
       case "V" : return "مصادق عليه من قبل الآمر بالصرف";
       case "S" : return "مصادق عليه من قبل سلطة الإشراف";
+      case "PA" : return "مصادق عليه من قبل المحاسب";
       default : return "في الإنتضار";
     }
   } 
