@@ -16,12 +16,6 @@ export class HomepageComponent implements OnInit {
     if(this.u==undefined){
         router.navigate(['error']);
     }
-   /* var CryptoTS = require("crypto-ts");
-    const encryptedMessage = AES.encrypt('message', 'secret key 123').toString();
-    var bytes  = CryptoTS.AES.decrypt(encryptedMessage.toString(), 'secret key 123');
-    alert(encryptedMessage);
-    alert(bytes);
-    alert(bytes.toString(CryptoTS.enc.Utf8))*/
    }
 
   ngOnInit() {

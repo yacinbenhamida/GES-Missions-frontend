@@ -13,6 +13,16 @@ body{ margin: 0px 0px 0px 0px;}
     background-position: center center;
 }
 
+.interactive-slider-v2 {
+    -webkit-text-fill-color: rgb(0, 0, 0);
+    -webkit-text-stroke-color: black;
+    padding: 200px 0;
+    position: relative;
+    text-align: center;
+    background: url(assets/img/post-image-3.jpg) no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
 .arabtext{
     font-family: 'Droid Arabic kufi', serif;
     font-weight: bold;

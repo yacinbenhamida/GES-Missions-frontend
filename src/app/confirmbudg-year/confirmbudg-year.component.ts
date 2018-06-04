@@ -47,14 +47,20 @@ export class ConfirmbudgYearComponent implements OnInit {
     if (confirm("? المصادقة على ميزانية هذه المؤسسة ")){
       this.budgserv.acceptBudgProgDep(maj.idMajBdugDep).subscribe(
         ()=>
-        {this.majbudgdep = this.majbudgdep.filter(h=>h!==maj);} 
+        {this.majbudgdep = this.majbudgdep.filter(h=>h!==maj);
+          alert("تمة المصادقة  ");
+          window.location.reload();
+
+        } 
       );
   }
 }
   abortUpdate(maj:MajBudgDep){
     if(confirm("رفض ميزانية  هذه المؤسسة ?")){
     this.budgserv.declineBudgDepMaj(maj.idMajBdugDep).subscribe(()=>
-    {this.majbudgdep = this.majbudgdep.filter(h=>h!==maj);});
+    {this.majbudgdep = this.majbudgdep.filter(h=>h!==maj);
+      alert("تمة الرفض ")
+      window.location.reload();});
   }
 }
   fetchDepBudgs(){
@@ -73,14 +79,19 @@ export class ConfirmbudgYearComponent implements OnInit {
     abortUpdateproj(maj:MajBudgProg){
       if(confirm("رفض ميزانية  هذا المشروع ?")){
         this.budgserv.declineBudgProgMaj(maj.idmajBudgPrg).subscribe(()=>
-        {this.majbudgprog = this.majbudgprog.filter(h=>h!==maj);} );      
+        {this.majbudgprog = this.majbudgprog.filter(h=>h!==maj);
+          alert("تمة الرفض ")
+          window.location.reload();} );      
       }
     }
     confirmUpdateproj(maj:MajBudgProg){
       if (confirm("? المصادقة على ميزانية هذا  المشروع ")){
         this.budgserv.acceptBudgProgMaj(maj.idmajBudgPrg).subscribe(
           ()=>
-        {this.majbudgprog = this.majbudgprog.filter(h=>h!==maj);} 
+        {this.majbudgprog = this.majbudgprog.filter(h=>h!==maj);
+          alert("تمة المصادقة ")
+        window.location.reload();
+      } 
         );
     }
     }

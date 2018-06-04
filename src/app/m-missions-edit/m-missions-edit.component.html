@@ -223,7 +223,7 @@
                                 <tr *ngFor="let u of tabOrdresMiss | paginate : { itemsPerPage:5, currentPage:p}">
                                     <td  class="text-center">
                                         <button *ngIf="u.etat == 'V'" type="button" class="btn-u btn-u-sea" (click)="print(u)"><i class="fa fa-print"></i></button>
-                                        <button *ngIf="u.etat == 'S'" type="button" class="btn-u" (click)="printOrdre(u)"><i class="fa fa-print"></i></button>
+                                        <button *ngIf="u.etat == 'S' || u.etat == 'PA'" type="button" class="btn-u" (click)="printOrdre(u)"><i class="fa fa-print"></i></button>
                                     </td>
                                     <td class="text-center"><button type="button" class="btn-u btn-u-red" (click)="deleteOrd(u)"><i class="fa fa-times"></i></button></td>
                                     <td class="text-center"><button type="button" class="btn-u btn-u-orange" (click)="editord(u)"><i class="fa fa-edit"></i></button></td>  

@@ -18,6 +18,7 @@ import { Projet } from '../model/projets';
 import { ProjetService } from '../model/projet.service';
 import { AvoirBudgProg } from '../model/AvoirBudgProg';
 import { isRegExp } from 'util';
+import { Concerne } from '../model/concerne';
 @Component({
   selector: 'app-s-mainpanel',
   templateUrl: './s-mainpanel.component.html',
@@ -97,7 +98,6 @@ export class SMainpanelComponent implements OnInit {
   })
     reportService.getYears(this.currentDep.codeDep).subscribe(a=>
       { if(!this.isEmpty(a)){
-        //this.barChartLabels.push(a+"");
         this.anneesAdministratives =a
         let i = [];
         let j =[];
@@ -148,9 +148,10 @@ export class SMainpanelComponent implements OnInit {
             b.push(element.montantBudg);
          }
         })
-        this.lineChartData[0].data = d;
-        this.lineChartData[1].data = b;
+      
       });
+      this.lineChartData[0].data = d;
+      this.lineChartData[1].data = b;
       this.loaded = true;
     }}
   )
@@ -503,6 +504,19 @@ export class SMainpanelComponent implements OnInit {
       this.lineChartLabels = [];
       this.lineChartData = [];
     })
+  }
+  getCountries(c:Concerne[]) : string{
+    alert(c.length);
+    if(!this.isEmpty(c)){
+      let ctr : string = "";
+      if(c.length==1) ctr = c[0].pays.libPaysAr;
+      else{
+        c.forEach(element => {
+          ctr += element.pays.libPaysAr +" - ";
+        });
+      } 
+      return ctr;
+    }else return "";
   }
 }
 interface marker {

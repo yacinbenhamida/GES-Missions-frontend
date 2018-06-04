@@ -24,7 +24,9 @@
             <h1 class="pull-left"><span class="arabtext">المتابعة</span></h1>
         </div>
     </div>
-</div>
+</div> 
+    
+
 <div class="container content ">
   <br/><br/>
   <div class="panel">
@@ -206,7 +208,7 @@
                   <div class="row" *ngIf=" loaded == true">
                         <div class="col-md-12">
                           <div style="display: block;">
-                          <canvas baseChart width="650" height="200"
+                          <canvas baseChart width="650" height="200" *ngIf="loaded == true"
                                       [datasets]="lineChartData"
                                       [labels]="lineChartLabels"
                                       [options]="lineChartOptions"
@@ -282,6 +284,7 @@
 
 </div>
 <!-- end template pays + deb + fin-->
+
 <!-- begin template deb + fin-->
 <div id="dates-only" style="display: none;">
     <p>الجمهورية التونسية
@@ -314,7 +317,8 @@
             <td>{{a.mission.objectifMissionAr}}</td>
             <td>{{a.mission.dateDepartP}}</td>
             <td>{{a.mission.dateArriveP}}</td>
-            <td>{{destinations}}</td>
+            <!--<td>{{destinations}}</td>-->
+            <td><span *ngFor="let r of a.concerne">{{r!=undefined?r.pays.libPaysAr:return}} - </span></td>
             <td>{{convDur(a.mission.dateDepartP,a.mission.dateArriveP)}}</td>
             <td>{{getFraisMission(a.avoirfrais)}}</td>
             <td>{{getFraisTransp(a.avoirfrais)}}</td>
@@ -390,6 +394,7 @@
             <td>{{l.mission.objectifMissionAr}}</td>
             <td>{{l.mission.dateDepartP}}<br/>{{l.mission.dateArriveP}} </td>
             <td><span *ngFor="let r of l.concerne">{{r!=undefined?r.pays.libPaysAr:return}} - </span></td>
+            <!--<td>{{getCountries(l.concerne)}}</td>-->
             <td>
                 {{getFraisMission(l.avoirfrais)}}
             </td>

@@ -152,8 +152,6 @@ export class MMissionsEditComponent implements OnInit {
       for (let index = 0; index < this.motcles.length; index++) {
         if(this.motcles[index].theme.idtheme==m.theme.idtheme){
           this.choosenMc = this.motcles[index];
-          this.missionmodif.objectifMissionAr = this.choosenMc.libMcAr;
-          this.missionmodif.objectifMissionFr = this.choosenMc.libMcFr;
         }
         this.calculDuree();
         this.missionaireService.getAllMissionaireNHAM(u.dateDepartP,u.dateArriveP,this.dep.codeDep).subscribe(d=>{
@@ -326,10 +324,10 @@ calcduree(d1:Date,d2:Date){
     .subscribe(val=>this.valbudgpromTrans=val,error=>this.valbudgpromTrans=0);
     this.consServ.getAllConcerneOfORDRE(u.idOrdre,u.mission.departement.codeDep).subscribe(a=>{
       u.concerne = a;
-      let supfraismiss:string = "";
-      let supfraislogement:string ="";
-      let supfraispartic:string ="";
-      let supfraistransport:string ="";
+      let supfraismiss:string = "غير محدد";
+      let supfraislogement:string ="غير محدد";
+      let supfraispartic:string ="غير محدد";
+      let supfraistransport:string ="غير محدد";
       let fraistransp:number = 0.000;
       let fraismiss:number = 0.000;
       let timbre:number = 0.000;
@@ -420,7 +418,7 @@ calcduree(d1:Date,d2:Date){
             else if (f[i].support.codeSupport=="I"){
               supfraispartic = u.mission.departement.libDepAr ;
             }
-            else supfraispartic = " " ;
+            else supfraispartic = " غير محدد" ;
             fraisdivers = f[i].valeurPrevue;
           }
           else if(f[i].typeFrai.codeTypefr == "0909"  && f[i].support!=null){ // frais de logement
@@ -442,6 +440,7 @@ calcduree(d1:Date,d2:Date){
             else if (f[i].support.codeSupport=="I"){
               supfraislogement = u.mission.departement.libDepAr ;
             }
+            else supfraislogement = "غير محدد";
             fraislogement = f[i].valeurPrevue;
             fraislogementtot = fraislogement;
           }             
@@ -498,19 +497,19 @@ calcduree(d1:Date,d2:Date){
         موضوع المأمورية : &emsp; ${u.mission.objectifMissionAr  !=null ? u.mission.objectifMissionAr : ''}
         </p>
         <p>
-        تحمل مصاريف المأمورية على : &emsp; ${supfraismiss  !=null ? supfraismiss : ''}
+        تحمل مصاريف المأمورية على : &emsp; ${supfraismiss  !=null ? supfraismiss : 'غير محدد'}
         </p>
         <p>
-        تحمل مصاريف السكن على : &emsp; ${supfraislogement  !=null ? supfraislogement : ''}
+        تحمل مصاريف السكن على : &emsp; ${supfraislogement  !=null ? supfraislogement : 'غير محدد'}
         </p>
         <p>
-        تحمل مصاريف المشاركة على : &emsp; ${supfraispartic !=null ? supfraispartic : ''}
+        تحمل مصاريف المشاركة على : &emsp; ${supfraispartic !=null ? supfraispartic : 'غير محدد'}
         </p>
         <p>
-        تحمل مصاريف النقل على : &emsp; ${supfraistransport!=null ? supfraistransport : ''}
+        تحمل مصاريف النقل على : &emsp; ${supfraistransport!=null ? supfraistransport : 'غير محدد'}
         </p>
         <p>
-        وسيلة النقل :  &emsp;  ${moytransport!=null ? moytransport : ''}
+        وسيلة النقل :  &emsp;  ${moytransport!=null ? moytransport : 'غير محدد'}
         <p>
         <p> 
         مصاريف النقل :  &emsp; ${fraistransp} دينار 
@@ -606,10 +605,10 @@ calcduree(d1:Date,d2:Date){
           nomorgetranger = a[index].nomOrgAr +" - ";
         }
       }
-      let supfraismiss:string = "";
-      let supfraislogement:string ="";
-      let supfraispartic:string ="";
-      let supfraistransport:string ="";
+      let supfraismiss:string = "غير محدد";
+      let supfraislogement:string ="غير محدد";
+      let supfraispartic:string ="غير محدد";
+      let supfraistransport:string ="غير محدد";
       let fraistransp:number = 0.000;
       let fraismiss:number = 0.000;
       let timbre:number = 0.000;
@@ -661,6 +660,7 @@ calcduree(d1:Date,d2:Date){
               else if (f[i].support.codeSupport=="I"){
                 supfraistransport = u.mission.departement.libDepAr ;
               }
+              else supfraistransport = "غير محدد"
           }
           else if(f[i].typeFrai.codeTypefr == "0303" || f[i].typeFrai.codeTypefr == "0707" ||f[i].typeFrai.codeTypefr == "0404" ||f[i].typeFrai.codeTypefr == "0202" || f[i].typeFrai.codeTypefr == "0101"){ //frais participation 
             if (f[i].typeFrai.codeTypefr == "0101"){
@@ -684,7 +684,7 @@ calcduree(d1:Date,d2:Date){
             else if (f[i].support.codeSupport=="I"){
               supfraispartic = u.mission.departement.libDepAr ;
             }
-            else supfraispartic = " " ;
+            else supfraispartic = " غير محدد" ;
           }
           else if(f[i].typeFrai.codeTypefr == "0909"){ // frais de logement
             if(f[i].support.codeSupport=="J"){ // org hote et org parrain
@@ -705,6 +705,7 @@ calcduree(d1:Date,d2:Date){
             else if (f[i].support.codeSupport=="I"){
               supfraislogement = u.mission.departement.libDepAr ;
             }
+            else supfraislogement = "غير محدد"
           }           
         }
         popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');

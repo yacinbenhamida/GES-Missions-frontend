@@ -38,6 +38,7 @@ export class ThUsersComponent implements OnInit,AfterViewInit {
   confirmPW:string = "";
   confirmPW2:string = "";
   departt:Departement;
+  vcin:boolean = false;
   constructor(public usserv:UtilisateurService
     ,public depserv:DepartementService,public router:Router,public route:ActivatedRoute) {
   }
@@ -147,4 +148,9 @@ export class ThUsersComponent implements OnInit,AfterViewInit {
       case 'ADMIN' : return 'مشرف (ADMIN)' ;
     }
   }
+  checkcin(event){
+    if(this.user.login && event){
+       event.length == 8 || this.user.login.toString().length == 8? this.vcin = true : this.vcin = false;
+    }else this.vcin = false
+}
 }

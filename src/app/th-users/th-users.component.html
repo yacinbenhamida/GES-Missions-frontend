@@ -63,9 +63,9 @@
           <section class="col col-4">رقم بطاقة التعريف الوطنية  (login)
             <label class="input">
                 <i class="icon-prepend fa fa-info"></i>
-                <input  minlength="8"  required type="number" name="login" placeholder="رقم بطاقة التعريف الوطنية  (login)"
+                <input (change)="checkcin(login)"  minlength="8"  required type="number" name="login" placeholder="رقم بطاقة التعريف الوطنية  (login)"
                  #login="ngModel" class="form-control" [(ngModel)]="user.login">
-                 <span class="errar" *ngIf="login.invalid && (login.dirty || login.touched)">
+                 <span class="errar" *ngIf="(login.invalid || vcin== false) && (login.dirty || login.touched)">
                       <div *ngIf="login.errors.required||login.errors.minlength">
                             رقم بطاقة التعريف يتكون من 8 ارقام على الأقل
                       </div>
