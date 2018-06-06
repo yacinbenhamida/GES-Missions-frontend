@@ -52,7 +52,7 @@ export class BudgetService{
     }
     updateBudgProg(d:AvoirBudgProg):Promise<MajBudgProg>{
         return this.http.post(this.projUrl + "/updateBudgetProj",JSON.stringify(d),{headers : this.headers})
-        .toPromise().then(()=>null).catch(this.handleError);
+        .toPromise().then(this.extractData).catch(this.handleError);
     }
     // toutes les maj du projet du ministere
     getAllBudgetProgUpdatesOfdep(iddep:string):Observable<MajBudgProg[]>{
@@ -126,7 +126,7 @@ export class BudgetService{
     }
     updateBudgDep(d:AvoirBudgDep):Promise<MajBudgDep>{
         return this.http.post(this.projUrl + "/updateBudgetDep",JSON.stringify(d),{headers : this.headers})
-        .toPromise().then(()=>null).catch(this.handleError);
+        .toPromise().then(this.extractData).catch(this.handleError);
     }
     getAllBudgetDepUpdates():Observable<MajBudgDep[]>{
         return this.http.get(this.projUrl+"/allMajDepBudgets",{headers:this.headers}).map(this.extractData).catch(this.handleError);

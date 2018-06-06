@@ -93,7 +93,11 @@ export class EntBudgyeareditComponent implements OnInit {
     this.budget.departement = this.departement;
     this.budget.dateBudg = this.d;
     this.budget.anneeAttr = this.year;
-    this.budgserv.updateBudgDep(this.budget).then((data)=>this.budgets.push(data));
+    this.budgserv.updateBudgDep(this.budget).then((data)=>{
+      f.reset();
+      alert("تمة إضافة مطلب التحيين");
+      this.budgets.push(data)
+    });
   }
   toggleList(){
     this.listvisible = ! this.listvisible;

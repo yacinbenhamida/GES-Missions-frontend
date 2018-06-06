@@ -70,7 +70,11 @@ export class ProjBudgyeareditComponent implements OnInit {
     if(this.signe=="-"){this.budget.montantBudg = -this.budget.montantBudg;}
     this.budget.dateBudg = this.d;
     this.budget.anneeAttr = this.year;
-    this.budgserv.updateBudgProg(this.budget).then((data)=>this.budgets.push(data));
+    this.budgserv.updateBudgProg(this.budget).then((data)=>{
+      f.reset();
+      alert("تمة إضافة مطلب التحيين");
+      this.budgets.push(data)
+    });
   }
   toggleList(){
     this.listvisible = !this.listvisible;

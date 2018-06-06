@@ -123,26 +123,19 @@ export class EntBudgyearinsertComponent implements OnInit {
         this.isApproved = false;
         this.isFirstelem = false;
       }
+      this.fraisServ.getFraisMissionPromis(this.dp.codeDep,this.year)
+      .subscribe(val=>{
+        
+        this.valbudgpromisMission=val
+        this.fraisServ.getFraisTransportPromis(this.dp.codeDep,this.year).subscribe(
+          a=>{
+            this.valbudgpromisTransport = a 
+          },error=>this.valbudgpromisTransport=0)  
+      },error=>this.valbudgpromisMission=0);
+  
+
     });
     
-    this.budgserv.getSommeBudgMissionObtenus(this.dp.codeDep,this.year)
-    .subscribe(val=>{
-      if(!this.isEmpty(val))this.valbudgobtmissions=val;
-      else this.valbudgobtmissions=0;
-      },error=>this.valbudgobtmissions=0);
-
-    this.budgserv.getSommeBudgTransportObtenus(this.dp.codeDep,this.year)
-    .subscribe(x=>{
-     !this.isEmpty(x)? this.valbudgobtTransport=x : this.valbudgobtTransport = 0;
-    },error=>this.valbudgobtTransport=0);
-
-    this.fraisServ.getFraisMissionPromis(this.dp.codeDep,this.year)
-    .subscribe(val=>{!this.isEmpty(val)?this.valbudgpromisMission=val:this.valbudgpromisMission = 0},error=>this.valbudgpromisMission=0);
-
-    this.fraisServ.getFraisTransportPromis(this.dp.codeDep,this.year).subscribe(
-      a=>{!this.isEmpty(a)?this.valbudgpromisMission = a:this.valbudgpromisMission =0; },error=>this.valbudgpromisMission=0
-    )  
-  
   }
   isEmpty(obj){
     return (obj && (Object.keys(obj).length === 0));
