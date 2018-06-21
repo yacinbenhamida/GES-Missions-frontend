@@ -28,6 +28,7 @@ export class EntBudgyeareditComponent implements OnInit {
     u:Utilisateur;
     canEnterBudg:boolean = false;
     message : string = "في انتضار موافقة سلطة الاشراف";
+    user : string = JSON.parse(localStorage.getItem('Array'));
   constructor(public budgserv:BudgetService,public projserv:ProjetService) {
     this.budgets = [];
     this.projets = [];
@@ -104,15 +105,28 @@ export class EntBudgyeareditComponent implements OnInit {
   }
   saveEdition(u:MajBudgDep){
     if(confirm("هل انت متأكد من تثبيت هذا التغيير  ?")){
-    this.budgserv.saveBudgDepMaj(u.idMajBdugDep).subscribe(
-      (val)=>{
-        //this.budgets = this.budgets.filter(h=>h!==u);
-        u = val;
-      });
+      if(this.user == "O"){
+        this.budgserv.saveBudgDepMaj(u.idMajBdugDep).subscribe(
+          (val)=>{
+            alert("تم تسجيل المطلب");
+              u.etat = 'O';
+              window.location.reload();
+          });
+    }
+    else if (this.user == "OM"){
+      this.budgserv.acceptBudgProgDep(u.idMajBdugDep).subscribe(
+        (v)=>{
+          alert("تمة المصادقة على ميزانية الوزارة");
+          u.etat = 'S';
+          window.location.reload();
+        }
+      )
+    }
   }}
   delEdition(u:MajBudgDep){
     if(confirm("هل انت متأكد من إزالة هذا التغيير ?")){
     this.budgserv.cancelBudgDepMaj(u.idMajBdugDep).subscribe(x=>{
+      alert("تم حذف المطلب");
       this.budgets = this.budgets.filter(h=>h!==u);
     });
     }

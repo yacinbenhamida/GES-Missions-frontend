@@ -148,7 +148,7 @@ export class BudgetService{
     // save & cancel by Ordonnateur normal
     saveBudgDepMaj(idmaj:number){
         const url = `${this.projUrl}/saveMajBudgDEP/${idmaj}`;
-        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(res=>null).catch(this.handleError);
     }
     cancelBudgDepMaj(idmaj:number){
         const url = `${this.projUrl}/deleteMajBudgDepOfUser/${idmaj}`;
@@ -158,7 +158,7 @@ export class BudgetService{
     // accept maj budget dep by OM 
     acceptBudgProgDep(idmaj:number){
         const url = `${this.projUrl}/acceptMajDEPM/${idmaj}`;
-        return this.http.get(url,{headers:this.headers}).map(this.extractData).catch(this.handleError);
+        return this.http.get(url,{headers:this.headers}).map(res=>null).catch(this.handleError);
     }
     // decline maj budg dep by OM 
     declineBudgDepMaj(idmaj:number){

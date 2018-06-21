@@ -38,11 +38,11 @@
                     </div>
                     <div class="input-group margin-bottom-20">
                         <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                        <input type="text" [ngModelOptions]="{standalone: true}" required [(ngModel)]="username" placeholder="رقم بطاقة التعريف الوطنية" class="form-control">
+                        <input type="text" name="username" required [(ngModel)]="username" placeholder="رقم بطاقة التعريف الوطنية" class="form-control">
                     </div>                    
                     <div class="input-group margin-bottom-20">
                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                        <input required [ngModelOptions]="{standalone: true}"  [(ngModel)]="pw" type="password" placeholder="كلمة السر" class="form-control">
+                        <input  name="pass" required  [(ngModel)]="pw" type="password" placeholder="كلمة السر" class="form-control">
                     </div>                    
 
                     <div class="row">

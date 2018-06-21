@@ -30,7 +30,6 @@ export class ThDepartementsComponent implements OnInit {
     this.dep.typedep.idtypedep = 5;
       this.depserv.insertDep(this.dep).then(a=>this.deps.push(a));
       alert("تم");
-
   }
 
   deleteDep(dep:Departement){

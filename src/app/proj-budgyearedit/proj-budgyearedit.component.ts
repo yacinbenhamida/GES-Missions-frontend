@@ -27,6 +27,7 @@ export class ProjBudgyeareditComponent implements OnInit {
     u:Utilisateur = JSON.parse(localStorage.getItem('user'));;
     canEdit:boolean = true;
     message = "يجب إدخال على الأقل مشروع كي تتمكن من تحيين اعتماداته"
+    user = JSON.parse(localStorage.getItem('Array'));
   constructor(public budgserv:BudgetService,public projserv:ProjetService) {   }
 
   ngOnInit() {
@@ -81,8 +82,17 @@ export class ProjBudgyeareditComponent implements OnInit {
   }
   saveEdition(u:MajBudgProg){
     if(confirm("هل انت متأكد من تثبيت هذا التغيير  ?")){  
+      if(this.user == "O"){
     this.budgserv.saveBudgProgMaj(u.idmajBudgPrg).subscribe(()=>null);
+    alert("تم تسجيل المطلب");
       u.etat = "O";}
+
+    else if(this.user =="OM"){
+      this.budgserv.acceptBudgProgMaj(u.idmajBudgPrg).subscribe(()=>null);
+      alert("تم تسجيل المطلب");
+      u.etat = "S";
+    }
+  }
   }
   delEdition(u:MajBudgProg){
     if(confirm("هل انت متأكد من إلغاء هذا التغيير  ?")){  

@@ -97,6 +97,7 @@ export class ThUsersComponent implements OnInit,AfterViewInit {
     this.usserv.getUsOfUSER(u.codeUtilisateur).subscribe(o=>{
       this.userstructupdate = o;
       this.userstructupdate.utilisateur = u;
+      this.userstructupdate.departement = o.departement;
       this.userstructupdate.utilisateur.motDePasse = this.decrypt(this.userstructupdate.utilisateur.motDePasse);
       this.toggleModal();
     })
@@ -104,6 +105,10 @@ export class ThUsersComponent implements OnInit,AfterViewInit {
   toggleAddUser(){
     this.adduserv = !(this.adduserv);
   }
+  compareFn(c1: Departement, c2: Departement): boolean {
+    return c1 && c2 &&c1.codeDep == c2.codeDep ? true : false;
+  }
+
   toggleList(){
     this.listusers = !(this.listusers);
   }
@@ -153,4 +158,5 @@ export class ThUsersComponent implements OnInit,AfterViewInit {
        event.length == 8 || this.user.login.toString().length == 8? this.vcin = true : this.vcin = false;
     }else this.vcin = false
 }
+
 }
